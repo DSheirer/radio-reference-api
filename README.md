@@ -10,7 +10,7 @@ A client library for accessing the web services methods available from the radio
 * Java 11+
 
 ### Usage
-    AuthorizationInformation authorizationInformation = new AuthorizationInformation("apikey", "usernamer", "password");
+    AuthorizationInformation authorizationInformation = new AuthorizationInformation("apikey", "username", "password");
 
     try
     {
