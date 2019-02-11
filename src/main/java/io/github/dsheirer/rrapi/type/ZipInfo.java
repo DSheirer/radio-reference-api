@@ -28,7 +28,7 @@ public class ZipInfo
     private String mLongitude;
     private String mCity;
     private int mStateId;
-    private int mCountryId;
+    private int mCountyId;
 
     public ZipInfo()
     {
@@ -90,13 +90,13 @@ public class ZipInfo
     }
 
     @JacksonXmlProperty(localName = "ctid")
-    public int getCountryId()
+    public int getCountyId()
     {
-        return mCountryId;
+        return mCountyId;
     }
 
-    public void setCountryId(int countryId)
+    public void setCountyId(int countyId)
     {
-        mCountryId = countryId;
+        mCountyId = countyId;
     }
 }

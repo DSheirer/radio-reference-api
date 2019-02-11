@@ -60,8 +60,25 @@ public class GetStatesByList extends RequestBody
         mStateIdItems.add(StateItem.create(stateId));
     }
 
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int ... stateIds)
     {
-        return RequestBody.create(new GetStatesByList(authorizationInformation));
+        GetStatesByList body = new GetStatesByList(authorizationInformation);
+        for(int stateId: stateIds)
+        {
+            body.addState(stateId);
+        }
+
+        return RequestEnvelope.create(body);
+    }
+
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, List<Integer> stateIds)
+    {
+        GetStatesByList body = new GetStatesByList(authorizationInformation);
+        for(int stateId: stateIds)
+        {
+            body.addState(stateId);
+        }
+
+        return RequestEnvelope.create(body);
     }
 }
