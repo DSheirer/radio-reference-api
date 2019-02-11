@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * User account information
+ */
 public class UserInfo
 {
     private String mUserName;
@@ -30,6 +33,10 @@ public class UserInfo
     {
     }
 
+    /**
+     * User name
+     * @return user name
+     */
     @JacksonXmlProperty(localName = "username")
     public String getUserName()
     {
@@ -41,6 +48,10 @@ public class UserInfo
         mUserName = userName;
     }
 
+    /**
+     * Expiration date for the account
+     * @return expiration date
+     */
     @JacksonXmlProperty(localName = "subExpireDate")
     public String getExpirationDate()
     {

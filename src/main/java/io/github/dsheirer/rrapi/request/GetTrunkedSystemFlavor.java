@@ -23,7 +23,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Trunked System Flavor information
+ * Trunked System Flavor query
  */
 public class GetTrunkedSystemFlavor extends RequestBody
 {
@@ -32,7 +32,7 @@ public class GetTrunkedSystemFlavor extends RequestBody
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param systemFlavorId to request
      */
     public GetTrunkedSystemFlavor(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
@@ -42,19 +42,27 @@ public class GetTrunkedSystemFlavor extends RequestBody
 
     /**
      * Constructs a get ALL tags request
-     * @param authorizationInformation
+     * @param authorizationInformation credentials
      */
     public GetTrunkedSystemFlavor(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
+    /**
+     * System Flavor ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public Integer getSystemFlavorId()
     {
         return mSystemFlavorId;
     }
 
+    /**
+     * Sets the sytem flavor id
+     * @param systemFlavorId id
+     */
     public void setSystemFlavorId(int systemFlavorId)
     {
         mSystemFlavorId = systemFlavorId;
@@ -62,9 +70,9 @@ public class GetTrunkedSystemFlavor extends RequestBody
 
     /**
      * Creates a get specific tag request
-     * @param authorizationInformation
-     * @param systemFlavorId
-     * @return
+     * @param authorizationInformation credentials
+     * @param systemFlavorId to query
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
@@ -73,8 +81,8 @@ public class GetTrunkedSystemFlavor extends RequestBody
 
     /**
      * Creates a get ALL tags request
-     * @param authorizationInformation
-     * @return
+     * @param authorizationInformation credentials
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Country information
+ * Get FCC callsign information
  */
 public class FccGetCallsign extends RequestBody
 {
@@ -31,8 +31,9 @@ public class FccGetCallsign extends RequestBody
 
     /**
      * Constructs the request
+     *
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param callsign to lookup
      */
     public FccGetCallsign(AuthorizationInformation authorizationInformation, String callsign)
     {
@@ -40,17 +41,31 @@ public class FccGetCallsign extends RequestBody
         mCallsign = callsign;
     }
 
+    /**
+     * Callsign being queried
+     * @return callsign
+     */
     @JacksonXmlProperty(localName = "request")
     public String getCallsign()
     {
         return mCallsign;
     }
 
+    /**
+     * Sets the callsign being queried
+     * @param callsign to query
+     */
     public void setCallsign(String callsign)
     {
         mCallsign = callsign;
     }
 
+    /**
+     * Creates a request envelope using the auth info and the callsign
+     * @param authorizationInformation credentials
+     * @param callsign to query
+     * @return request envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, String callsign)
     {
         return RequestBody.create(new FccGetCallsign(authorizationInformation, callsign));

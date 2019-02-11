@@ -55,15 +55,27 @@ public class RequestBody
 {
     private AuthorizationInformation mAuthorizationInformation;
 
+    /**
+     * Empty constructor for Jackson
+     */
     public RequestBody()
     {
     }
 
+    /**
+     * Constructs a request body
+     *
+     * @param authorizationInformation containing username and password
+     */
     public RequestBody(AuthorizationInformation authorizationInformation)
     {
         mAuthorizationInformation = authorizationInformation;
     }
 
+    /**
+     * Authorization information
+     * @return authorization information
+     */
     @JacksonXmlProperty(localName = "authInfo")
     public AuthorizationInformation getAuthorizationInformation()
     {
@@ -72,13 +84,18 @@ public class RequestBody
 
     /**
      * Sets the authorization information for this request
-     * @param authorizationInformation
+     * @param authorizationInformation containing username and password
      */
     public void setAuthorizationInformation(AuthorizationInformation authorizationInformation)
     {
         mAuthorizationInformation = authorizationInformation;
     }
 
+    /**
+     * Creates a request envelope containing the request body
+     * @param requestBody to wrap with the envelope
+     * @return request envelope
+     */
     public static RequestEnvelope create(RequestBody requestBody)
     {
         return RequestEnvelope.create(requestBody);

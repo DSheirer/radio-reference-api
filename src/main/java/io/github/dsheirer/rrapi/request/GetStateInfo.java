@@ -32,7 +32,7 @@ public class GetStateInfo extends RequestBody
     /**
      * Constructs the request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param stateId to request
      */
     public GetStateInfo(AuthorizationInformation authorizationInformation, int stateId)
     {
@@ -40,17 +40,31 @@ public class GetStateInfo extends RequestBody
         mStateId = stateId;
     }
 
+    /**
+     * State id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public int getStateId()
     {
         return mStateId;
     }
 
+    /**
+     * Sets the state ID to query
+     * @param stateId to query
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation credentials
+     * @param stateId to query
+     * @return request
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int stateId)
     {
         return RequestBody.create(new GetStateInfo(authorizationInformation, stateId));

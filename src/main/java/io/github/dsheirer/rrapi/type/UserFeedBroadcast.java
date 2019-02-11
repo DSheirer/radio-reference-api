@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Broadcastify feed / audio streaming channel configuration details
+ */
 public class UserFeedBroadcast
 {
     private int mFeedId;
@@ -30,10 +33,17 @@ public class UserFeedBroadcast
     private String mMount;
     private String mPassword;
 
+    /**
+     * Constructs a user feed broadcast instance
+     */
     public UserFeedBroadcast()
     {
     }
 
+    /**
+     * Feed identifier
+     * @return feed id
+     */
     @JacksonXmlProperty(localName = "feedId")
     public int getFeedId()
     {
@@ -45,6 +55,10 @@ public class UserFeedBroadcast
         mFeedId = feedId;
     }
 
+    /**
+     * Description of the feed
+     * @return description
+     */
     @JacksonXmlProperty(localName = "descr")
     public String getDescription()
     {
@@ -56,6 +70,10 @@ public class UserFeedBroadcast
         mDescription = description;
     }
 
+    /**
+     * Hostname for the server that will receive the feed
+     * @return hostname
+     */
     @JacksonXmlProperty(localName = "hostname")
     public String getHostname()
     {
@@ -67,6 +85,10 @@ public class UserFeedBroadcast
         mHostname = hostname;
     }
 
+    /**
+     * Port for the server that will receive the feed
+     * @return port number
+     */
     @JacksonXmlProperty(localName = "port")
     public String getPort()
     {
@@ -78,6 +100,10 @@ public class UserFeedBroadcast
         mPort = port;
     }
 
+    /**
+     * Icecast mount point for the feed
+     * @return mount point
+     */
     @JacksonXmlProperty(localName = "mount")
     public String getMount()
     {
@@ -89,6 +115,10 @@ public class UserFeedBroadcast
         mMount = mount;
     }
 
+    /**
+     * Password for the feed
+     * @return password
+     */
     @JacksonXmlProperty(localName = "password")
     public String getPassword()
     {

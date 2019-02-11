@@ -32,7 +32,7 @@ public class GetTrunkedSystemVoice extends RequestBody
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param systemVoiceId to request
      */
     public GetTrunkedSystemVoice(AuthorizationInformation authorizationInformation, int systemVoiceId)
     {
@@ -42,29 +42,37 @@ public class GetTrunkedSystemVoice extends RequestBody
 
     /**
      * Constructs a get ALL tags request
-     * @param authorizationInformation
+     * @param authorizationInformation credentials
      */
     public GetTrunkedSystemVoice(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
+    /**
+     * System voice id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public Integer getSystemVoiceId()
     {
         return mSystemVoiceId;
     }
 
+    /**
+     * Sets the system voice id
+     * @param systemVoiceId to query
+     */
     public void setSystemVoiceId(int systemVoiceId)
     {
         mSystemVoiceId = systemVoiceId;
     }
 
     /**
-     * Creates a get specific tag request
-     * @param authorizationInformation
-     * @param systemVoiceId
-     * @return
+     * Creates a get specific voice request
+     * @param authorizationInformation credentials
+     * @param systemVoiceId to query
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemVoiceId)
     {
@@ -72,9 +80,9 @@ public class GetTrunkedSystemVoice extends RequestBody
     }
 
     /**
-     * Creates a get ALL tags request
-     * @param authorizationInformation
-     * @return
+     * Creates a get ALL voices request
+     * @param authorizationInformation credentials
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * State information
+ * Query agency information
  */
 public class GetAgencyInfo extends RequestBody
 {
@@ -32,7 +32,7 @@ public class GetAgencyInfo extends RequestBody
     /**
      * Constructs the request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param agencyId to request
      */
     public GetAgencyInfo(AuthorizationInformation authorizationInformation, int agencyId)
     {
@@ -40,17 +40,31 @@ public class GetAgencyInfo extends RequestBody
         mAgencyId = agencyId;
     }
 
+    /**
+     * Agency id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public int getAgencyId()
     {
         return mAgencyId;
     }
 
+    /**
+     * Sets the agency id
+     * @param agencyId to query
+     */
     public void setAgencyId(int agencyId)
     {
         mAgencyId = agencyId;
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation credentials
+     * @param agencyId to query
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int agencyId)
     {
         return RequestBody.create(new GetAgencyInfo(authorizationInformation, agencyId));

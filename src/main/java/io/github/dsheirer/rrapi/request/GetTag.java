@@ -32,7 +32,7 @@ public class GetTag extends RequestBody
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param tagId to request
      */
     public GetTag(AuthorizationInformation authorizationInformation, int tagId)
     {
@@ -42,19 +42,27 @@ public class GetTag extends RequestBody
 
     /**
      * Constructs a get ALL tags request
-     * @param authorizationInformation
+     * @param authorizationInformation credentials
      */
     public GetTag(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
+    /**
+     * Tag ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public Integer getTagId()
     {
         return mTagId;
     }
 
+    /**
+     * Set tag ID
+     * @param tagId to query
+     */
     public void setTagId(int tagId)
     {
         mTagId = tagId;
@@ -62,9 +70,9 @@ public class GetTag extends RequestBody
 
     /**
      * Creates a get specific tag request
-     * @param authorizationInformation
-     * @param tagId
-     * @return
+     * @param authorizationInformation credentials
+     * @param tagId to query
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int tagId)
     {
@@ -73,8 +81,8 @@ public class GetTag extends RequestBody
 
     /**
      * Creates a get ALL tags request
-     * @param authorizationInformation
-     * @return
+     * @param authorizationInformation credentials
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {

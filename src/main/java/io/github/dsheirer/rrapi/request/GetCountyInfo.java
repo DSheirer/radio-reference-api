@@ -32,25 +32,39 @@ public class GetCountyInfo extends RequestBody
     /**
      * Constructs the request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param countyId to request
      */
-    public GetCountyInfo(AuthorizationInformation authorizationInformation, int countryId)
+    public GetCountyInfo(AuthorizationInformation authorizationInformation, int countyId)
     {
         super(authorizationInformation);
-        mCountyId = countryId;
+        mCountyId = countyId;
     }
 
+    /**
+     * County id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public int getCountyId()
     {
         return mCountyId;
     }
 
+    /**
+     * Sets the county id
+     * @param countyId to query
+     */
     public void setCountyId(int countyId)
     {
         mCountyId = countyId;
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation credentials
+     * @param countyId to query
+     * @return request
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int countyId)
     {
         return RequestBody.create(new GetCountyInfo(authorizationInformation, countyId));

@@ -42,19 +42,27 @@ public class GetMode extends RequestBody
 
     /**
      * Constructs a get ALL modes request
-     * @param authorizationInformation
+     * @param authorizationInformation credentials
      */
     public GetMode(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
+    /**
+     * Mode id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public Integer getModeId()
     {
         return mModeId;
     }
 
+    /**
+     * Sets the mode id to query
+     * @param modeId to query
+     */
     public void setModeId(int modeId)
     {
         mModeId = modeId;
@@ -62,9 +70,9 @@ public class GetMode extends RequestBody
 
     /**
      * Creates a get specific mode request
-     * @param authorizationInformation
-     * @param modeId
-     * @return
+     * @param authorizationInformation credentials
+     * @param modeId to query
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int modeId)
     {
@@ -73,8 +81,8 @@ public class GetMode extends RequestBody
 
     /**
      * Creates a get ALL modes request
-     * @param authorizationInformation
-     * @return
+     * @param authorizationInformation credentials
+     * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {

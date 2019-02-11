@@ -19,10 +19,11 @@
 
 plugins {
     id 'java'
+    id 'java-library'
+    id 'maven'
+    id 'maven-publish'
+    id 'signing'
 }
-
-group 'io.github.dsheirer'
-version '15.0'
 
 sourceCompatibility = 11
 
@@ -35,4 +36,104 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.2.3'
     compile 'org.slf4j:slf4j-api:1.7.25'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+group 'io.github.dsheirer'
+archivesBaseName = "radio-reference-api"
+version '15.0-SNAPSHOT'
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+ext.moduleName = 'io.github.dsheirer.rrapi'
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
+signing {
+    useGpgCmd()
+}
+
+javadoc {
+    options.addBooleanOption('html5', true)
+    options.addStringOption('-module-path', classpath.asPath)
+}
+
+task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+    doLast{
+        signing.sign(packageJavadoc)
+    }
+}
+
+task packageSources(type: Jar, dependsOn: 'classes') {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+    doLast{
+        signing.sign(packageSources)
+    }
+}
+
+artifacts {
+    archives packageJavadoc, packageSources
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'radioreference.com web services Java client'
+                packaging 'jar'
+                artifactId 'radio-reference-api'
+                description 'Java client library for radioreference.com web services'
+                url = 'https://github.com/DSheirer/radio-reference-api'
+
+                scm {
+                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
+                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
+                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
+                }
+
+                licenses {
+                    license {
+                        name = 'GNU General Public License, Version 3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'dsheirer'
+                        name = 'Dennis Sheirer'
+                        email = 'dsheirer@sonatype.com'
+                        organizationUrl = 'https://github.com/DSheirer'
+                    }
+                }
+            }
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': "${project.archivesBaseName}",
+                   'Implementation-Version': version
+    }
 }

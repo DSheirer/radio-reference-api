@@ -25,7 +25,7 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import java.util.List;
 
 /**
- * Country information
+ * Country information request
  */
 public class GetCountryInfo extends RequestBody
 {
@@ -34,7 +34,7 @@ public class GetCountryInfo extends RequestBody
     /**
      * Constructs the request
      * @param authorizationInformation for the user
-     * @param stateIds to request
+     * @param countryId to request
      */
     public GetCountryInfo(AuthorizationInformation authorizationInformation, int countryId)
     {
@@ -42,17 +42,31 @@ public class GetCountryInfo extends RequestBody
         mCountryId = countryId;
     }
 
+    /**
+     * Country id
+     * @return id
+     */
     @JacksonXmlProperty(localName = "request")
     public int getCountryId()
     {
         return mCountryId;
     }
 
+    /**
+     * Sets the country id
+     * @param countryId to query
+     */
     public void setCountryId(int countryId)
     {
         mCountryId = countryId;
     }
 
+    /**
+     * Request envelope
+     * @param authorizationInformation credentials
+     * @param countryId to query
+     * @return request
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int countryId)
     {
         return RequestBody.create(new GetCountryInfo(authorizationInformation, countryId));
