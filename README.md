@@ -5,6 +5,7 @@ A client library for accessing the web services methods available from the radio
 ### Compatibility
 * SOAP Web Service API Version 15
 * See https://wiki.radioreference.com/index.php/API
+* See https://wiki.radioreference.com/index.php/RadioReference.com_Web_Service3.1
 
 ### Requirements
 * Java 11+
