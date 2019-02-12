@@ -24,12 +24,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * State information containing list of agencies, counties and trunked radio systems.
+ */
 public class StateInfo
 {
     private int mStateId;
     private String mName;
     private String mStateEntityType;
-    private List<SystemItem> mSystemItems;
+    private List<RadioSystemItem> mRadioSystemItems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
     private List<County> mCounties = new ArrayList<>();
 
@@ -37,6 +40,10 @@ public class StateInfo
     {
     }
 
+    /**
+     * State ID
+     * @return state id
+     */
     @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
@@ -48,6 +55,10 @@ public class StateInfo
         mStateId = stateId;
     }
 
+    /**
+     * State name
+     * @return state name
+     */
     @JacksonXmlProperty(localName = "stateName")
     public String getName()
     {
@@ -59,6 +70,10 @@ public class StateInfo
         mName = name;
     }
 
+    /**
+     * State entity type
+     * @return type
+     */
     @JacksonXmlProperty(localName = "stateEntityType")
     public String getStateEntityType()
     {
@@ -70,17 +85,28 @@ public class StateInfo
         mStateEntityType = stateEntityType;
     }
 
+    /**
+     * Trunked radio systems list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "trsList")
-    public List<SystemItem> getSystemItems()
+    public List<RadioSystemItem> getRadioSystemItems()
     {
-        return mSystemItems;
+        return mRadioSystemItems;
     }
 
-    public void setSystemItems(List<SystemItem> systemItems)
+    public void setRadioSystemItems(List<RadioSystemItem> radioSystemItems)
     {
-        mSystemItems = systemItems;
+        if(radioSystemItems != null)
+        {
+            mRadioSystemItems = radioSystemItems;
+        }
     }
 
+    /**
+     * Agencies list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "agencyList")
     public List<Agency> getAgencies()
     {
@@ -89,9 +115,16 @@ public class StateInfo
 
     public void setAgencies(List<Agency> agencies)
     {
-        mAgencies = agencies;
+        if(agencies != null)
+        {
+            mAgencies = agencies;
+        }
     }
 
+    /**
+     * Counties list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "countyList")
     public List<County> getCounties()
     {
@@ -100,6 +133,9 @@ public class StateInfo
 
     public void setCounties(List<County> counties)
     {
-        mCounties = counties;
+        if(counties != null)
+        {
+            mCounties = counties;
+        }
     }
 }

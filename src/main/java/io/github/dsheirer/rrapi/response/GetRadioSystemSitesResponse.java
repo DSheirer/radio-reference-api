@@ -17,34 +17,29 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
+import io.github.dsheirer.rrapi.type.Site;
 
-public class GetTrunkedSystemTalkgroupCategories extends RequestBody
+import java.util.List;
+
+public class GetRadioSystemSitesResponse extends ResponseBody
 {
-    private int mSystemId;
+    private List<Site> mSites;
 
-    public GetTrunkedSystemTalkgroupCategories(AuthorizationInformation authorizationInformation, int systemId)
+    public GetRadioSystemSitesResponse()
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "sid")
-    public int getSystemId()
+    @JacksonXmlProperty(localName = "return")
+    public List<Site> getSites()
     {
-        return mSystemId;
+        return mSites;
     }
 
-    public void setSystemId(int systemId)
+    public void setSites(List<Site> sites)
     {
-        mSystemId = systemId;
-    }
-
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
-    {
-        return RequestBody.create(new GetTrunkedSystemTalkgroupCategories(authorizationInformation, systemId));
+        mSites = sites;
     }
 }

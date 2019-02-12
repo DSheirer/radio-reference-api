@@ -23,69 +23,69 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Trunked System Voice information
+ * Get type information
  */
-public class GetTrunkedSystemVoice extends RequestBody
+public class GetRadioSystemType extends RequestBody
 {
-    private Integer mSystemVoiceId;
+    private Integer mSystemTypeId;
 
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param systemVoiceId to request
+     * @param systemTypeId to request
      */
-    public GetTrunkedSystemVoice(AuthorizationInformation authorizationInformation, int systemVoiceId)
+    public GetRadioSystemType(AuthorizationInformation authorizationInformation, int systemTypeId)
     {
         super(authorizationInformation);
-        mSystemVoiceId = systemVoiceId;
+        mSystemTypeId = systemTypeId;
     }
 
     /**
      * Constructs a get ALL tags request
      * @param authorizationInformation credentials
      */
-    public GetTrunkedSystemVoice(AuthorizationInformation authorizationInformation)
+    public GetRadioSystemType(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
     /**
-     * System voice id
+     * System Type id
      * @return id
      */
     @JacksonXmlProperty(localName = "request")
-    public Integer getSystemVoiceId()
+    public Integer getTypeId()
     {
-        return mSystemVoiceId;
+        return mSystemTypeId;
     }
 
     /**
-     * Sets the system voice id
-     * @param systemVoiceId to query
+     * Sets the system type id
+     * @param systemTypeId to query
      */
-    public void setSystemVoiceId(int systemVoiceId)
+    public void setTypeId(int systemTypeId)
     {
-        mSystemVoiceId = systemVoiceId;
+        mSystemTypeId = systemTypeId;
     }
 
     /**
-     * Creates a get specific voice request
+     * Creates a get specific type request
      * @param authorizationInformation credentials
-     * @param systemVoiceId to query
+     * @param typeId to query
      * @return request
      */
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemVoiceId)
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int typeId)
     {
-        return RequestBody.create(new GetTrunkedSystemVoice(authorizationInformation, systemVoiceId));
+        return RequestBody.create(new GetRadioSystemType(authorizationInformation, typeId));
     }
 
     /**
-     * Creates a get ALL voices request
+     * Creates a get ALL types request
      * @param authorizationInformation credentials
      * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetTrunkedSystemVoice(authorizationInformation));
+        return RequestBody.create(new GetRadioSystemType(authorizationInformation));
     }
 }

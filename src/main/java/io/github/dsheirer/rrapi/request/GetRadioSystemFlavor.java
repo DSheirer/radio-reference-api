@@ -25,7 +25,7 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 /**
  * Trunked System Flavor query
  */
-public class GetTrunkedSystemFlavor extends RequestBody
+public class GetRadioSystemFlavor extends RequestBody
 {
     private Integer mSystemFlavorId;
 
@@ -34,7 +34,7 @@ public class GetTrunkedSystemFlavor extends RequestBody
      * @param authorizationInformation for the user
      * @param systemFlavorId to request
      */
-    public GetTrunkedSystemFlavor(AuthorizationInformation authorizationInformation, int systemFlavorId)
+    public GetRadioSystemFlavor(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
         super(authorizationInformation);
         mSystemFlavorId = systemFlavorId;
@@ -44,7 +44,7 @@ public class GetTrunkedSystemFlavor extends RequestBody
      * Constructs a get ALL tags request
      * @param authorizationInformation credentials
      */
-    public GetTrunkedSystemFlavor(AuthorizationInformation authorizationInformation)
+    public GetRadioSystemFlavor(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
@@ -76,7 +76,7 @@ public class GetTrunkedSystemFlavor extends RequestBody
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
-        return RequestBody.create(new GetTrunkedSystemFlavor(authorizationInformation, systemFlavorId));
+        return RequestBody.create(new GetRadioSystemFlavor(authorizationInformation, systemFlavorId));
     }
 
     /**
@@ -86,6 +86,6 @@ public class GetTrunkedSystemFlavor extends RequestBody
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetTrunkedSystemFlavor(authorizationInformation));
+        return RequestBody.create(new GetRadioSystemFlavor(authorizationInformation));
     }
 }

@@ -1,4 +1,5 @@
-module io.github.dsheirer.rrapi {
+module io.github.dsheirer.rrapi
+{
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.dataformat.xml;
     requires jackson.annotations;

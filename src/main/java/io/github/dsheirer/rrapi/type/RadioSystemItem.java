@@ -24,7 +24,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.Date;
 
-public class SystemItem
+public class RadioSystemItem
 {
     private int mSystemId;
     private String mName;
@@ -34,7 +34,7 @@ public class SystemItem
     private String mCity;
     private Date mLastUpdated;
 
-    public SystemItem()
+    public RadioSystemItem()
     {
     }
 

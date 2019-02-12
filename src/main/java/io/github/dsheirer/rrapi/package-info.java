@@ -17,4 +17,17 @@
  * ****************************************************************************
  */
 
+/**
+ * Java client for accessing the radioreference.com SOAP web services API.
+ *
+ * Usage:
+ *
+ * AuthorizationInformation authorizationInformation = new AuthorizationInformation("apikey", "username", "password");
+ *
+ * RadioReferenceService service = new RadioReferenceService(authorizationInformation);
+ *
+ * UserInfo userInfo = service.getUserInfo();
+ *
+ */
 package io.github.dsheirer.rrapi;
+

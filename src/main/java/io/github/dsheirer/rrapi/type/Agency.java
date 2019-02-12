@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Agency information
+ */
 public class Agency
 {
     private int mAgencyId;
@@ -31,6 +34,10 @@ public class Agency
     {
     }
 
+    /**
+     * Agency ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "aid")
     public int getAgencyId()
     {
@@ -42,6 +49,10 @@ public class Agency
         mAgencyId = agencyId;
     }
 
+    /**
+     * Agency name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "aName")
     public String getName()
     {
@@ -53,6 +64,10 @@ public class Agency
         mName = name;
     }
 
+    /**
+     * Agency type.
+     * @return type
+     */
     @JacksonXmlProperty(localName = "aType")
     public int getType()
     {

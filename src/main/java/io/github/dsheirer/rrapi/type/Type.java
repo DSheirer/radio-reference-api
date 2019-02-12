@@ -21,39 +21,38 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class SystemFlavor
+/**
+ * Type description
+ */
+public class Type
 {
-    private int mFlavorId;
-    private int mFlavor;
+    private int mTypeId;
     private String mDescription;
 
-    public SystemFlavor()
+    public Type()
     {
     }
 
+    /**
+     * Type ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "sType")
-    public int getFlavorId()
+    public int getTypeId()
     {
-        return mFlavorId;
+        return mTypeId;
     }
 
-    public void setFlavorId(int flavorId)
+    public void setTypeId(int typeId)
     {
-        mFlavorId = flavorId;
+        mTypeId = typeId;
     }
 
-    @JacksonXmlProperty(localName = "sFlavor")
-    public int getFlavor()
-    {
-        return mFlavor;
-    }
-
-    public void setFlavor(int flavor)
-    {
-        mFlavor = flavor;
-    }
-
-    @JacksonXmlProperty(localName = "sFlavorDescr")
+    /**
+     * Type description
+     * @return decription
+     */
+    @JacksonXmlProperty(localName = "sTypeDescr")
     public String getDescription()
     {
         return mDescription;

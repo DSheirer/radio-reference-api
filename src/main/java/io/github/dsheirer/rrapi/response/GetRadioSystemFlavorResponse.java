@@ -20,28 +20,27 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.SystemFlavor;
-import io.github.dsheirer.rrapi.type.SystemVoice;
+import io.github.dsheirer.rrapi.type.RadioSystemFlavor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetTrunkedSystemVoiceResponse extends ResponseBody
+public class GetRadioSystemFlavorResponse extends ResponseBody
 {
-    private List<SystemVoice> mSystemSystemVoices = new ArrayList<>();
+    private List<RadioSystemFlavor> mRadioSystemFlavors = new ArrayList<>();
 
-    public GetTrunkedSystemVoiceResponse()
+    public GetRadioSystemFlavorResponse()
     {
     }
 
     @JacksonXmlProperty(localName = "return")
-    public List<SystemVoice> getSystemVoices()
+    public List<RadioSystemFlavor> getRadioSystemFlavors()
     {
-        return mSystemSystemVoices;
+        return mRadioSystemFlavors;
     }
 
-    public void setSystemSystemVoices(List<SystemVoice> systemSystemVoices)
+    public void setRadioSystemFlavors(List<RadioSystemFlavor> radioSystemFlavors)
     {
-        mSystemSystemVoices = systemSystemVoices;
+        mRadioSystemFlavors = radioSystemFlavors;
     }
 }

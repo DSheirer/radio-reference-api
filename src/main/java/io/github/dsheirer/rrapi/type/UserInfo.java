@@ -29,6 +29,9 @@ public class UserInfo
     private String mUserName;
     private String mExpirationDate;
 
+    /**
+     * Constructs an instance of user information
+     */
     public UserInfo()
     {
     }

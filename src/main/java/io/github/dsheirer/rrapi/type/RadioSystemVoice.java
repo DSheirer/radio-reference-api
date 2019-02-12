@@ -17,31 +17,50 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
+package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.System;
-import io.github.dsheirer.rrapi.type.SystemId;
-import io.github.dsheirer.rrapi.type.SystemItem;
 
-import java.util.List;
-
-public class GetTrsBySysidResponse extends ResponseBody
+public class RadioSystemVoice
 {
-    private List<SystemItem> mSystemItemps;
+    private int mVoiceId;
+    private int mVoice;
+    private String mDescription;
 
-    public GetTrsBySysidResponse()
+    public RadioSystemVoice()
     {
     }
 
-    @JacksonXmlProperty(localName = "return")
-    public List<SystemItem> getSystemItemps()
+    @JacksonXmlProperty(localName = "sType")
+    public int getVoiceId()
     {
-        return mSystemItemps;
+        return mVoiceId;
     }
 
-    public void setSystemItemps(List<SystemItem> systemItemps)
+    public void setVoiceId(int voiceId)
     {
-        mSystemItemps = systemItemps;
+        mVoiceId = voiceId;
+    }
+
+    @JacksonXmlProperty(localName = "sVoice")
+    public int getVoice()
+    {
+        return mVoice;
+    }
+
+    public void setVoice(int voice)
+    {
+        mVoice = voice;
+    }
+
+    @JacksonXmlProperty(localName = "sVoiceDescr")
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    public void setDescription(String description)
+    {
+        mDescription = description;
     }
 }

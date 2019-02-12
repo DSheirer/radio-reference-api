@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * County information
+ */
 public class CountyInfo
 {
     private int mCountyId;
@@ -38,13 +41,17 @@ public class CountyInfo
     private String mFips;
     private Date mLastUpdated;
     private List<Category> mCategories = new ArrayList<>();
-    private List<SystemItem> mSystemItems = new ArrayList<>();
+    private List<RadioSystemItem> mRadioSystemItems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
 
     public CountyInfo()
     {
     }
 
+    /**
+     * County ID
+     * @return county id
+     */
     @JacksonXmlProperty(localName = "ctid")
     public int getCountyId()
     {
@@ -56,6 +63,10 @@ public class CountyInfo
         mCountyId = countyId;
     }
 
+    /**
+     * Name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "countyName")
     public String getName()
     {
@@ -67,6 +78,10 @@ public class CountyInfo
         mName = name;
     }
 
+    /**
+     * County header
+     * @return header
+     */
     @JacksonXmlProperty(localName = "countyHeader")
     public String getHeader()
     {
@@ -78,6 +93,10 @@ public class CountyInfo
         mHeader = header;
     }
 
+    /**
+     * State ID for the county
+     * @return state ID
+     */
     @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
@@ -89,6 +108,10 @@ public class CountyInfo
         mStateId = stateId;
     }
 
+    /**
+     * Location latitude
+     * @return latitude in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
@@ -100,6 +123,10 @@ public class CountyInfo
         mLatitude = latitude;
     }
 
+    /**
+     * Location longitude
+     * @return longitude in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
@@ -111,6 +138,10 @@ public class CountyInfo
         mLongitude = longitude;
     }
 
+    /**
+     * Range of the county
+     * @return range
+     */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
     {
@@ -122,6 +153,10 @@ public class CountyInfo
         mRange = range;
     }
 
+    /**
+     * FIPS county code
+     * @return fips code
+     */
     @JacksonXmlProperty(localName = "fips")
     public String getFips()
     {
@@ -133,6 +168,10 @@ public class CountyInfo
         mFips = fips;
     }
 
+    /**
+     * Last Updated
+     * @return last updated date
+     */
     @JacksonXmlProperty(localName = "lastUpdated")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssX")
     public Date getLastUpdated()
@@ -145,6 +184,10 @@ public class CountyInfo
         mLastUpdated = lastUpdated;
     }
 
+    /**
+     * Categories list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "cats")
     public List<Category> getCategories()
     {
@@ -156,17 +199,25 @@ public class CountyInfo
         mCategories = categories;
     }
 
+    /**
+     * Radio systems list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "trsList")
-    public List<SystemItem> getSystemItems()
+    public List<RadioSystemItem> getRadioSystemItems()
     {
-        return mSystemItems;
+        return mRadioSystemItems;
     }
 
-    public void setSystemItems(List<SystemItem> systemItems)
+    public void setRadioSystemItems(List<RadioSystemItem> radioSystemItems)
     {
-        mSystemItems = systemItems;
+        mRadioSystemItems = radioSystemItems;
     }
 
+    /**
+     * Agencies list
+     * @return list
+     */
     @JacksonXmlProperty(localName = "agencyList")
     public List<Agency> getAgencies()
     {

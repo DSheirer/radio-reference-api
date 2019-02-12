@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Zipcode Information
+ */
 public class ZipInfo
 {
     private int mZipcode;
@@ -30,10 +33,17 @@ public class ZipInfo
     private int mStateId;
     private int mCountyId;
 
+    /**
+     * Constructs an instance of zipcode information
+     */
     public ZipInfo()
     {
     }
 
+    /**
+     * Zipcode value
+     * @return zipcode value
+     */
     @JacksonXmlProperty(localName = "zipCode")
     public int getZipcode()
     {
@@ -45,6 +55,10 @@ public class ZipInfo
         mZipcode = zipcode;
     }
 
+    /**
+     * Location latitude value in decimal degrees
+     * @return latitude
+     */
     @JacksonXmlProperty(localName = "lat")
     public String getLatitude()
     {
@@ -56,6 +70,10 @@ public class ZipInfo
         mLatitude = latitude;
     }
 
+    /**
+     * Location longitude value in decimal degrees
+     * @return longitude
+     */
     @JacksonXmlProperty(localName = "lon")
     public String getLongitude()
     {
@@ -67,6 +85,10 @@ public class ZipInfo
         mLongitude = longitude;
     }
 
+    /**
+     * City or area name
+     * @return city name
+     */
     @JacksonXmlProperty(localName = "city")
     public String getCity()
     {
@@ -78,6 +100,13 @@ public class ZipInfo
         mCity = city;
     }
 
+    /**
+     * State id
+     *
+     * @see State
+     *
+     * @return state identifier value
+     */
     @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
@@ -89,6 +118,13 @@ public class ZipInfo
         mStateId = stateId;
     }
 
+    /**
+     * County id
+     *
+     * @see County
+     *
+     * @return county identifier value
+     */
     @JacksonXmlProperty(localName = "ctid")
     public int getCountyId()
     {

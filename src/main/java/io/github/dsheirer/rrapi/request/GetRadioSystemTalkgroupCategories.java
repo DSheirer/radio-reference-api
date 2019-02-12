@@ -17,30 +17,34 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
+package io.github.dsheirer.rrapi.request;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.SystemFlavor;
+import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetTrunkedSystemFlavorResponse extends ResponseBody
+public class GetRadioSystemTalkgroupCategories extends RequestBody
 {
-    private List<SystemFlavor> mSystemFlavors = new ArrayList<>();
+    private int mSystemId;
 
-    public GetTrunkedSystemFlavorResponse()
+    public GetRadioSystemTalkgroupCategories(AuthorizationInformation authorizationInformation, int systemId)
     {
+        super(authorizationInformation);
+        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "return")
-    public List<SystemFlavor> getSystemFlavors()
+    @JacksonXmlProperty(localName = "sid")
+    public int getSystemId()
     {
-        return mSystemFlavors;
+        return mSystemId;
     }
 
-    public void setSystemFlavors(List<SystemFlavor> systemFlavors)
+    public void setSystemId(int systemId)
     {
-        mSystemFlavors = systemFlavors;
+        mSystemId = systemId;
+    }
+
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
+    {
+        return RequestBody.create(new GetRadioSystemTalkgroupCategories(authorizationInformation, systemId));
     }
 }

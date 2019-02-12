@@ -17,19 +17,16 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-public class GetTrsDetails extends RequestBody
+public class RadioSystemIdentifier
 {
     private int mSystemId;
 
-    public GetTrsDetails(AuthorizationInformation authorizationInformation, int systemId)
+    public RadioSystemIdentifier()
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
     }
 
     @JacksonXmlProperty(localName = "sid")
@@ -41,10 +38,5 @@ public class GetTrsDetails extends RequestBody
     public void setSystemId(int systemId)
     {
         mSystemId = systemId;
-    }
-
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
-    {
-        return RequestBody.create(new GetTrsDetails(authorizationInformation, systemId));
     }
 }

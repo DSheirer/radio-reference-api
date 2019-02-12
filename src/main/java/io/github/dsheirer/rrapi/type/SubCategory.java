@@ -31,7 +31,7 @@ public class SubCategory
     private double mLatitude;
     private double mLongitude;
     private double mRange;
-    private List<SystemIdentifier> mSystemIdentifiers = new ArrayList<>();
+    private List<RadioSystemIdentifier> mRadioSystemIdentifiers = new ArrayList<>();
 
     public SubCategory()
     {
@@ -93,13 +93,13 @@ public class SubCategory
     }
 
     @JacksonXmlProperty(localName = "sids")
-    public List<SystemIdentifier> getSystemIdentifiers()
+    public List<RadioSystemIdentifier> getRadioSystemIdentifiers()
     {
-        return mSystemIdentifiers;
+        return mRadioSystemIdentifiers;
     }
 
-    public void setSystemIdentifiers(List<SystemIdentifier> systemIdentifiers)
+    public void setRadioSystemIdentifiers(List<RadioSystemIdentifier> radioSystemIdentifiers)
     {
-        mSystemIdentifiers = systemIdentifiers;
+        mRadioSystemIdentifiers = radioSystemIdentifiers;
     }
 }

@@ -21,34 +21,46 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class SystemType
+public class RadioSystemId
 {
-    private int mTypeId;
-    private String mDescription;
+    private String mSystemId;
+    private String mCt;
+    private String mWacn;
 
-    public SystemType()
+    public RadioSystemId()
     {
     }
 
-    @JacksonXmlProperty(localName = "sType")
-    public int getTypeId()
+    @JacksonXmlProperty(localName = "sysid")
+    public String getSystemId()
     {
-        return mTypeId;
+        return mSystemId;
     }
 
-    public void setTypeId(int typeId)
+    public void setSystemId(String systemId)
     {
-        mTypeId = typeId;
+        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "sTypeDescr")
-    public String getDescription()
+    @JacksonXmlProperty(localName = "ct")
+    public String getCt()
     {
-        return mDescription;
+        return mCt;
     }
 
-    public void setDescription(String description)
+    public void setCt(String ct)
     {
-        mDescription = description;
+        mCt = ct;
+    }
+
+    @JacksonXmlProperty(localName = "wacn")
+    public String getWacn()
+    {
+        return mWacn;
+    }
+
+    public void setWacn(String wacn)
+    {
+        mWacn = wacn;
     }
 }

@@ -17,50 +17,29 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.rrapi.type.RadioSystemItem;
 
-public class SystemId
+import java.util.List;
+
+public class GetRadioSystemBySystemIdResponse extends ResponseBody
 {
-    private String mSystemId;
-    private String mCt;
-    private String mWacn;
+    private List<RadioSystemItem> mRadioSystemItemps;
 
-    public SystemId()
+    public GetRadioSystemBySystemIdResponse()
     {
     }
 
-    @JacksonXmlProperty(localName = "sysid")
-    public String getSystemId()
+    @JacksonXmlProperty(localName = "return")
+    public List<RadioSystemItem> getRadioSystemItemps()
     {
-        return mSystemId;
+        return mRadioSystemItemps;
     }
 
-    public void setSystemId(String systemId)
+    public void setRadioSystemItemps(List<RadioSystemItem> radioSystemItemps)
     {
-        mSystemId = systemId;
-    }
-
-    @JacksonXmlProperty(localName = "ct")
-    public String getCt()
-    {
-        return mCt;
-    }
-
-    public void setCt(String ct)
-    {
-        mCt = ct;
-    }
-
-    @JacksonXmlProperty(localName = "wacn")
-    public String getWacn()
-    {
-        return mWacn;
-    }
-
-    public void setWacn(String wacn)
-    {
-        mWacn = wacn;
+        mRadioSystemItemps = radioSystemItemps;
     }
 }

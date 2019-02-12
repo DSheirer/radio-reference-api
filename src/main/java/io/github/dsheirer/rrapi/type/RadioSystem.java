@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class System
+public class RadioSystem
 {
     private String mName;
     private int mType;
@@ -39,11 +39,11 @@ public class System
     private double mLongitude;
     private double mRange;
     private Date mLastUpdated;
-    private List<SystemId> mSystemIds;
+    private List<RadioSystemId> mRadioSystemIds;
     private Bandplan mBandplan;
     private Fleetmap mFleetmap;
 
-    public System()
+    public RadioSystem()
     {
     }
 
@@ -180,14 +180,14 @@ public class System
     }
 
     @JacksonXmlProperty(localName = "sysid")
-    public List<SystemId> getSystemIds()
+    public List<RadioSystemId> getRadioSystemIds()
     {
-        return mSystemIds;
+        return mRadioSystemIds;
     }
 
-    public void setSystemIds(List<SystemId> systemIds)
+    public void setRadioSystemIds(List<RadioSystemId> radioSystemIds)
     {
-        mSystemIds = systemIds;
+        mRadioSystemIds = radioSystemIds;
     }
 
     @JacksonXmlProperty(localName = "bandplan")

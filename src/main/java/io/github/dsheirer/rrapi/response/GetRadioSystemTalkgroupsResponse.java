@@ -17,26 +17,30 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.rrapi.type.Site;
+import io.github.dsheirer.rrapi.type.Talkgroup;
 
-public class SystemIdentifier
+import java.util.List;
+
+public class GetRadioSystemTalkgroupsResponse extends ResponseBody
 {
-    private int mSystemId;
+    private List<Talkgroup> mTalkgroups;
 
-    public SystemIdentifier()
+    public GetRadioSystemTalkgroupsResponse()
     {
     }
 
-    @JacksonXmlProperty(localName = "sid")
-    public int getSystemId()
+    @JacksonXmlProperty(localName = "return")
+    public List<Talkgroup> getTalkgroups()
     {
-        return mSystemId;
+        return mTalkgroups;
     }
 
-    public void setSystemId(int systemId)
+    public void setTalkgroups(List<Talkgroup> talkgroups)
     {
-        mSystemId = systemId;
+        mTalkgroups = talkgroups;
     }
 }

@@ -24,7 +24,10 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
 import io.github.dsheirer.rrapi.request.GetCountyInfo;
+import io.github.dsheirer.rrapi.request.GetStateInfo;
 import io.github.dsheirer.rrapi.request.GetStatesByList;
+import io.github.dsheirer.rrapi.request.GetRadioSystemDetails;
+import io.github.dsheirer.rrapi.request.GetRadioSystemType;
 import io.github.dsheirer.rrapi.request.GetUserData;
 import io.github.dsheirer.rrapi.request.GetUserFeedBroadcasts;
 import io.github.dsheirer.rrapi.request.GetZipcodeInfo;
@@ -32,16 +35,24 @@ import io.github.dsheirer.rrapi.request.RequestEnvelope;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
 import io.github.dsheirer.rrapi.response.GetCountyInfoResponse;
+import io.github.dsheirer.rrapi.response.GetStateInfoResponse;
 import io.github.dsheirer.rrapi.response.GetStatesByListResponse;
+import io.github.dsheirer.rrapi.response.GetRadioSystemDetailsResponse;
+import io.github.dsheirer.rrapi.response.GetRadioSystemTypeResponse;
 import io.github.dsheirer.rrapi.response.GetUserDataResponse;
 import io.github.dsheirer.rrapi.response.GetUserFeedBroadcastsResponse;
 import io.github.dsheirer.rrapi.response.GetZipcodeInfoResponse;
 import io.github.dsheirer.rrapi.response.ResponseEnvelope;
+import io.github.dsheirer.rrapi.type.Agency;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.CountyInfo;
+import io.github.dsheirer.rrapi.type.RadioSystem;
 import io.github.dsheirer.rrapi.type.State;
+import io.github.dsheirer.rrapi.type.StateInfo;
+import io.github.dsheirer.rrapi.type.RadioSystemItem;
+import io.github.dsheirer.rrapi.type.Type;
 import io.github.dsheirer.rrapi.type.UserFeedBroadcast;
 import io.github.dsheirer.rrapi.type.UserInfo;
 import io.github.dsheirer.rrapi.type.ZipInfo;
@@ -203,6 +214,25 @@ public class RadioReferenceService
     }
 
     /**
+     * Get state info
+     * @param stateId to query
+     * @return state info or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public StateInfo getStateInfo(int stateId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetStateInfo.create(mAuthorizationInformation, stateId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetStateInfoResponse)
+        {
+            return ((GetStateInfoResponse)response.getResponseBody()).getStateInfo();
+        }
+
+        return null;
+    }
+
+    /**
      * Get a list of states by state id
      * @param stateIds to query
      * @return list of states or empty list
@@ -239,6 +269,69 @@ public class RadioReferenceService
 
         return null;
     }
+
+    /**
+     * Radio system
+     * @param systemId to query
+     * @return radio system or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public RadioSystem getRadioSystem(int systemId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetRadioSystemDetails.create(mAuthorizationInformation, systemId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetRadioSystemDetailsResponse)
+        {
+            return ((GetRadioSystemDetailsResponse)response.getResponseBody()).getRadioSystem();
+        }
+
+        return null;
+    }
+
+    /**
+     * Type information
+     * @param typeId to query
+     * @return type or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Type getType(int typeId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetRadioSystemType.create(mAuthorizationInformation, typeId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetRadioSystemTypeResponse)
+        {
+            List<Type> types = ((GetRadioSystemTypeResponse)response.getResponseBody()).getTypes();
+
+            if(types.size() == 1)
+            {
+                return types.get(0);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Complete list of types
+     * @return types list
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Type> getTypes() throws RadioReferenceException
+    {
+        RequestEnvelope request = GetRadioSystemType.create(mAuthorizationInformation);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetRadioSystemTypeResponse)
+        {
+            return ((GetRadioSystemTypeResponse)response.getResponseBody()).getTypes();
+        }
+
+        return Collections.EMPTY_LIST;
+    }
+
+
 
     /**
      * Zipcode information
@@ -357,11 +450,16 @@ public class RadioReferenceService
             if(zipInfo != null)
             {
                 mLog.debug("Zip:" + zipInfo.getCity() + " Loc:" + zipInfo.getLatitude() + " " + zipInfo.getLongitude());
-                State state = service.getState(zipInfo.getStateId());
+                StateInfo stateInfo = service.getStateInfo(zipInfo.getStateId());
 
-                if(state != null)
+                if(stateInfo != null)
                 {
-                    mLog.debug("State: " + state.getName());
+                    mLog.debug("State: " + stateInfo.getName());
+
+                    for(RadioSystemItem radioSystemItem : stateInfo.getRadioSystemItems())
+                    {
+                        mLog.debug("System " + radioSystemItem.getSystemId() + " " + radioSystemItem.getName());
+                    }
                 }
 
                 CountyInfo countyInfo = service.getCountyInfo(zipInfo.getCountyId());
@@ -369,6 +467,12 @@ public class RadioReferenceService
                 if(countyInfo != null)
                 {
                     mLog.debug("County:" + countyInfo.getName());
+
+                    for(Agency agency: countyInfo.getAgencies())
+                    {
+                        Type type = service.getType(agency.getType());
+                        mLog.debug("Agency: " + agency.getName() + " + Type:" + type.getDescription());
+                    }
                 }
             }
         }

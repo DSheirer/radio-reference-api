@@ -20,27 +20,27 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.System;
-import io.github.dsheirer.rrapi.type.TalkgroupCategory;
+import io.github.dsheirer.rrapi.type.RadioSystemVoice;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class GetTrunkedSystemTalkgroupCategoriesResponse extends ResponseBody
+public class GetRadioSystemVoiceResponse extends ResponseBody
 {
-    private List<TalkgroupCategory> mTalkgroupCategories;
+    private List<RadioSystemVoice> mSystemRadioSystemVoices = new ArrayList<>();
 
-    public GetTrunkedSystemTalkgroupCategoriesResponse()
+    public GetRadioSystemVoiceResponse()
     {
     }
 
     @JacksonXmlProperty(localName = "return")
-    public List<TalkgroupCategory> getTalkgroupCategories()
+    public List<RadioSystemVoice> getSystemVoices()
     {
-        return mTalkgroupCategories;
+        return mSystemRadioSystemVoices;
     }
 
-    public void setTalkgroupCategories(List<TalkgroupCategory> talkgroupCategories)
+    public void setSystemRadioSystemVoices(List<RadioSystemVoice> systemRadioSystemVoices)
     {
-        mTalkgroupCategories = talkgroupCategories;
+        mSystemRadioSystemVoices = systemRadioSystemVoices;
     }
 }

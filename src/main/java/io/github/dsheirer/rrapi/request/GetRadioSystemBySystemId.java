@@ -17,31 +17,34 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
+package io.github.dsheirer.rrapi.request;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.SystemType;
-import io.github.dsheirer.rrapi.type.Tag;
+import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetTrunkedSystemTypeResponse extends ResponseBody
+public class GetRadioSystemBySystemId extends RequestBody
 {
-    private List<SystemType> mSystemTypes = new ArrayList<>();
+    private String mSystemId;
 
-    public GetTrunkedSystemTypeResponse()
+    public GetRadioSystemBySystemId(AuthorizationInformation authorizationInformation, String systemId)
     {
+        super(authorizationInformation);
+        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "return")
-    public List<SystemType> getSystemTypes()
+    @JacksonXmlProperty(localName = "sysid")
+    public String getSystemId()
     {
-        return mSystemTypes;
+        return mSystemId;
     }
 
-    public void setSystemTypes(List<SystemType> systemTypes)
+    public void setSystemId(String systemId)
     {
-        mSystemTypes = systemTypes;
+        mSystemId = systemId;
+    }
+
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, String systemId)
+    {
+        return RequestBody.create(new GetRadioSystemBySystemId(authorizationInformation, systemId));
     }
 }

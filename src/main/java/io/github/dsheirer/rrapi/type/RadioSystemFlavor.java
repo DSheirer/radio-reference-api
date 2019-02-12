@@ -17,34 +17,50 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-public class GetTrsBySysid extends RequestBody
+public class RadioSystemFlavor
 {
-    private String mSystemId;
+    private int mFlavorId;
+    private int mFlavor;
+    private String mDescription;
 
-    public GetTrsBySysid(AuthorizationInformation authorizationInformation, String systemId)
+    public RadioSystemFlavor()
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "sysid")
-    public String getSystemId()
+    @JacksonXmlProperty(localName = "sType")
+    public int getFlavorId()
     {
-        return mSystemId;
+        return mFlavorId;
     }
 
-    public void setSystemId(String systemId)
+    public void setFlavorId(int flavorId)
     {
-        mSystemId = systemId;
+        mFlavorId = flavorId;
     }
 
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, String systemId)
+    @JacksonXmlProperty(localName = "sFlavor")
+    public int getFlavor()
     {
-        return RequestBody.create(new GetTrsBySysid(authorizationInformation, systemId));
+        return mFlavor;
+    }
+
+    public void setFlavor(int flavor)
+    {
+        mFlavor = flavor;
+    }
+
+    @JacksonXmlProperty(localName = "sFlavorDescr")
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    public void setDescription(String description)
+    {
+        mDescription = description;
     }
 }
