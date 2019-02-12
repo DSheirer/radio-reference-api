@@ -1,37 +1,32 @@
-## Welcome to GitHub Pages
+## Java Client Library for radioreference.com Web Services API
 
-You can use the [editor on GitHub](https://github.com/DSheirer/radio-reference-api/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+A client library for accessing the web services methods available from the radioreference.com website.  The web service wsdl uses legacy rpc encoding which is not compatible with current versions of the wsimport utility and therefore requires the use of non-modular (pre-Java 9) apache axis 1.4 library and related dependencies.  This library uses the Java 11 HttpClient and Faster Jackson annotated classes for serialization of SOAP messages.  SOAP implementation and serialization are largely hidden from the user via the public methods available in the RadioReferenceService class.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Compatibility
+* SOAP Web Service API Version 15
+* See https://wiki.radioreference.com/index.php/API
+* See https://wiki.radioreference.com/index.php/RadioReference.com_Web_Service3.1
 
-### Markdown
+### Requirements
+* Java 11+
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Usage
+    AuthorizationInformation authorizationInformation = new AuthorizationInformation("apikey", "username", "password");
 
-```markdown
-Syntax highlighted code block
+    try
+    {
+        RadioReferenceService service = new RadioReferenceService(authorizationInformation);
+        UserInfo userInfo = service.getUserInfo();
+    }
+    catch(RadioReferenceException e)
+    {
+        //Handle error
+    }
 
-# Header 1
-## Header 2
-### Header 3
+### Gradle Dependencies
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DSheirer/radio-reference-api/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+    dependencies {
+        compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.8'
+        compile 'ch.qos.logback:logback-classic:1.2.3'
+        compile 'org.slf4j:slf4j-api:1.7.25'
+    }
