@@ -57,8 +57,10 @@ compileJava {
 }
 
 signing {
-    useGpgCmd()
+//    useGpgCmd()
+    sign configurations.archives
 }
+
 
 javadoc {
     options.addBooleanOption('html5', true)
@@ -68,17 +70,11 @@ javadoc {
 task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
     archiveClassifier = 'javadoc'
     from javadoc.destinationDir
-    doLast{
-        signing.sign(packageJavadoc)
-    }
 }
 
 task packageSources(type: Jar, dependsOn: 'classes') {
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
-    doLast{
-        signing.sign(packageSources)
-    }
 }
 
 artifacts {
@@ -88,7 +84,9 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(userName: ossrhUsername, password: ossrhPassword)

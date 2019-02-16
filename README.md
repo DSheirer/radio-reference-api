@@ -23,10 +23,19 @@ A client library for accessing the web services methods available from the radio
         //Handle error
     }
 
-### Gradle Dependencies
+### Gradle
 
     dependencies {
         compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.8'
         compile 'ch.qos.logback:logback-classic:1.2.3'
         compile 'org.slf4j:slf4j-api:1.7.25'
+        compile 'io.github.dsheirer:radio-reference-api:15.0
     }
+    
+### Maven
+
+    <dependency>
+      <groupId>io.github.dsheirer</groupId>
+      <artifactId>radio-reference-api</artifactId>
+      <version>15.0</version>
+    </dependency>
