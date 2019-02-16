@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Country
+ */
 public class Country
 {
     private int mCountryId;
@@ -31,34 +34,58 @@ public class Country
     {
     }
 
+    /**
+     * Country identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "coid")
     public int getCountryId()
     {
         return mCountryId;
     }
 
+    /**
+     * Sets the country id.
+     * @param countryId value
+     */
     public void setCountryId(int countryId)
     {
         mCountryId = countryId;
     }
 
+    /**
+     * Country name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "countryName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the couuntry name.
+     * @param name for the country
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * Country code or digraph
+     * @return code
+     */
     @JacksonXmlProperty(localName = "countryCode")
     public String getCountryCode()
     {
         return mCountryCode;
     }
 
+    /**
+     * Sets the country code.
+     * @param countryCode for the country
+     */
     public void setCountryCode(String countryCode)
     {
         mCountryCode = countryCode;

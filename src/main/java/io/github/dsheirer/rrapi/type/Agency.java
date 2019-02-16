@@ -22,7 +22,7 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Agency information
+ * Abbreviated agency information
  */
 public class Agency
 {

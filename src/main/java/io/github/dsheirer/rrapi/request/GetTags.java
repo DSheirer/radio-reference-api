@@ -23,69 +23,69 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Get type information
+ * Get tags request
  */
-public class GetRadioSystemType extends RequestBody
+public class GetTags extends RequestBody
 {
-    private Integer mSystemTypeId;
+    private Integer mTagId;
 
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param systemTypeId to request
+     * @param tagId to request
      */
-    public GetRadioSystemType(AuthorizationInformation authorizationInformation, int systemTypeId)
+    public GetTags(AuthorizationInformation authorizationInformation, int tagId)
     {
         super(authorizationInformation);
-        mSystemTypeId = systemTypeId;
+        mTagId = tagId;
     }
 
     /**
      * Constructs a get ALL tags request
      * @param authorizationInformation credentials
      */
-    public GetRadioSystemType(AuthorizationInformation authorizationInformation)
+    public GetTags(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
     /**
-     * System Type id
+     * Tag ID
      * @return id
      */
     @JacksonXmlProperty(localName = "request")
-    public Integer getTypeId()
+    public Integer getTagId()
     {
-        return mSystemTypeId;
+        return mTagId;
     }
 
     /**
-     * Sets the system type id
-     * @param systemTypeId to query
+     * Set tag ID
+     * @param tagId to query
      */
-    public void setTypeId(int systemTypeId)
+    public void setTagId(int tagId)
     {
-        mSystemTypeId = systemTypeId;
+        mTagId = tagId;
     }
 
     /**
-     * Creates a get specific type request
+     * Creates a get specific tag request
      * @param authorizationInformation credentials
-     * @param typeId to query
+     * @param tagId to query
      * @return request
      */
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int typeId)
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int tagId)
     {
-        return RequestBody.create(new GetRadioSystemType(authorizationInformation, typeId));
+        return RequestBody.create(new GetTags(authorizationInformation, tagId));
     }
 
     /**
-     * Creates a get ALL types request
+     * Creates a get ALL tags request
      * @param authorizationInformation credentials
      * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetRadioSystemType(authorizationInformation));
+        return RequestBody.create(new GetTags(authorizationInformation));
     }
 }

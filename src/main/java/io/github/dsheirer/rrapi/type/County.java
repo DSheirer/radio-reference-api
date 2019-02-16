@@ -21,44 +21,74 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * County
+ */
 public class County
 {
     private int mCountyId;
     private String mName;
     private String mCountyHeader;
 
+    /**
+     * Constructs an instance
+     */
     public County()
     {
     }
 
+    /**
+     * County identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "ctid")
     public int getCountyId()
     {
         return mCountyId;
     }
 
+    /**
+     * Sets the country identifier
+     * @param countyId value
+     */
     public void setCountyId(int countyId)
     {
         mCountyId = countyId;
     }
 
+    /**
+     * County name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "countyName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the county name
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * County header, indicating of the object represents a county or other geo-political classifier.
+     * @return header.
+     */
     @JacksonXmlProperty(localName = "countyHeader")
     public String getCountyHeader()
     {
         return mCountyHeader;
     }
 
+    /**
+     * Sets the county header.
+     * @param countyHeader value
+     */
     public void setCountyHeader(String countyHeader)
     {
         mCountyHeader = countyHeader;

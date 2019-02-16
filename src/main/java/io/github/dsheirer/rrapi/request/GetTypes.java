@@ -23,69 +23,69 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Country information
+ * Get type information
  */
-public class GetTag extends RequestBody
+public class GetTypes extends RequestBody
 {
-    private Integer mTagId;
+    private Integer mSystemTypeId;
 
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param tagId to request
+     * @param systemTypeId to request
      */
-    public GetTag(AuthorizationInformation authorizationInformation, int tagId)
+    public GetTypes(AuthorizationInformation authorizationInformation, int systemTypeId)
     {
         super(authorizationInformation);
-        mTagId = tagId;
+        mSystemTypeId = systemTypeId;
     }
 
     /**
      * Constructs a get ALL tags request
      * @param authorizationInformation credentials
      */
-    public GetTag(AuthorizationInformation authorizationInformation)
+    public GetTypes(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
     /**
-     * Tag ID
+     * System Type id
      * @return id
      */
     @JacksonXmlProperty(localName = "request")
-    public Integer getTagId()
+    public Integer getTypeId()
     {
-        return mTagId;
+        return mSystemTypeId;
     }
 
     /**
-     * Set tag ID
-     * @param tagId to query
+     * Sets the system type id
+     * @param systemTypeId to query
      */
-    public void setTagId(int tagId)
+    public void setTypeId(int systemTypeId)
     {
-        mTagId = tagId;
+        mSystemTypeId = systemTypeId;
     }
 
     /**
-     * Creates a get specific tag request
+     * Creates a get specific type request
      * @param authorizationInformation credentials
-     * @param tagId to query
+     * @param typeId to query
      * @return request
      */
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int tagId)
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int typeId)
     {
-        return RequestBody.create(new GetTag(authorizationInformation, tagId));
+        return RequestBody.create(new GetTypes(authorizationInformation, typeId));
     }
 
     /**
-     * Creates a get ALL tags request
+     * Creates a get ALL types request
      * @param authorizationInformation credentials
      * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetTag(authorizationInformation));
+        return RequestBody.create(new GetTypes(authorizationInformation));
     }
 }

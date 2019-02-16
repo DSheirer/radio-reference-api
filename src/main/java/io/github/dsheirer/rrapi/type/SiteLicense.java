@@ -21,20 +21,34 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Site licence
+ */
 public class SiteLicense
 {
     private String mLicense;
 
+    /**
+     * Constructs an instance
+     */
     public SiteLicense()
     {
     }
 
+    /**
+     * License
+     * @return license
+     */
     @JacksonXmlProperty(localName = "license")
     public String getLicense()
     {
         return mLicense;
     }
 
+    /**
+     * Sets the site license
+     * @param license value
+     */
     public void setLicense(String license)
     {
         mLicense = license;

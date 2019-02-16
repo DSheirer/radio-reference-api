@@ -20,28 +20,27 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.County;
-import io.github.dsheirer.rrapi.type.Tag;
+import io.github.dsheirer.rrapi.type.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetTagResponse extends ResponseBody
+public class GetTypesResponse extends ResponseBody
 {
-    private List<Tag> mTags = new ArrayList<>();
+    private List<Type> mTypes = new ArrayList<>();
 
-    public GetTagResponse()
+    public GetTypesResponse()
     {
     }
 
     @JacksonXmlProperty(localName = "return")
-    public List<Tag> getTags()
+    public List<Type> getTypes()
     {
-        return mTags;
+        return mTypes;
     }
 
-    public void setTags(List<Tag> tags)
+    public void setTypes(List<Type> types)
     {
-        mTags = tags;
+        mTypes = types;
     }
 }

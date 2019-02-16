@@ -23,69 +23,69 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Radio System Voice information
+ * Trunked System Flavor query
  */
-public class GetRadioSystemVoice extends RequestBody
+public class GetFlavors extends RequestBody
 {
-    private Integer mSystemVoiceId;
+    private Integer mSystemFlavorId;
 
     /**
      * Constructs the get tag request
      * @param authorizationInformation for the user
-     * @param systemVoiceId to request
+     * @param systemFlavorId to request
      */
-    public GetRadioSystemVoice(AuthorizationInformation authorizationInformation, int systemVoiceId)
+    public GetFlavors(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
         super(authorizationInformation);
-        mSystemVoiceId = systemVoiceId;
+        mSystemFlavorId = systemFlavorId;
     }
 
     /**
      * Constructs a get ALL tags request
      * @param authorizationInformation credentials
      */
-    public GetRadioSystemVoice(AuthorizationInformation authorizationInformation)
+    public GetFlavors(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
     /**
-     * System voice id
+     * System Flavor ID
      * @return id
      */
     @JacksonXmlProperty(localName = "request")
-    public Integer getSystemVoiceId()
+    public Integer getSystemFlavorId()
     {
-        return mSystemVoiceId;
+        return mSystemFlavorId;
     }
 
     /**
-     * Sets the system voice id
-     * @param systemVoiceId to query
+     * Sets the sytem flavor id
+     * @param systemFlavorId id
      */
-    public void setSystemVoiceId(int systemVoiceId)
+    public void setSystemFlavorId(int systemFlavorId)
     {
-        mSystemVoiceId = systemVoiceId;
+        mSystemFlavorId = systemFlavorId;
     }
 
     /**
-     * Creates a get specific voice request
+     * Creates a get specific tag request
      * @param authorizationInformation credentials
-     * @param systemVoiceId to query
+     * @param systemFlavorId to query
      * @return request
      */
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemVoiceId)
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemFlavorId)
     {
-        return RequestBody.create(new GetRadioSystemVoice(authorizationInformation, systemVoiceId));
+        return RequestBody.create(new GetFlavors(authorizationInformation, systemFlavorId));
     }
 
     /**
-     * Creates a get ALL voices request
+     * Creates a get ALL tags request
      * @param authorizationInformation credentials
      * @return request
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetRadioSystemVoice(authorizationInformation));
+        return RequestBody.create(new GetFlavors(authorizationInformation));
     }
 }

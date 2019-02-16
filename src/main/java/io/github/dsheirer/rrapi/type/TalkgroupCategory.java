@@ -23,10 +23,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.Date;
 
+/**
+ * Talkgroup category or grouping
+ */
 public class TalkgroupCategory
 {
     private int mTalkgroupCategoryId;
-    private int mSid;
+    private int mSystemId;
     private String mName;
     private int mSort;
     private int mSortBy;
@@ -35,104 +38,179 @@ public class TalkgroupCategory
     private double mRange;
     private Date mLastUpdated;
 
+    /**
+     * Constructs an instance
+     */
     public TalkgroupCategory()
     {
     }
 
+    /**
+     * Talkgroup category identfier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "tgCid")
     public int getTalkgroupCategoryId()
     {
         return mTalkgroupCategoryId;
     }
 
+    /**
+     * Sets the talkgroup category identifier
+     * @param talkgroupCategoryId value
+     */
     public void setTalkgroupCategoryId(int talkgroupCategoryId)
     {
         mTalkgroupCategoryId = talkgroupCategoryId;
     }
 
+    /**
+     * System identifier
+     * @return system id
+     */
     @JacksonXmlProperty(localName = "sid")
-    public int getSid()
+    public int getSystemId()
     {
-        return mSid;
+        return mSystemId;
     }
 
-    public void setSid(int sid)
+    /**
+     * Sets the system identifier
+     * @param systemId value
+     */
+    public void setSystemId(int systemId)
     {
-        mSid = sid;
+        mSystemId = systemId;
     }
 
+    /**
+     * Name or label for the category
+     * @return name
+     */
     @JacksonXmlProperty(localName = "tgCname")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * Sort order for display
+     * @return sort order
+     */
     @JacksonXmlProperty(localName = "tgSort")
     public int getSort()
     {
         return mSort;
     }
 
+    /**
+     * Sets the sort order
+     * @param sort order
+     */
     public void setSort(int sort)
     {
         mSort = sort;
     }
 
+    /**
+     * Secondary sort ordering
+     * @return sort by
+     */
     @JacksonXmlProperty(localName = "tgSortBy")
     public int getSortBy()
     {
         return mSortBy;
     }
 
+    /**
+     * Sets the sort by
+     * @param sortBy value
+     */
     public void setSortBy(int sortBy)
     {
         mSortBy = sortBy;
     }
 
+    /**
+     * Center location latitude
+     * @return latitude in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude value
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
     }
 
+    /**
+     * Center location longitude
+     * @return longitude in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude value in decimal degrees
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
     }
 
+    /**
+     * Range or extent from the center location
+     * @return range
+     */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
     {
         return mRange;
     }
 
+    /**
+     * Sets the range
+     * @param range value
+     */
     public void setRange(double range)
     {
         mRange = range;
     }
 
+    /**
+     * Last updated date
+     * @return last updated
+     */
     @JacksonXmlProperty(localName = "lastUpdated")
     public Date getLastUpdated()
     {
         return mLastUpdated;
     }
 
+    /**
+     * Sets the last updated date
+     * @param lastUpdated date
+     */
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;

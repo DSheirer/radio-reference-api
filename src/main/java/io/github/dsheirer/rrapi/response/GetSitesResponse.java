@@ -20,26 +20,26 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.TalkgroupCategory;
+import io.github.dsheirer.rrapi.type.Site;
 
 import java.util.List;
 
-public class GetRadioSystemTalkgroupCategoriesResponse extends ResponseBody
+public class GetSitesResponse extends ResponseBody
 {
-    private List<TalkgroupCategory> mTalkgroupCategories;
+    private List<Site> mSites;
 
-    public GetRadioSystemTalkgroupCategoriesResponse()
+    public GetSitesResponse()
     {
     }
 
     @JacksonXmlProperty(localName = "return")
-    public List<TalkgroupCategory> getTalkgroupCategories()
+    public List<Site> getSites()
     {
-        return mTalkgroupCategories;
+        return mSites;
     }
 
-    public void setTalkgroupCategories(List<TalkgroupCategory> talkgroupCategories)
+    public void setSites(List<Site> sites)
     {
-        mTalkgroupCategories = talkgroupCategories;
+        mSites = sites;
     }
 }

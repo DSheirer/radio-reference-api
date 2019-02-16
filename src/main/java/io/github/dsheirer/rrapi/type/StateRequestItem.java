@@ -21,46 +21,48 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class RadioSystemId
+/**
+ * State request item used when requesting states by state ID value
+ */
+public class StateRequestItem
 {
-    private String mSystemId;
-    private String mCt;
-    private String mWacn;
+    private int mStateId;
 
-    public RadioSystemId()
+    /**
+     * Constructs an instance
+     * @param stateId value
+     */
+    public StateRequestItem(int stateId)
     {
+        mStateId = stateId;
     }
 
-    @JacksonXmlProperty(localName = "sysid")
-    public String getSystemId()
+    /**
+     * State identifier
+     * @return id
+     */
+    @JacksonXmlProperty(localName = "stid")
+    public int getStateId()
     {
-        return mSystemId;
+        return mStateId;
     }
 
-    public void setSystemId(String systemId)
+    /**
+     * Sets the state identifier
+     * @param stateId value
+     */
+    public void setStateId(int stateId)
     {
-        mSystemId = systemId;
+        mStateId = stateId;
     }
 
-    @JacksonXmlProperty(localName = "ct")
-    public String getCt()
+    /**
+     * Creates an instance of a state request for the specified state identifier
+     * @param stateId to request
+     * @return instance of this class
+     */
+    public static StateRequestItem create(int stateId)
     {
-        return mCt;
-    }
-
-    public void setCt(String ct)
-    {
-        mCt = ct;
-    }
-
-    @JacksonXmlProperty(localName = "wacn")
-    public String getWacn()
-    {
-        return mWacn;
-    }
-
-    public void setWacn(String wacn)
-    {
-        mWacn = wacn;
+        return new StateRequestItem(stateId);
     }
 }

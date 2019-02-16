@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Agency information including frequency categories, subcategories and radio systems.
+ */
 public class AgencyInfo
 {
     private int mAgencyId;
@@ -38,10 +41,17 @@ public class AgencyInfo
     private Date mLastUpdated;
     private List<Category> mCategories = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public AgencyInfo()
     {
     }
 
+    /**
+     * Agency ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "aid")
     public int getAgencyId()
     {
@@ -53,6 +63,10 @@ public class AgencyInfo
         mAgencyId = agencyId;
     }
 
+    /**
+     * Agency name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "agencyName")
     public String getName()
     {
@@ -64,6 +78,10 @@ public class AgencyInfo
         mName = name;
     }
 
+    /**
+     * Type of agency
+     * @return type
+     */
     @JacksonXmlProperty(localName = "agencyType")
     public String getType()
     {
@@ -75,6 +93,10 @@ public class AgencyInfo
         mType = type;
     }
 
+    /**
+     * County ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "ctid")
     public int getCountyId()
     {
@@ -86,6 +108,10 @@ public class AgencyInfo
         mCountyId = countyId;
     }
 
+    /**
+     * State ID
+     * @return id
+     */
     @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
@@ -97,6 +123,10 @@ public class AgencyInfo
         mStateId = stateId;
     }
 
+    /**
+     * Agency location - latitude
+     * @return latitude
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
@@ -108,6 +138,10 @@ public class AgencyInfo
         mLatitude = latitude;
     }
 
+    /**
+     * Agency location - longitude
+     * @return longitude
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
@@ -119,6 +153,10 @@ public class AgencyInfo
         mLongitude = longitude;
     }
 
+    /**
+     * Agency location - range (extent)
+     * @return range
+     */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
     {
@@ -130,6 +168,10 @@ public class AgencyInfo
         mRange = range;
     }
 
+    /**
+     * Last updated date
+     * @return date
+     */
     @JacksonXmlProperty(localName = "lastUpdated")
     public Date getLastUpdated()
     {
@@ -141,6 +183,10 @@ public class AgencyInfo
         mLastUpdated = lastUpdated;
     }
 
+    /**
+     * Frequency categories
+     * @return categorites
+     */
     @JacksonXmlProperty(localName = "cats")
     public List<Category> getCategories()
     {

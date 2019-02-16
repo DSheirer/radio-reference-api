@@ -21,33 +21,55 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Operating mode indicating analog or digital modulation type/mode
+ */
 public class Mode
 {
     private int mModeId;
     private String mModeName;
 
+    /**
+     * Constructs an instance
+     */
     public Mode()
     {
     }
 
+    /**
+     * Mode identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "mode")
     public int getModeId()
     {
         return mModeId;
     }
 
+    /**
+     * Sets the mode identifier
+     * @param modeId value
+     */
     public void setModeId(int modeId)
     {
         mModeId = modeId;
     }
 
+    /**
+     * Mode name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "modeName")
-    public String getModeName()
+    public String getName()
     {
         return mModeName;
     }
 
-    public void setModeName(String modeName)
+    /**
+     * Sets the mode name
+     * @param modeName value
+     */
+    public void setName(String modeName)
     {
         mModeName = modeName;
     }

@@ -17,34 +17,30 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
+import io.github.dsheirer.rrapi.type.Flavor;
 
-public class GetRadioSystemSites extends RequestBody
+import java.util.ArrayList;
+import java.util.List;
+
+public class GetFlavorsResponse extends ResponseBody
 {
-    private int mSystemId;
+    private List<Flavor> mFlavors = new ArrayList<>();
 
-    public GetRadioSystemSites(AuthorizationInformation authorizationInformation, int systemId)
+    public GetFlavorsResponse()
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "sid")
-    public int getSystemId()
+    @JacksonXmlProperty(localName = "return")
+    public List<Flavor> getFlavors()
     {
-        return mSystemId;
+        return mFlavors;
     }
 
-    public void setSystemId(int systemId)
+    public void setFlavors(List<Flavor> flavors)
     {
-        mSystemId = systemId;
-    }
-
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
-    {
-        return RequestBody.create(new GetRadioSystemSites(authorizationInformation, systemId));
+        mFlavors = flavors;
     }
 }

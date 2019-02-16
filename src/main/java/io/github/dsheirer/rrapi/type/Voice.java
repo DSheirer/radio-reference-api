@@ -22,51 +22,74 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Metropolitan area
+ * Voice CODEC option for a protocol type
  */
-public class Metro
+public class Voice
 {
-    private int mMetroId;
+    private int mTypeId;
+    private int mVoiceId;
     private String mName;
 
     /**
-     * Constructs an instance
+     * Constructs a voice instance
      */
-    public Metro()
+    public Voice()
     {
     }
 
     /**
-     * Metro identifier
+     * Protocol type (parent).
+     *
+     * @see Type
+     *
+     * @return type identifier
+     */
+    @JacksonXmlProperty(localName = "sType")
+    public int getTypeId()
+    {
+        return mTypeId;
+    }
+
+    /**
+     * Sets the type identifier
+     * @param typeId value
+     */
+    public void setTypeId(int typeId)
+    {
+        mTypeId = typeId;
+    }
+
+    /**
+     * Voice identifier
      * @return id
      */
-    @JacksonXmlProperty(localName = "mid")
-    public int getMetroId()
+    @JacksonXmlProperty(localName = "sVoice")
+    public int getVoiceId()
     {
-        return mMetroId;
+        return mVoiceId;
     }
 
     /**
-     * Sets the metro id
-     * @param metroId value
+     * Sets the voice identifier
+     * @param voiceId value
      */
-    public void setMetroId(int metroId)
+    public void setVoiceId(int voiceId)
     {
-        mMetroId = metroId;
+        mVoiceId = voiceId;
     }
 
     /**
-     * Name of the metro area
+     * Name or description
      * @return name
      */
-    @JacksonXmlProperty(localName = "metroName")
+    @JacksonXmlProperty(localName = "sVoiceDescr")
     public String getName()
     {
         return mName;
     }
 
     /**
-     * Sets the name
+     * Sets the name or description
      * @param name value
      */
     public void setName(String name)

@@ -22,7 +22,7 @@ package io.github.dsheirer.rrapi.request;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
-import io.github.dsheirer.rrapi.type.StateItem;
+import io.github.dsheirer.rrapi.type.StateRequestItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class GetStatesByList extends RequestBody
 {
-    private List<StateItem> mStateIdItems = new ArrayList<>();
+    private List<StateRequestItem> mStateIdItems = new ArrayList<>();
 
     /**
      * Constructs the request
@@ -45,19 +45,19 @@ public class GetStatesByList extends RequestBody
 
     @JacksonXmlElementWrapper(localName = "request")
     @JacksonXmlProperty(localName = "item")
-    public List<StateItem> getStateIdItems()
+    public List<StateRequestItem> getStateIdItems()
     {
         return mStateIdItems;
     }
 
-    public void setStateIdItems(List<StateItem> stateIdItems)
+    public void setStateIdItems(List<StateRequestItem> stateIdItems)
     {
         mStateIdItems = stateIdItems;
     }
 
     public void addState(int stateId)
     {
-        mStateIdItems.add(StateItem.create(stateId));
+        mStateIdItems.add(StateRequestItem.create(stateId));
     }
 
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int ... stateIds)

@@ -22,7 +22,7 @@ package io.github.dsheirer.rrapi.request;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
-import io.github.dsheirer.rrapi.type.CountyItem;
+import io.github.dsheirer.rrapi.type.CountyRequestItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class GetCountiesByList extends RequestBody
 {
-    private List<CountyItem> mCountyItems = new ArrayList<>();
+    private List<CountyRequestItem> mCountyRequestItems = new ArrayList<>();
 
     /**
      * Constructs the request
@@ -45,19 +45,19 @@ public class GetCountiesByList extends RequestBody
 
     @JacksonXmlElementWrapper(localName = "request")
     @JacksonXmlProperty(localName = "item")
-    public List<CountyItem> getCountyItems()
+    public List<CountyRequestItem> getCountyRequestItems()
     {
-        return mCountyItems;
+        return mCountyRequestItems;
     }
 
-    public void setCountyItems(List<CountyItem> countyItems)
+    public void setCountyRequestItems(List<CountyRequestItem> countyRequestItems)
     {
-        mCountyItems = countyItems;
+        mCountyRequestItems = countyRequestItems;
     }
 
     public void addCounty(int countyId)
     {
-        mCountyItems.add(CountyItem.create(countyId));
+        mCountyRequestItems.add(CountyRequestItem.create(countyId));
     }
 
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)

@@ -21,28 +21,37 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class CountyItem
+/**
+ * Radio system reference with system identifier value
+ *
+ */
+public class SystemReference
 {
-    private int mCountyId;
+    private int mSystemId;
 
-    public CountyItem(int countyId)
+    /**
+     * Constructs an instance
+     */
+    public SystemReference()
     {
-        mCountyId = countyId;
     }
 
-    @JacksonXmlProperty(localName = "ctid")
-    public int getCountyId()
+    /**
+     * System Identifier
+     * @return id
+     */
+    @JacksonXmlProperty(localName = "sid")
+    public int getSystemId()
     {
-        return mCountyId;
+        return mSystemId;
     }
 
-    public void setCountyId(int countyId)
+    /**
+     * Sets the radio system identifier
+     * @param systemId value
+     */
+    public void setSystemId(int systemId)
     {
-        mCountyId = countyId;
-    }
-
-    public static CountyItem create(int countyId)
-    {
-        return new CountyItem(countyId);
+        mSystemId = systemId;
     }
 }

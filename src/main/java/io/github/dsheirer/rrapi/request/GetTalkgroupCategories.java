@@ -17,60 +17,34 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.request;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-/**
- * Metropolitan area
- */
-public class Metro
+public class GetTalkgroupCategories extends RequestBody
 {
-    private int mMetroId;
-    private String mName;
+    private int mSystemId;
 
-    /**
-     * Constructs an instance
-     */
-    public Metro()
+    public GetTalkgroupCategories(AuthorizationInformation authorizationInformation, int systemId)
     {
+        super(authorizationInformation);
+        mSystemId = systemId;
     }
 
-    /**
-     * Metro identifier
-     * @return id
-     */
-    @JacksonXmlProperty(localName = "mid")
-    public int getMetroId()
+    @JacksonXmlProperty(localName = "sid")
+    public int getSystemId()
     {
-        return mMetroId;
+        return mSystemId;
     }
 
-    /**
-     * Sets the metro id
-     * @param metroId value
-     */
-    public void setMetroId(int metroId)
+    public void setSystemId(int systemId)
     {
-        mMetroId = metroId;
+        mSystemId = systemId;
     }
 
-    /**
-     * Name of the metro area
-     * @return name
-     */
-    @JacksonXmlProperty(localName = "metroName")
-    public String getName()
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
     {
-        return mName;
-    }
-
-    /**
-     * Sets the name
-     * @param name value
-     */
-    public void setName(String name)
-    {
-        mName = name;
+        return RequestBody.create(new GetTalkgroupCategories(authorizationInformation, systemId));
     }
 }

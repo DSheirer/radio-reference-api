@@ -21,40 +21,63 @@ package io.github.dsheirer.rrapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import io.github.dsheirer.rrapi.request.GetApco25Systems;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
 import io.github.dsheirer.rrapi.request.GetCountyInfo;
+import io.github.dsheirer.rrapi.request.GetFlavors;
+import io.github.dsheirer.rrapi.request.GetModes;
+import io.github.dsheirer.rrapi.request.GetSites;
 import io.github.dsheirer.rrapi.request.GetStateInfo;
 import io.github.dsheirer.rrapi.request.GetStatesByList;
-import io.github.dsheirer.rrapi.request.GetRadioSystemDetails;
-import io.github.dsheirer.rrapi.request.GetRadioSystemType;
+import io.github.dsheirer.rrapi.request.GetSystemInformation;
+import io.github.dsheirer.rrapi.request.GetTags;
+import io.github.dsheirer.rrapi.request.GetTalkgroupCategories;
+import io.github.dsheirer.rrapi.request.GetTalkgroups;
+import io.github.dsheirer.rrapi.request.GetTypes;
 import io.github.dsheirer.rrapi.request.GetUserData;
 import io.github.dsheirer.rrapi.request.GetUserFeedBroadcasts;
+import io.github.dsheirer.rrapi.request.GetVoices;
 import io.github.dsheirer.rrapi.request.GetZipcodeInfo;
 import io.github.dsheirer.rrapi.request.RequestEnvelope;
+import io.github.dsheirer.rrapi.response.GetApco25SystemsResponse;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
 import io.github.dsheirer.rrapi.response.GetCountyInfoResponse;
+import io.github.dsheirer.rrapi.response.GetFlavorsResponse;
+import io.github.dsheirer.rrapi.response.GetModesResponse;
+import io.github.dsheirer.rrapi.response.GetSitesResponse;
 import io.github.dsheirer.rrapi.response.GetStateInfoResponse;
 import io.github.dsheirer.rrapi.response.GetStatesByListResponse;
-import io.github.dsheirer.rrapi.response.GetRadioSystemDetailsResponse;
-import io.github.dsheirer.rrapi.response.GetRadioSystemTypeResponse;
+import io.github.dsheirer.rrapi.response.GetSystemInformationResponse;
+import io.github.dsheirer.rrapi.response.GetTagsResponse;
+import io.github.dsheirer.rrapi.response.GetTalkgroupCategoriesResponse;
+import io.github.dsheirer.rrapi.response.GetTalkgroupsResponse;
+import io.github.dsheirer.rrapi.response.GetTypesResponse;
 import io.github.dsheirer.rrapi.response.GetUserDataResponse;
 import io.github.dsheirer.rrapi.response.GetUserFeedBroadcastsResponse;
+import io.github.dsheirer.rrapi.response.GetVoicesResponse;
 import io.github.dsheirer.rrapi.response.GetZipcodeInfoResponse;
 import io.github.dsheirer.rrapi.response.ResponseEnvelope;
-import io.github.dsheirer.rrapi.type.Agency;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.CountyInfo;
-import io.github.dsheirer.rrapi.type.RadioSystem;
+import io.github.dsheirer.rrapi.type.Flavor;
+import io.github.dsheirer.rrapi.type.Mode;
+import io.github.dsheirer.rrapi.type.Site;
 import io.github.dsheirer.rrapi.type.State;
 import io.github.dsheirer.rrapi.type.StateInfo;
-import io.github.dsheirer.rrapi.type.RadioSystemItem;
+import io.github.dsheirer.rrapi.type.System;
+import io.github.dsheirer.rrapi.type.SystemInformation;
+import io.github.dsheirer.rrapi.type.Tag;
+import io.github.dsheirer.rrapi.type.Talkgroup;
+import io.github.dsheirer.rrapi.type.TalkgroupCategory;
+import io.github.dsheirer.rrapi.type.TalkgroupRequestFilter;
 import io.github.dsheirer.rrapi.type.Type;
 import io.github.dsheirer.rrapi.type.UserFeedBroadcast;
 import io.github.dsheirer.rrapi.type.UserInfo;
+import io.github.dsheirer.rrapi.type.Voice;
 import io.github.dsheirer.rrapi.type.ZipInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +89,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  * Java client for accessing the radioreference.com web services API
@@ -86,6 +111,11 @@ public class RadioReferenceService
 
     private HttpClient mHttpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
     private AuthorizationInformation mAuthorizationInformation;
+    private Map<Integer,Flavor> mFlavorMap;
+    private Map<Integer,Mode> mModeMap;
+    private Map<Integer,Tag> mTagMap;
+    private Map<Integer,Type> mTypeMap;
+    private Map<Integer,Voice> mVoiceMap;
 
     /**
      * Constructs an instance of the service
@@ -270,67 +300,368 @@ public class RadioReferenceService
         return null;
     }
 
+
     /**
-     * Radio system
+     * Radio system information and details
      * @param systemId to query
      * @return radio system or null
      * @throws RadioReferenceException if there is an error
      */
-    public RadioSystem getRadioSystem(int systemId) throws RadioReferenceException
+    public SystemInformation getSystemInformation(int systemId) throws RadioReferenceException
     {
-        RequestEnvelope request = GetRadioSystemDetails.create(mAuthorizationInformation, systemId);
+        RequestEnvelope request = GetSystemInformation.create(mAuthorizationInformation, systemId);
         ResponseEnvelope response = submitSync(request);
 
-        if(response != null && response.getResponseBody() instanceof GetRadioSystemDetailsResponse)
+        if(response != null && response.getResponseBody() instanceof GetSystemInformationResponse)
         {
-            return ((GetRadioSystemDetailsResponse)response.getResponseBody()).getRadioSystem();
+            return ((GetSystemInformationResponse)response.getResponseBody()).getSystemInformation();
         }
 
         return null;
     }
 
     /**
-     * Type information
+     * Query radio systems by APCO25 hexadecimal system identifier.
+     *
+     * @param systemId to query (e.g. '2AE')
+     * @return list of radio systems or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<System> getApco25Systems(String systemId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetApco25Systems.create(mAuthorizationInformation, systemId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetApco25SystemsResponse)
+        {
+            return ((GetApco25SystemsResponse)response.getResponseBody()).getSystems();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get sites for a radio system
+     *
+     * @param systemId to query
+     * @return list of sites or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Site> getSites(int systemId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetSites.create(mAuthorizationInformation, systemId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetSitesResponse)
+        {
+            return ((GetSitesResponse)response.getResponseBody()).getSites();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get talkgroups for a specific system
+     *
+     * @param systemId to query
+     * @return list of talkgroups or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Talkgroup> getTalkgroups(int systemId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetTalkgroups.create(mAuthorizationInformation, systemId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetTalkgroupsResponse)
+        {
+            return ((GetTalkgroupsResponse)response.getResponseBody()).getTalkgroups();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get talkgroups for a specific system with optional filtering by category, tag, or decimal value
+     *
+     * @param filter specifying a category id, tag id, or decimal value
+     * @return list of talkgroups or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Talkgroup> getTalkgroups(TalkgroupRequestFilter filter) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetTalkgroups.create(mAuthorizationInformation, filter);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetTalkgroupsResponse)
+        {
+            return ((GetTalkgroupsResponse)response.getResponseBody()).getTalkgroups();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get talkgroup categories
+     *
+     * @param systemId to query
+     * @return list of talkgroup categories or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<TalkgroupCategory> getTalkgroupCategories(int systemId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetTalkgroupCategories.create(mAuthorizationInformation, systemId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetTalkgroupCategoriesResponse)
+        {
+            return ((GetTalkgroupCategoriesResponse)response.getResponseBody()).getTalkgroupCategories();
+        }
+
+        return null;
+    }
+
+    /**
+     * Flavor information
+     * @param flavorId to query
+     * @return flavor or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Flavor getFlavor(int flavorId) throws RadioReferenceException
+    {
+        getFlavorsMap();
+
+        if(mFlavorMap != null)
+        {
+            return mFlavorMap.get(flavorId);
+        }
+
+        return null;
+    }
+
+    /**
+     * Map of flavors and flavor identifiers.
+     *
+     * Note: flavor values are cached on the first web service call and reused for subsequent method invocations.
+     *
+     * @return flavors map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,Flavor> getFlavorsMap() throws RadioReferenceException
+    {
+        if(mFlavorMap == null)
+        {
+            RequestEnvelope request = GetFlavors.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetFlavorsResponse)
+            {
+                List<Flavor> flavors = ((GetFlavorsResponse)response.getResponseBody()).getFlavors();
+
+                mFlavorMap = new TreeMap<>();
+
+                for(Flavor flavor: flavors)
+                {
+                    mFlavorMap.put(flavor.getTypeId(), flavor);
+                }
+            }
+        }
+
+        return mFlavorMap;
+    }
+
+    /**
+     * Mode information
+     * @param modeId to query
+     * @return mode or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Mode getMode(int modeId) throws RadioReferenceException
+    {
+        getModesMap();
+
+        if(mModeMap != null)
+        {
+            return mModeMap.get(modeId);
+        }
+
+        return null;
+    }
+
+    /**
+     * Map of modes and mode identifiers.
+     *
+     * Note: mode values are cached on the first web service call and reused for subsequent method invocations.
+     *
+     * @return modes map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,Mode> getModesMap() throws RadioReferenceException
+    {
+        if(mModeMap == null)
+        {
+            RequestEnvelope request = GetModes.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetModesResponse)
+            {
+                List<Mode> modes = ((GetModesResponse)response.getResponseBody()).getModes();
+
+                mModeMap = new TreeMap<>();
+
+                for(Mode mode: modes)
+                {
+                    mModeMap.put(mode.getModeId(), mode);
+                }
+            }
+        }
+
+        return mModeMap;
+    }
+
+    /**
+     * Map of tags and tag identifiers
+     *
+     * Note: map is cached on first call to the web service and reused on subsequent method invocations.
+     * @return tags map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,Tag> getTagsMap() throws RadioReferenceException
+    {
+        if(mTagMap == null)
+        {
+            RequestEnvelope request = GetTags.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetTagsResponse)
+            {
+                mTagMap = new TreeMap<>();
+
+                List<Tag> tags = ((GetTagsResponse)response.getResponseBody()).getTags();
+
+                for(Tag tag: tags)
+                {
+                    mTagMap.put(tag.getTagId(), tag);
+                }
+            }
+        }
+
+        return mTagMap;
+    }
+
+    /**
+     * Tag
+     * @param tagId to query
+     * @return type or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Tag getTag(int tagId) throws RadioReferenceException
+    {
+        getTagsMap();
+
+        if(mTagMap != null)
+        {
+            return mTagMap.get(tagId);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Type (protocol) information
      * @param typeId to query
      * @return type or null
      * @throws RadioReferenceException if there is an error
      */
     public Type getType(int typeId) throws RadioReferenceException
     {
-        RequestEnvelope request = GetRadioSystemType.create(mAuthorizationInformation, typeId);
-        ResponseEnvelope response = submitSync(request);
+        getTypesMap();
 
-        if(response != null && response.getResponseBody() instanceof GetRadioSystemTypeResponse)
+        if(mTypeMap != null)
         {
-            List<Type> types = ((GetRadioSystemTypeResponse)response.getResponseBody()).getTypes();
-
-            if(types.size() == 1)
-            {
-                return types.get(0);
-            }
+            return mTypeMap.get(typeId);
         }
 
         return null;
     }
 
     /**
-     * Complete list of types
-     * @return types list
+     * Map of types (protocols) and type identifiers
+     *
+     * Note: type map is cached on first call to the web service and reused on subsequent method invocations.
+     * @return types map or null
      * @throws RadioReferenceException if there is an error
      */
-    public List<Type> getTypes() throws RadioReferenceException
+    public Map<Integer,Type> getTypesMap() throws RadioReferenceException
     {
-        RequestEnvelope request = GetRadioSystemType.create(mAuthorizationInformation);
-        ResponseEnvelope response = submitSync(request);
-
-        if(response != null && response.getResponseBody() instanceof GetRadioSystemTypeResponse)
+        if(mTypeMap == null)
         {
-            return ((GetRadioSystemTypeResponse)response.getResponseBody()).getTypes();
+            RequestEnvelope request = GetTypes.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetTypesResponse)
+            {
+                mTypeMap = new TreeMap<>();
+
+                List<Type> types = ((GetTypesResponse)response.getResponseBody()).getTypes();
+
+                for(Type type: types)
+                {
+                    mTypeMap.put(type.getTypeId(), type);
+                }
+            }
         }
 
-        return Collections.EMPTY_LIST;
+        return mTypeMap;
     }
 
+    /**
+     * Map of voices and voice identifiers
+     *
+     * Note: map is cached on first call to the web service and reused on subsequent method invocations.
+     * @return voices map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,Voice> getVoicesMap() throws RadioReferenceException
+    {
+        if(mVoiceMap == null)
+        {
+            RequestEnvelope request = GetVoices.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetVoicesResponse)
+            {
+                mVoiceMap = new TreeMap<>();
+
+                List<Voice> voices = ((GetVoicesResponse)response.getResponseBody()).getVoices();
+
+                for(Voice voice: voices)
+                {
+                    mVoiceMap.put(voice.getTypeId(), voice);
+                }
+            }
+        }
+
+        return mVoiceMap;
+    }
+
+    /**
+     * Voice information
+     * @param voiceId to query
+     * @return voice or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Voice getVoice(int voiceId) throws RadioReferenceException
+    {
+        getVoicesMap();
+
+        if(mVoiceMap != null)
+        {
+            return mVoiceMap.get(voiceId);
+        }
+
+        return null;
+    }
 
 
     /**
@@ -436,8 +767,8 @@ public class RadioReferenceService
 
     public static void main(String[] args)
     {
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("Please enter radio reference password?");
+        Scanner keyboard = new Scanner(java.lang.System.in);
+        java.lang.System.out.println("Please enter radio reference password?");
         String password = keyboard.next();
         mLog.debug("Using password: " + password);
         AuthorizationInformation authorizationInformation = new AuthorizationInformation("88969092", "dsheirer", password);
@@ -445,36 +776,20 @@ public class RadioReferenceService
         try
         {
             RadioReferenceService service = new RadioReferenceService(authorizationInformation);
-            ZipInfo zipInfo = service.getZipcodeInfo(13069);
+            List<TalkgroupCategory> categories = service.getTalkgroupCategories(5298);
 
-            if(zipInfo != null)
+            TalkgroupCategory category = categories.get(0);
+
+            mLog.debug("Category: " + category.getName());
+
+            TalkgroupRequestFilter filter = TalkgroupRequestFilter.createCategoryFilter(5298, category.getTalkgroupCategoryId());
+            List<Talkgroup> talkgroups = service.getTalkgroups(filter);
+
+            for(Talkgroup talkgroup: talkgroups)
             {
-                mLog.debug("Zip:" + zipInfo.getCity() + " Loc:" + zipInfo.getLatitude() + " " + zipInfo.getLongitude());
-                StateInfo stateInfo = service.getStateInfo(zipInfo.getStateId());
-
-                if(stateInfo != null)
-                {
-                    mLog.debug("State: " + stateInfo.getName());
-
-                    for(RadioSystemItem radioSystemItem : stateInfo.getRadioSystemItems())
-                    {
-                        mLog.debug("System " + radioSystemItem.getSystemId() + " " + radioSystemItem.getName());
-                    }
-                }
-
-                CountyInfo countyInfo = service.getCountyInfo(zipInfo.getCountyId());
-
-                if(countyInfo != null)
-                {
-                    mLog.debug("County:" + countyInfo.getName());
-
-                    for(Agency agency: countyInfo.getAgencies())
-                    {
-                        Type type = service.getType(agency.getType());
-                        mLog.debug("Agency: " + agency.getName() + " + Type:" + type.getDescription());
-                    }
-                }
+                mLog.debug(talkgroup.getAlphaTag());
             }
+
         }
         catch(Exception e)
         {

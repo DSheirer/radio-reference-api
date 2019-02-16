@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Federal Communications Commission (FCC) (transmitter) location information.
+ */
 public class FccLocation
 {
     private int mLocationId;
@@ -36,137 +39,236 @@ public class FccLocation
     private String mCounty;
     private String mState;
 
+    /**
+     * Constructs an instance
+     */
     public FccLocation()
     {
     }
 
+    /**
+     * Location identifier
+     * @return value
+     */
     @JacksonXmlProperty(localName = "locationNumber")
     public int getLocationId()
     {
         return mLocationId;
     }
 
+    /**
+     * Sets the location identifier
+     * @param locationId value
+     */
     public void setLocationId(int locationId)
     {
         mLocationId = locationId;
     }
 
+    /**
+     * Tower identifier
+     * @return tower id
+     */
     @JacksonXmlProperty(localName = "towerId")
     public String getTowerId()
     {
         return mTowerId;
     }
 
+    /**
+     * Sets the tower id
+     * @param towerId value
+     */
     public void setTowerId(String towerId)
     {
         mTowerId = towerId;
     }
 
+    /**
+     * Transmitter type
+     * @return type
+     */
     @JacksonXmlProperty(localName = "type")
     public String getType()
     {
         return mType;
     }
 
+    /**
+     * Sets the transmitter type
+     * @param type of transmitter
+     */
     public void setType(String type)
     {
         mType = type;
     }
 
+    /**
+     * Antenna height
+     * @return height
+     */
     @JacksonXmlProperty(localName = "antennaHeight")
     public double getAntennaHeight()
     {
         return mAntennaHeight;
     }
 
+    /**
+     * Sets the antenna height
+     * @param antennaHeight value
+     */
     public void setAntennaHeight(double antennaHeight)
     {
         mAntennaHeight = antennaHeight;
     }
 
+    /**
+     * Height of the structure hosting the antenna
+     * @return height
+     */
     @JacksonXmlProperty(localName = "structureHeight")
     public double getStructureHeight()
     {
         return mStructureHeight;
     }
 
+    /**
+     * Sets the structure height
+     * @param structureHeight value
+     */
     public void setStructureHeight(double structureHeight)
     {
         mStructureHeight = structureHeight;
     }
 
+    /**
+     * Elevation of the terrain at the transmitter site.
+     * @return elevation
+     */
     @JacksonXmlProperty(localName = "elevation")
     public double getElevation()
     {
         return mElevation;
     }
 
+    /**
+     * Sets the elevation
+     * @param elevation value
+     */
     public void setElevation(double elevation)
     {
         mElevation = elevation;
     }
 
+    /**
+     * Address for the transmitter site
+     * @return address
+     */
     @JacksonXmlProperty(localName = "address")
     public String getAddress()
     {
         return mAddress;
     }
 
+    /**
+     * Sets the address
+     * @param address value
+     */
     public void setAddress(String address)
     {
         mAddress = address;
     }
 
+    /**
+     * Site latitude
+     * @return value in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
         return mLatitude;
     }
 
+    /**
+     * Sets the site latitude
+     * @param latitude value
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
     }
 
+    /**
+     * Site longitude
+     * @return  latitude value in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude value
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
     }
 
+    /**
+     * City for the transmitter site
+     * @return city
+     */
     @JacksonXmlProperty(localName = "city")
     public String getCity()
     {
         return mCity;
     }
 
+    /**
+     * Sets the city for the transmitter type
+     * @param city value
+     */
     public void setCity(String city)
     {
         mCity = city;
     }
 
+    /**
+     * County for the transmitter type
+     * @return county
+     */
     @JacksonXmlProperty(localName = "county")
     public String getCounty()
     {
         return mCounty;
     }
 
+    /**
+     * Sets the county for the transmitter site
+     * @param county name
+     */
     public void setCounty(String county)
     {
         mCounty = county;
     }
 
+    /**
+     * State for the transmitter site
+     * @return state
+     */
     @JacksonXmlProperty(localName = "state")
     public String getState()
     {
         return mState;
     }
 
+    /**
+     * Sets the state
+     * @param state value
+     */
     public void setState(String state)
     {
         mState = state;

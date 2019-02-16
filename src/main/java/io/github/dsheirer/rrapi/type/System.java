@@ -19,98 +19,164 @@
 
 package io.github.dsheirer.rrapi.type;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.Date;
 
-public class RadioSystemItem
+/**
+ * Radio system basic details
+ */
+public class System
 {
     private int mSystemId;
     private String mName;
-    private int mType;
-    private int mFlavor;
-    private int mVoice;
+    private int mTypeId;
+    private int mFlavorId;
+    private int mVoiceId;
     private String mCity;
     private Date mLastUpdated;
 
-    public RadioSystemItem()
+    /**
+     * Constructs an instance
+     */
+    public System()
     {
     }
 
+    /**
+     * System identifier
+     * @return identifier
+     */
     @JacksonXmlProperty(localName = "sid")
     public int getSystemId()
     {
         return mSystemId;
     }
 
+    /**
+     * Sets the radio system identifier
+     * @param systemId value
+     */
     public void setSystemId(int systemId)
     {
         mSystemId = systemId;
     }
 
+    /**
+     * Name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "sName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * Protocol type identifier
+     *
+     * @see Type Type
+     * @return type id
+     */
     @JacksonXmlProperty(localName = "sType")
-    public int getType()
+    public int getTypeId()
     {
-        return mType;
+        return mTypeId;
     }
 
-    public void setType(int type)
+    /**
+     * Sets the protocol type identifier
+     * @param typeId value
+     */
+    public void setTypeId(int typeId)
     {
-        mType = type;
+        mTypeId = typeId;
     }
 
+    /**
+     * Protocol flavor or variant identifier
+     *
+     * @see Flavor Flavor
+     * @return flavor id
+     */
     @JacksonXmlProperty(localName = "sFlavor")
-    public int getFlavor()
+    public int getFlavorId()
     {
-        return mFlavor;
+        return mFlavorId;
     }
 
-    public void setFlavor(int flavor)
+    /**
+     * Sets the flavor identifier
+     * @param flavorId value
+     */
+    public void setFlavorId(int flavorId)
     {
-        mFlavor = flavor;
+        mFlavorId = flavorId;
     }
 
+    /**
+     * Protocol voice codec
+     *
+     * @see Voice Voice
+     * @return voice identifier
+     */
     @JacksonXmlProperty(localName = "sVoice")
-    public int getVoice()
+    public int getVoiceId()
     {
-        return mVoice;
+        return mVoiceId;
     }
 
-    public void setVoice(int voice)
+    /**
+     * Sets the voice identifier
+     * @param voiceId value
+     */
+    public void setVoiceId(int voiceId)
     {
-        mVoice = voice;
+        mVoiceId = voiceId;
     }
 
+    /**
+     * City name
+     * @return city
+     */
     @JacksonXmlProperty(localName = "sCity")
     public String getCity()
     {
         return mCity;
     }
 
+    /**
+     * Sets the city name
+     * @param city name
+     */
     public void setCity(String city)
     {
         mCity = city;
     }
 
+    /**
+     * Last updated date
+     * @return date
+     */
     @JacksonXmlProperty(localName = "lastUpdated")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssX")
     public Date getLastUpdated()
     {
         return mLastUpdated;
     }
 
+    /**
+     * Sets the last updated value
+     * @param lastUpdated date
+     */
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;

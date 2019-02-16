@@ -17,30 +17,7 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.RadioSystemFlavor;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetRadioSystemFlavorResponse extends ResponseBody
-{
-    private List<RadioSystemFlavor> mRadioSystemFlavors = new ArrayList<>();
-
-    public GetRadioSystemFlavorResponse()
-    {
-    }
-
-    @JacksonXmlProperty(localName = "return")
-    public List<RadioSystemFlavor> getRadioSystemFlavors()
-    {
-        return mRadioSystemFlavors;
-    }
-
-    public void setRadioSystemFlavors(List<RadioSystemFlavor> radioSystemFlavors)
-    {
-        mRadioSystemFlavors = radioSystemFlavors;
-    }
-}
+/**
+ * SOAP request messages
+ */
+package io.github.dsheirer.rrapi.request;

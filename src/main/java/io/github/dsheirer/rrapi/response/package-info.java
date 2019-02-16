@@ -17,32 +17,7 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
-public class StateItem
-{
-    private int mStateId;
-
-    public StateItem(int stateId)
-    {
-        mStateId = stateId;
-    }
-
-    @JacksonXmlProperty(localName = "stid")
-    public int getStateId()
-    {
-        return mStateId;
-    }
-
-    public void setStateId(int stateId)
-    {
-        mStateId = stateId;
-    }
-
-    public static StateItem create(int stateId)
-    {
-        return new StateItem(stateId);
-    }
-}
+/**
+ * SOAP response messages
+ */
+package io.github.dsheirer.rrapi.response;

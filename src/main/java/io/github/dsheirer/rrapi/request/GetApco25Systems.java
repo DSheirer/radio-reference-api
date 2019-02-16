@@ -17,30 +17,34 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
+package io.github.dsheirer.rrapi.request;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.RadioSystemVoice;
+import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetRadioSystemVoiceResponse extends ResponseBody
+public class GetApco25Systems extends RequestBody
 {
-    private List<RadioSystemVoice> mSystemRadioSystemVoices = new ArrayList<>();
+    private String mSystemId;
 
-    public GetRadioSystemVoiceResponse()
+    public GetApco25Systems(AuthorizationInformation authorizationInformation, String systemId)
     {
+        super(authorizationInformation);
+        mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "return")
-    public List<RadioSystemVoice> getSystemVoices()
+    @JacksonXmlProperty(localName = "sysid")
+    public String getSystemId()
     {
-        return mSystemRadioSystemVoices;
+        return mSystemId;
     }
 
-    public void setSystemRadioSystemVoices(List<RadioSystemVoice> systemRadioSystemVoices)
+    public void setSystemId(String systemId)
     {
-        mSystemRadioSystemVoices = systemRadioSystemVoices;
+        mSystemId = systemId;
+    }
+
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, String systemId)
+    {
+        return RequestBody.create(new GetApco25Systems(authorizationInformation, systemId));
     }
 }

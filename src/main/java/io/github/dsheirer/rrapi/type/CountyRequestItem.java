@@ -17,34 +17,52 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-public class GetRadioSystemTalkgroupCategories extends RequestBody
+/**
+ * County and identifier used when requesting counties by ID value.
+ */
+public class CountyRequestItem
 {
-    private int mSystemId;
+    private int mCountyId;
 
-    public GetRadioSystemTalkgroupCategories(AuthorizationInformation authorizationInformation, int systemId)
+    /**
+     * Constructs a county request item
+     * @param countyId value
+     */
+    public CountyRequestItem(int countyId)
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
+        mCountyId = countyId;
     }
 
-    @JacksonXmlProperty(localName = "sid")
-    public int getSystemId()
+    /**
+     * County identifier
+     * @return value
+     */
+    @JacksonXmlProperty(localName = "ctid")
+    public int getCountyId()
     {
-        return mSystemId;
+        return mCountyId;
     }
 
-    public void setSystemId(int systemId)
+    /**
+     * Sets the county identifier
+     * @param countyId value
+     */
+    public void setCountyId(int countyId)
     {
-        mSystemId = systemId;
+        mCountyId = countyId;
     }
 
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
+    /**
+     * Creates an instance of a county request item for the specified county identifier.
+     * @param countyId value
+     * @return instance
+     */
+    public static CountyRequestItem create(int countyId)
     {
-        return RequestBody.create(new GetRadioSystemTalkgroupCategories(authorizationInformation, systemId));
+        return new CountyRequestItem(countyId);
     }
 }

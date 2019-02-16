@@ -25,7 +25,7 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 /**
  * Get mode(s)
  */
-public class GetMode extends RequestBody
+public class GetModes extends RequestBody
 {
     private Integer mModeId;
 
@@ -34,7 +34,7 @@ public class GetMode extends RequestBody
      * @param authorizationInformation for the user
      * @param modeId to request
      */
-    public GetMode(AuthorizationInformation authorizationInformation, int modeId)
+    public GetModes(AuthorizationInformation authorizationInformation, int modeId)
     {
         super(authorizationInformation);
         mModeId = modeId;
@@ -44,7 +44,7 @@ public class GetMode extends RequestBody
      * Constructs a get ALL modes request
      * @param authorizationInformation credentials
      */
-    public GetMode(AuthorizationInformation authorizationInformation)
+    public GetModes(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
@@ -76,7 +76,7 @@ public class GetMode extends RequestBody
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int modeId)
     {
-        return RequestBody.create(new GetMode(authorizationInformation, modeId));
+        return RequestBody.create(new GetModes(authorizationInformation, modeId));
     }
 
     /**
@@ -86,6 +86,6 @@ public class GetMode extends RequestBody
      */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
-        return RequestBody.create(new GetMode(authorizationInformation));
+        return RequestBody.create(new GetModes(authorizationInformation));
     }
 }

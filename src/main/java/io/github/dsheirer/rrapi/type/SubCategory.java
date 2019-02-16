@@ -24,6 +24,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Sub Category
+ */
 public class SubCategory
 {
     private int mSubCategoryId;
@@ -31,75 +34,129 @@ public class SubCategory
     private double mLatitude;
     private double mLongitude;
     private double mRange;
-    private List<RadioSystemIdentifier> mRadioSystemIdentifiers = new ArrayList<>();
+    private List<SystemReference> mSystemReferences = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public SubCategory()
     {
     }
 
+    /**
+     * Sub Category identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "scid")
     public int getSubCategoryId()
     {
         return mSubCategoryId;
     }
 
+    /**
+     * Sets the sub category id
+     * @param subCategoryId value
+     */
     public void setSubCategoryId(int subCategoryId)
     {
         mSubCategoryId = subCategoryId;
     }
 
+    /**
+     * Name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "scName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * Center location latitude
+     * @return latitude in decimal degrees
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude value
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
     }
 
+    /**
+     * Center location longitude
+     * @return longitude
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude value
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
     }
 
+    /**
+     * Range or extent from the center location
+     * @return range
+     */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
     {
         return mRange;
     }
 
+    /**
+     * Sets the range
+     * @param range value
+     */
     public void setRange(double range)
     {
         mRange = range;
     }
 
+    /**
+     * List of system identifier references.  These can be used to query the systems that use this sub category.
+     * @return list
+     */
     @JacksonXmlProperty(localName = "sids")
-    public List<RadioSystemIdentifier> getRadioSystemIdentifiers()
+    public List<SystemReference> getSystemReferences()
     {
-        return mRadioSystemIdentifiers;
+        return mSystemReferences;
     }
 
-    public void setRadioSystemIdentifiers(List<RadioSystemIdentifier> radioSystemIdentifiers)
+    /**
+     * Sets the system references
+     * @param systemReferences values
+     */
+    public void setSystemReferences(List<SystemReference> systemReferences)
     {
-        mRadioSystemIdentifiers = radioSystemIdentifiers;
+        if(systemReferences != null)
+        {
+            mSystemReferences = systemReferences;
+        }
     }
 }

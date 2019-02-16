@@ -19,8 +19,12 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Site frequency or repeater output frequency
+ */
 public class SiteFrequency
 {
     private int mLogicalChannelNumber;
@@ -29,60 +33,123 @@ public class SiteFrequency
     private String mColorCode;
     private String mChannelId;
 
+    /**
+     * Constructs an instance
+     */
     public SiteFrequency()
     {
     }
 
+    /**
+     * Logical channel number (LCN)
+     * @return lcn
+     */
     @JacksonXmlProperty(localName = "lcn")
     public int getLogicalChannelNumber()
     {
         return mLogicalChannelNumber;
     }
 
+    /**
+     * Sets the LCN
+     * @param logicalChannelNumber value
+     */
     public void setLogicalChannelNumber(int logicalChannelNumber)
     {
         mLogicalChannelNumber = logicalChannelNumber;
     }
 
+    /**
+     * Frequency
+     * @return frequency in MHz
+     */
     @JacksonXmlProperty(localName = "freq")
     public double getFrequency()
     {
         return mFrequency;
     }
 
+    /**
+     * Sets the frequency
+     * @param frequency value
+     */
     public void setFrequency(double frequency)
     {
         mFrequency = frequency;
     }
 
+    /**
+     * Indicates the use for the channel.
+     * @return 'd' for primary control channel, 'a' for alternate control channel, or null.
+     */
     @JacksonXmlProperty(localName = "use")
     public String getUse()
     {
         return mUse;
     }
 
+    /**
+     * Indicates if this is a primary control channel
+     * @return true if this is a primary control channel
+     */
+    @JsonIgnore
+    public boolean isPrimaryControlChannel()
+    {
+        return mUse != null && mUse.equals("d");
+    }
+
+    /**
+     * Indicates if this is an alternate control channel
+     * @return true if this is an alternate control channel
+     */
+    @JsonIgnore
+    public boolean isAlternateControlChannel()
+    {
+        return mUse != null && mUse.equals("a");
+    }
+
+    /**
+     * Sets the use.
+     * @param use value
+     */
     public void setUse(String use)
     {
         mUse = use;
     }
 
+    /**
+     * Color code
+     * @return color code or null
+     */
     @JacksonXmlProperty(localName = "colorCode")
     public String getColorCode()
     {
         return mColorCode;
     }
 
+    /**
+     * Sets the color code
+     * @param colorCode value
+     */
     public void setColorCode(String colorCode)
     {
         mColorCode = colorCode;
     }
 
+    /**
+     * Channel ID
+     * @return id or null
+     */
     @JacksonXmlProperty(localName = "ch_id")
     public String getChannelId()
     {
         return mChannelId;
     }
 
+    /**
+     * Sets the channel id
+     * @param channelId value
+     */
     public void setChannelId(String channelId)
     {
         mChannelId = channelId;

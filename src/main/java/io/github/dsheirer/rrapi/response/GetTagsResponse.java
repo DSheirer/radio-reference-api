@@ -17,50 +17,30 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.rrapi.type.Tag;
 
-public class RadioSystemVoice
+import java.util.ArrayList;
+import java.util.List;
+
+public class GetTagsResponse extends ResponseBody
 {
-    private int mVoiceId;
-    private int mVoice;
-    private String mDescription;
+    private List<Tag> mTags = new ArrayList<>();
 
-    public RadioSystemVoice()
+    public GetTagsResponse()
     {
     }
 
-    @JacksonXmlProperty(localName = "sType")
-    public int getVoiceId()
+    @JacksonXmlProperty(localName = "return")
+    public List<Tag> getTags()
     {
-        return mVoiceId;
+        return mTags;
     }
 
-    public void setVoiceId(int voiceId)
+    public void setTags(List<Tag> tags)
     {
-        mVoiceId = voiceId;
-    }
-
-    @JacksonXmlProperty(localName = "sVoice")
-    public int getVoice()
-    {
-        return mVoice;
-    }
-
-    public void setVoice(int voice)
-    {
-        mVoice = voice;
-    }
-
-    @JacksonXmlProperty(localName = "sVoiceDescr")
-    public String getDescription()
-    {
-        return mDescription;
-    }
-
-    public void setDescription(String description)
-    {
-        mDescription = description;
+        mTags = tags;
     }
 }

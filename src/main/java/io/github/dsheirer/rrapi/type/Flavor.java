@@ -21,46 +21,78 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class RadioSystemFlavor
+/**
+ * Flavor of protocol that identifies a specific type or variant of a digital protocol.
+ *
+ * @see Type
+ */
+public class Flavor
 {
+    private int mTypeId;
     private int mFlavorId;
-    private int mFlavor;
-    private String mDescription;
+    private String mName;
 
-    public RadioSystemFlavor()
+    /**
+     * Constructs an instance
+     */
+    public Flavor()
     {
     }
 
+    /**
+     * Protocol type identifier (parent) for this flavor
+     * @return id
+     */
     @JacksonXmlProperty(localName = "sType")
+    public int getTypeId()
+    {
+        return mTypeId;
+    }
+
+    /**
+     * Sets the type identifier
+     * @param typeId value
+     */
+    public void setTypeId(int typeId)
+    {
+        mTypeId = typeId;
+    }
+
+    /**
+     * Flavor identifier
+     * @return id
+     */
+    @JacksonXmlProperty(localName = "sFlavor")
     public int getFlavorId()
     {
         return mFlavorId;
     }
 
+    /**
+     * Sets the flavor identifier
+     * @param flavorId value
+     */
     public void setFlavorId(int flavorId)
     {
         mFlavorId = flavorId;
     }
 
-    @JacksonXmlProperty(localName = "sFlavor")
-    public int getFlavor()
-    {
-        return mFlavor;
-    }
-
-    public void setFlavor(int flavor)
-    {
-        mFlavor = flavor;
-    }
-
+    /**
+     * Flavor name or description
+     * @return name
+     */
     @JacksonXmlProperty(localName = "sFlavorDescr")
-    public String getDescription()
+    public String getName()
     {
-        return mDescription;
+        return mName;
     }
 
-    public void setDescription(String description)
+    /**
+     * Sets the flavor name or description
+     * @param name of the flavor
+     */
+    public void setName(String name)
     {
-        mDescription = description;
+        mName = name;
     }
 }

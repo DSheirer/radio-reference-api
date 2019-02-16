@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Fleetmap configuration details for legacy Motorola systems
+ */
 public class Fleetmap
 {
     private String mB0;
@@ -32,10 +35,13 @@ public class Fleetmap
     private String mB6;
     private String mB7;
 
-
+    /**
+     * Constructs a fleetmap instance
+     */
     public Fleetmap()
     {
     }
+
 
     @JacksonXmlProperty(localName = "b0")
     public String getB0()

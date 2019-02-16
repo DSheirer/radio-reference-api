@@ -19,19 +19,14 @@
 
 package io.github.dsheirer.rrapi.request;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-@JsonPropertyOrder({"sid", "tgCid", "tgTag", "tgDec"})
-public class GetRadioSystemTalkgroups extends RequestBody
+public class GetSystemInformation extends RequestBody
 {
     private int mSystemId;
-    private Integer mCategoryId;
-    private Integer mTagId;
-    private Integer mDecimalValue;
 
-    public GetRadioSystemTalkgroups(AuthorizationInformation authorizationInformation, int systemId)
+    public GetSystemInformation(AuthorizationInformation authorizationInformation, int systemId)
     {
         super(authorizationInformation);
         mSystemId = systemId;
@@ -48,42 +43,8 @@ public class GetRadioSystemTalkgroups extends RequestBody
         mSystemId = systemId;
     }
 
-    @JacksonXmlProperty(localName = "tgCid")
-    public Integer getCategoryId()
-    {
-        return mCategoryId;
-    }
-
-    public void setCategoryId(Integer categoryId)
-    {
-        mCategoryId = categoryId;
-    }
-
-    @JacksonXmlProperty(localName = "tgTag")
-    public Integer getTagId()
-    {
-        return mTagId;
-    }
-
-    public void setTagId(Integer tagId)
-    {
-        mTagId = tagId;
-    }
-
-    @JacksonXmlProperty(localName = "tgDec")
-    public Integer getDecimalValue()
-    {
-        return mDecimalValue;
-    }
-
-    public void setDecimalValue(Integer decimalValue)
-    {
-        mDecimalValue = decimalValue;
-    }
-
-
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
     {
-        return RequestBody.create(new GetRadioSystemTalkgroups(authorizationInformation, systemId));
+        return RequestBody.create(new GetSystemInformation(authorizationInformation, systemId));
     }
 }

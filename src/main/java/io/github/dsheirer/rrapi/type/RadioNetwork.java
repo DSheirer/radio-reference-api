@@ -17,34 +17,65 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.request;
+package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
-public class GetRadioSystemBySystemId extends RequestBody
+/**
+ * Radio Network information
+ */
+public class RadioNetwork
 {
     private String mSystemId;
+    private String mCt;
+    private String mWacn;
 
-    public GetRadioSystemBySystemId(AuthorizationInformation authorizationInformation, String systemId)
+    /**
+     * Constructs an instance
+     */
+    public RadioNetwork()
     {
-        super(authorizationInformation);
-        mSystemId = systemId;
     }
 
+    /**
+     * System identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "sysid")
     public String getSystemId()
     {
         return mSystemId;
     }
 
+    /**
+     * Sets the system identifier
+     * @param systemId value
+     */
     public void setSystemId(String systemId)
     {
         mSystemId = systemId;
     }
 
-    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, String systemId)
+
+    @JacksonXmlProperty(localName = "ct")
+    public String getCt()
     {
-        return RequestBody.create(new GetRadioSystemBySystemId(authorizationInformation, systemId));
+        return mCt;
+    }
+
+    public void setCt(String ct)
+    {
+        mCt = ct;
+    }
+
+    @JacksonXmlProperty(localName = "wacn")
+    public String getWacn()
+    {
+        return mWacn;
+    }
+
+    public void setWacn(String wacn)
+    {
+        mWacn = wacn;
     }
 }

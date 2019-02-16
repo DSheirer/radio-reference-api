@@ -21,6 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Federal Communications Commission (FCC) frequency information.
+ */
 public class FccFrequency
 {
     private int mLocationId;
@@ -31,82 +34,141 @@ public class FccFrequency
     private int mMobiles;
     private int mPagers;
 
+    /**
+     * Constructs an instance
+     */
     public FccFrequency()
     {
     }
 
+    /**
+     * Location identifier
+     * @return value
+     */
     @JacksonXmlProperty(localName = "locationNumber")
     public int getLocationId()
     {
         return mLocationId;
     }
 
+    /**
+     * Sets the location identifier
+     * @param locationId value
+     */
     public void setLocationId(int locationId)
     {
         mLocationId = locationId;
     }
 
+    /**
+     * Frequency
+     * @return value in megahertz/megacycles
+     */
     @JacksonXmlProperty(localName = "frequency")
     public double getFrequency()
     {
         return mFrequency;
     }
 
+    /**
+     * Sets the frequency
+     * @param frequency in MHz
+     */
     public void setFrequency(double frequency)
     {
         mFrequency = frequency;
     }
 
+    /**
+     * Emission identifier
+     * @return value
+     */
     @JacksonXmlProperty(localName = "emission")
     public String getEmission()
     {
         return mEmission;
     }
 
+    /**
+     * Sets the emission
+     * @param emission value
+     */
     public void setEmission(String emission)
     {
         mEmission = emission;
     }
 
+    /**
+     * Frequency class description
+     * @return description
+     */
     @JacksonXmlProperty(localName = "class")
     public String getClassDescription()
     {
         return mClassDescription;
     }
 
+    /**
+     * Sets the frequency class description
+     * @param classDescription value
+     */
     public void setClassDescription(String classDescription)
     {
         mClassDescription = classDescription;
     }
 
+    /**
+     * Maximum authorized output power
+     * @return power in decibels
+     */
     @JacksonXmlProperty(localName = "power")
     public double getPower()
     {
         return mPower;
     }
 
+    /**
+     * Sets the maximum output power
+     * @param power in decibels
+     */
     public void setPower(double power)
     {
         mPower = power;
     }
 
+    /**
+     * Number of mobile radio units authorized for the frequency or channel.
+     * @return mobiles authorized
+     */
     @JacksonXmlProperty(localName = "mobiles")
     public int getMobiles()
     {
         return mMobiles;
     }
 
+    /**
+     * Sets the number of mobiles authorized
+     * @param mobiles count
+     */
     public void setMobiles(int mobiles)
     {
         mMobiles = mobiles;
     }
 
+    /**
+     * Number of pagers authorized for the channel.
+     * @return pager count
+     */
     @JacksonXmlProperty(localName = "pagers")
     public int getPagers()
     {
         return mPagers;
     }
 
+    /**
+     * Sets the number of pagers authorized for the channel
+     * @param pagers count
+     */
     public void setPagers(int pagers)
     {
         mPagers = pagers;

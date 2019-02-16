@@ -41,7 +41,7 @@ public class CountyInfo
     private String mFips;
     private Date mLastUpdated;
     private List<Category> mCategories = new ArrayList<>();
-    private List<RadioSystemItem> mRadioSystemItems = new ArrayList<>();
+    private List<System> mSystems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
 
     public CountyInfo()
@@ -58,6 +58,10 @@ public class CountyInfo
         return mCountyId;
     }
 
+    /**
+     * Sets the county id
+     * @param countyId value
+     */
     public void setCountyId(int countyId)
     {
         mCountyId = countyId;
@@ -73,14 +77,18 @@ public class CountyInfo
         return mName;
     }
 
+    /**
+     * Sets the county name.
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
     /**
-     * County header
-     * @return header
+     * County header, indicating the geo-political classifier that the object represents.
+     * @return header value
      */
     @JacksonXmlProperty(localName = "countyHeader")
     public String getHeader()
@@ -88,6 +96,10 @@ public class CountyInfo
         return mHeader;
     }
 
+    /**
+     * Sets the county header.
+     * @param header value
+     */
     public void setHeader(String header)
     {
         mHeader = header;
@@ -103,6 +115,10 @@ public class CountyInfo
         return mStateId;
     }
 
+    /**
+     * Sets the state id
+     * @param stateId value
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
@@ -118,6 +134,10 @@ public class CountyInfo
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude value
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
@@ -133,6 +153,10 @@ public class CountyInfo
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude value
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
@@ -148,6 +172,10 @@ public class CountyInfo
         return mRange;
     }
 
+    /**
+     * Sets the range
+     * @param range value
+     */
     public void setRange(double range)
     {
         mRange = range;
@@ -163,6 +191,10 @@ public class CountyInfo
         return mFips;
     }
 
+    /**
+     * Sets the FIPS county code
+     * @param fips code
+     */
     public void setFips(String fips)
     {
         mFips = fips;
@@ -179,6 +211,10 @@ public class CountyInfo
         return mLastUpdated;
     }
 
+    /**
+     * Sets the last updated date
+     * @param lastUpdated date
+     */
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;
@@ -194,9 +230,16 @@ public class CountyInfo
         return mCategories;
     }
 
+    /**
+     * Sets the list of categories
+     * @param categories list
+     */
     public void setCategories(List<Category> categories)
     {
-        mCategories = categories;
+        if(categories != null)
+        {
+            mCategories = categories;
+        }
     }
 
     /**
@@ -204,14 +247,21 @@ public class CountyInfo
      * @return list
      */
     @JacksonXmlProperty(localName = "trsList")
-    public List<RadioSystemItem> getRadioSystemItems()
+    public List<System> getSystems()
     {
-        return mRadioSystemItems;
+        return mSystems;
     }
 
-    public void setRadioSystemItems(List<RadioSystemItem> radioSystemItems)
+    /**
+     * Sets the list of radio system items
+     * @param systems items
+     */
+    public void setSystems(List<System> systems)
     {
-        mRadioSystemItems = radioSystemItems;
+        if(systems != null)
+        {
+            mSystems = systems;
+        }
     }
 
     /**
@@ -224,8 +274,15 @@ public class CountyInfo
         return mAgencies;
     }
 
+    /**
+     * Sets the list of agencies
+     * @param agencies list
+     */
     public void setAgencies(List<Agency> agencies)
     {
-        mAgencies = agencies;
+        if(agencies != null)
+        {
+            mAgencies = agencies;
+        }
     }
 }

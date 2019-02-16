@@ -21,32 +21,54 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Tag for frequency category or grouping
+ */
 public class Tag
 {
     private int mTagId;
     private String mDescription;
 
+    /**
+     * Constructs an instance
+     */
     public Tag()
     {
     }
 
+    /**
+     * Tag identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "tagId")
     public int getTagId()
     {
         return mTagId;
     }
 
+    /**
+     * Sets the tag identifier
+     * @param tagId value
+     */
     public void setTagId(int tagId)
     {
         mTagId = tagId;
     }
 
+    /**
+     * Description
+     * @return description
+     */
     @JacksonXmlProperty(localName = "tagDescr")
     public String getDescription()
     {
         return mDescription;
     }
 
+    /**
+     * Sets the description
+     * @param description value
+     */
     public void setDescription(String description)
     {
         mDescription = description;

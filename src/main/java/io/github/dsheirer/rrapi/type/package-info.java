@@ -17,31 +17,7 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.response;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.Mode;
-import io.github.dsheirer.rrapi.type.Tag;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetModeResponse extends ResponseBody
-{
-    private List<Mode> mModes = new ArrayList<>();
-
-    public GetModeResponse()
-    {
-    }
-
-    @JacksonXmlProperty(localName = "return")
-    public List<Mode> getModes()
-    {
-        return mModes;
-    }
-
-    public void setModes(List<Mode> modes)
-    {
-        mModes = modes;
-    }
-}
+/**
+ * Type structures provided by the web service
+ */
+package io.github.dsheirer.rrapi.type;

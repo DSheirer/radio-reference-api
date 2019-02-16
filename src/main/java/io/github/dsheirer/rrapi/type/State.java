@@ -21,44 +21,74 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * State
+ */
 public class State
 {
     private int mStateId;
     private String mName;
     private String mStateCode;
 
+    /**
+     * Constructs an instance
+     */
     public State()
     {
     }
 
+    /**
+     * State identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
         return mStateId;
     }
 
+    /**
+     * Sets the state identifier
+     * @param stateId value
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
     }
 
+    /**
+     * Name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "stateName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name value
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * Code or digraph
+     * @return code
+     */
     @JacksonXmlProperty(localName = "stateCode")
     public String getStateCode()
     {
         return mStateCode;
     }
 
+    /**
+     * Sets the code
+     * @param stateCode value
+     */
     public void setStateCode(String stateCode)
     {
         mStateCode = stateCode;

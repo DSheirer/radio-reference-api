@@ -21,44 +21,74 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Frequency band plan
+ */
 public class Bandplan
 {
     private String mBase;
     private String mSpacing;
     private String mOffset;
 
+    /**
+     * Constructs an instance of a band plan.
+     */
     public Bandplan()
     {
     }
 
+    /**
+     * Base frequency for the downlink channel.
+     * @return frequency
+     */
     @JacksonXmlProperty(localName = "base")
     public String getBase()
     {
         return mBase;
     }
 
+    /**
+     * Sets the base frequency
+     * @param base frequency
+     */
     public void setBase(String base)
     {
         mBase = base;
     }
 
+    /**
+     * Channel spacing
+     * @return spacing
+     */
     @JacksonXmlProperty(localName = "spacing")
     public String getSpacing()
     {
         return mSpacing;
     }
 
+    /**
+     * Sets channel spacing
+     * @param spacing for channels
+     */
     public void setSpacing(String spacing)
     {
         mSpacing = spacing;
     }
 
+    /**
+     * Offset frequency for the uplink channel.
+     * @return uplink frequency offset.
+     */
     @JacksonXmlProperty(localName = "offset")
     public String getOffset()
     {
         return mOffset;
     }
 
+    /**
+     * Sets the uplink frequency offset
+     * @param offset value
+     */
     public void setOffset(String offset)
     {
         mOffset = offset;

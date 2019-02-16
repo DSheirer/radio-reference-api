@@ -22,19 +22,25 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Type description
+ * Protocol type or name
+ *
+ * @see Flavor Flavor for protocol type variants or flavors
+ * @see Voice Voice for protocol voice CODEC options
  */
 public class Type
 {
     private int mTypeId;
-    private String mDescription;
+    private String mName;
 
+    /**
+     * Constructs an instance
+     */
     public Type()
     {
     }
 
     /**
-     * Type ID
+     * Type identifier
      * @return id
      */
     @JacksonXmlProperty(localName = "sType")
@@ -43,23 +49,31 @@ public class Type
         return mTypeId;
     }
 
+    /**
+     * Sets the type identifier
+     * @param typeId value
+     */
     public void setTypeId(int typeId)
     {
         mTypeId = typeId;
     }
 
     /**
-     * Type description
-     * @return decription
+     * Protocol type name or description
+     * @return name
      */
     @JacksonXmlProperty(localName = "sTypeDescr")
-    public String getDescription()
+    public String getName()
     {
-        return mDescription;
+        return mName;
     }
 
-    public void setDescription(String description)
+    /**
+     * Sets the protocol type name
+     * @param name value
+     */
+    public void setName(String name)
     {
-        mDescription = description;
+        mName = name;
     }
 }

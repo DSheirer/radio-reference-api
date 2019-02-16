@@ -32,7 +32,7 @@ public class StateInfo
     private int mStateId;
     private String mName;
     private String mStateEntityType;
-    private List<RadioSystemItem> mRadioSystemItems = new ArrayList<>();
+    private List<System> mSystems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
     private List<County> mCounties = new ArrayList<>();
 
@@ -90,16 +90,16 @@ public class StateInfo
      * @return list
      */
     @JacksonXmlProperty(localName = "trsList")
-    public List<RadioSystemItem> getRadioSystemItems()
+    public List<System> getSystems()
     {
-        return mRadioSystemItems;
+        return mSystems;
     }
 
-    public void setRadioSystemItems(List<RadioSystemItem> radioSystemItems)
+    public void setSystems(List<System> systems)
     {
-        if(radioSystemItems != null)
+        if(systems != null)
         {
-            mRadioSystemItems = radioSystemItems;
+            mSystems = systems;
         }
     }
 

@@ -17,26 +17,30 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.github.dsheirer.rrapi.type.Mode;
 
-public class RadioSystemIdentifier
+import java.util.ArrayList;
+import java.util.List;
+
+public class GetModesResponse extends ResponseBody
 {
-    private int mSystemId;
+    private List<Mode> mModes = new ArrayList<>();
 
-    public RadioSystemIdentifier()
+    public GetModesResponse()
     {
     }
 
-    @JacksonXmlProperty(localName = "sid")
-    public int getSystemId()
+    @JacksonXmlProperty(localName = "return")
+    public List<Mode> getModes()
     {
-        return mSystemId;
+        return mModes;
     }
 
-    public void setSystemId(int systemId)
+    public void setModes(List<Mode> modes)
     {
-        mSystemId = systemId;
+        mModes = modes;
     }
 }

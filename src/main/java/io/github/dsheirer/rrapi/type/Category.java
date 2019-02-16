@@ -24,44 +24,75 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Radio system categories
+ */
 public class Category
 {
     private int mCategoryId;
     private String mName;
     private List<SubCategory> mSubCategories = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public Category()
     {
     }
 
+    /**
+     * Category identifier
+     * @return id
+     */
     @JacksonXmlProperty(localName = "cid")
     public int getCategoryId()
     {
         return mCategoryId;
     }
 
+    /**
+     * Sets the category id
+     * @param categoryId value
+     */
     public void setCategoryId(int categoryId)
     {
         mCategoryId = categoryId;
     }
 
+    /**
+     * Category name
+     * @return name
+     */
     @JacksonXmlProperty(localName = "cName")
     public String getName()
     {
         return mName;
     }
 
+    /**
+     * Sets the category name
+     * @param name for the category
+     */
     public void setName(String name)
     {
         mName = name;
     }
 
+    /**
+     * List of sub-categories for the category
+     * @return list
+     */
     @JacksonXmlProperty(localName = "subcats")
     public List<SubCategory> getSubCategories()
     {
         return mSubCategories;
     }
 
+    /**
+     * Sets the list of sub-categories.
+     *
+     * @param subCategories for the category
+     */
     public void setSubCategories(List<SubCategory> subCategories)
     {
         mSubCategories = subCategories;

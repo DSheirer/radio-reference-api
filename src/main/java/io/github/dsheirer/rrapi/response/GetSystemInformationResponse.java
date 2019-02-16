@@ -20,27 +20,24 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.Type;
+import io.github.dsheirer.rrapi.type.SystemInformation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GetRadioSystemTypeResponse extends ResponseBody
+public class GetSystemInformationResponse extends ResponseBody
 {
-    private List<Type> mTypes = new ArrayList<>();
+    private SystemInformation mSystemInformation;
 
-    public GetRadioSystemTypeResponse()
+    public GetSystemInformationResponse()
     {
     }
 
     @JacksonXmlProperty(localName = "return")
-    public List<Type> getTypes()
+    public SystemInformation getSystemInformation()
     {
-        return mTypes;
+        return mSystemInformation;
     }
 
-    public void setTypes(List<Type> types)
+    public void setSystemInformation(SystemInformation systemInformation)
     {
-        mTypes = types;
+        mSystemInformation = systemInformation;
     }
 }
