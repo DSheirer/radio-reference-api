@@ -741,7 +741,9 @@ public class RadioReferenceService
             }
             else
             {
-                throw new RadioReferenceException("Http Error: " + (response != null ? response.statusCode(): "null response"));
+                throw new RadioReferenceException("Http Error: " +
+                    (response != null ? response.statusCode(): "unknown") +
+                    " Message:" + response.body());
             }
         }
 

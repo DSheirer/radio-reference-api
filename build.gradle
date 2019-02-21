@@ -40,7 +40,7 @@ dependencies {
 
 group 'io.github.dsheirer'
 archivesBaseName = "radio-reference-api"
-version '15.0'
+version '15.0.1'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
