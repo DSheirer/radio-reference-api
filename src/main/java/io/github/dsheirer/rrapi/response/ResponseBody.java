@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonSubTypes({
+    @JsonSubTypes.Type(value = Fault.class, name = "Fault"),
     @JsonSubTypes.Type(value = FccGetCallsignResponse.class, name = "fccGetCallsignResponse"),
     @JsonSubTypes.Type(value = GetAgencyInfoResponse.class, name = "getAgencyInfoResponse"),
     @JsonSubTypes.Type(value = GetCountryInfoResponse.class, name = "getCountryInfoResponse"),

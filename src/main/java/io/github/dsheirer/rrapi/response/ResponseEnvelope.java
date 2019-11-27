@@ -19,6 +19,7 @@
 
 package io.github.dsheirer.rrapi.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class ResponseEnvelope
 {
     private ResponseBody mResponseBody;
+    private String mEncodingStyle;
 
     public ResponseEnvelope()
     {
@@ -41,5 +43,16 @@ public class ResponseEnvelope
     public void setResponseBody(ResponseBody responseBody)
     {
         mResponseBody = responseBody;
+    }
+
+    @JacksonXmlProperty(localName = "encodingStyle")
+    public String getEncodingStyle()
+    {
+        return mEncodingStyle;
+    }
+
+    public void setEncodingStyle(String style)
+    {
+        mEncodingStyle = style;
     }
 }
