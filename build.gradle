@@ -18,9 +18,7 @@
  */
 
 plugins {
-    id 'java'
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
 }
@@ -43,7 +41,6 @@ archivesBaseName = "radio-reference-api"
 version '15.0.2'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
 ext.moduleName = 'io.github.dsheirer.rrapi'
 
 compileJava {
@@ -55,12 +52,6 @@ compileJava {
         classpath = files()
     }
 }
-
-signing {
-//    useGpgCmd()
-    sign configurations.archives
-}
-
 
 javadoc {
     options.addBooleanOption('html5', true)
@@ -77,61 +68,72 @@ task packageSources(type: Jar, dependsOn: 'classes') {
     from sourceSets.main.allSource
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'radio-reference-api'
+            from components.java
+            artifact packageSources
+            artifact packageJavadoc
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'radioreference.com web services Java client'
+                description = 'Java client library for radioreference.com web services'
+                url = 'https://github.com/DSheirer/radio-reference-api'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, Version 3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'dsheirer'
+                        name = 'Dennis Sheirer'
+                        email = 'dsheirer@sonatype.com'
+                        organizationUrl = 'https://github.com/DSheirer'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
+                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
+                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
 artifacts {
     archives packageJavadoc, packageSources
 }
 
-//uploadArchives {
-//    repositories {
-//        mavenDeployer {
-//            beforeDeployment {
-//                MavenDeployment deployment -> signing.signPom(deployment)
-//            }
-//
-//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            pom.project {
-//                name 'radioreference.com web services Java client'
-//                packaging 'jar'
-//                artifactId 'radio-reference-api'
-//                description 'Java client library for radioreference.com web services'
-//                url = 'https://github.com/DSheirer/radio-reference-api'
-//
-//                scm {
-//                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
-//                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
-//                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
-//                }
-//
-//                licenses {
-//                    license {
-//                        name = 'GNU General Public License, Version 3.0'
-//                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-//                    }
-//                }
-//
-//                developers {
-//                    developer {
-//                        id = 'dsheirer'
-//                        name = 'Dennis Sheirer'
-//                        email = 'dsheirer@sonatype.com'
-//                        organizationUrl = 'https://github.com/DSheirer'
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 jar {
     manifest {
         attributes 'Implementation-Title': "${project.archivesBaseName}",
-                   'Implementation-Version': version
+                   'Implementation-Version': archiveVersion
     }
 }

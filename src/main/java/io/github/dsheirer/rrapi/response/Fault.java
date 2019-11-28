@@ -32,7 +32,7 @@ public class Fault extends ResponseBody
     private String mDetail;
 
     /**
-     * Default constructor
+     * Default constructor for this class
      */
     public Fault()
     {
@@ -41,6 +41,7 @@ public class Fault extends ResponseBody
 
     /**
      * Fault code
+     * @return code
      */
     @JacksonXmlProperty(localName = "faultcode")
     public String getFaultCode()
@@ -55,6 +56,7 @@ public class Fault extends ResponseBody
 
     /**
      * Fault actor
+     * @return actor
      */
     @JacksonXmlProperty(localName = "faultactor")
     public String getFaultActor()
@@ -69,6 +71,7 @@ public class Fault extends ResponseBody
 
     /**
      * Fault string (ie message)
+     * @return message
      */
     @JacksonXmlProperty(localName = "faultstring")
     public String getFaultString()
@@ -83,7 +86,7 @@ public class Fault extends ResponseBody
 
     /**
      * Fault Detail
-     * @return
+     * @return detail
      */
     @JacksonXmlProperty(localName = "detail")
     public String getDetail()
