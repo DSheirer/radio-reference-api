@@ -40,7 +40,7 @@ dependencies {
 
 group 'io.github.dsheirer'
 archivesBaseName = "radio-reference-api"
-version '15.0.1'
+version '15.0.2'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -81,53 +81,53 @@ artifacts {
     archives packageJavadoc, packageSources
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment {
-                MavenDeployment deployment -> signing.signPom(deployment)
-            }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'radioreference.com web services Java client'
-                packaging 'jar'
-                artifactId 'radio-reference-api'
-                description 'Java client library for radioreference.com web services'
-                url = 'https://github.com/DSheirer/radio-reference-api'
-
-                scm {
-                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
-                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
-                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
-                }
-
-                licenses {
-                    license {
-                        name = 'GNU General Public License, Version 3.0'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'dsheirer'
-                        name = 'Dennis Sheirer'
-                        email = 'dsheirer@sonatype.com'
-                        organizationUrl = 'https://github.com/DSheirer'
-                    }
-                }
-            }
-        }
-    }
-}
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            beforeDeployment {
+//                MavenDeployment deployment -> signing.signPom(deployment)
+//            }
+//
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            pom.project {
+//                name 'radioreference.com web services Java client'
+//                packaging 'jar'
+//                artifactId 'radio-reference-api'
+//                description 'Java client library for radioreference.com web services'
+//                url = 'https://github.com/DSheirer/radio-reference-api'
+//
+//                scm {
+//                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
+//                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
+//                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name = 'GNU General Public License, Version 3.0'
+//                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id = 'dsheirer'
+//                        name = 'Dennis Sheirer'
+//                        email = 'dsheirer@sonatype.com'
+//                        organizationUrl = 'https://github.com/DSheirer'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 jar {
     manifest {

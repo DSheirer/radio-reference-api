@@ -19,8 +19,13 @@
 
 package io.github.dsheirer.rrapi;
 
+import io.github.dsheirer.rrapi.response.Fault;
+
 public class RadioReferenceException extends Exception
 {
+    private Integer mHttpStatusCode;
+    private Fault mFault;
+
     public RadioReferenceException(String message, Throwable throwable)
     {
         super(message, throwable);
@@ -29,5 +34,32 @@ public class RadioReferenceException extends Exception
     public RadioReferenceException(String message)
     {
         super(message);
+    }
+
+    public RadioReferenceException(String message, int httpStatusCode, Fault fault)
+    {
+        super(message);
+        mHttpStatusCode = httpStatusCode;
+        mFault = fault;
+    }
+
+    public Integer getHttpStatusCode()
+    {
+        return mHttpStatusCode;
+    }
+
+    public boolean hasHttpStatusCode()
+    {
+        return mHttpStatusCode != null;
+    }
+
+    public Fault getFault()
+    {
+        return mFault;
+    }
+
+    public boolean hasFault()
+    {
+        return mFault != null;
     }
 }

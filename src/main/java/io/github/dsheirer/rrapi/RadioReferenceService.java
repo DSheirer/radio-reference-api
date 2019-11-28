@@ -40,6 +40,7 @@ import io.github.dsheirer.rrapi.request.GetUserFeedBroadcasts;
 import io.github.dsheirer.rrapi.request.GetVoices;
 import io.github.dsheirer.rrapi.request.GetZipcodeInfo;
 import io.github.dsheirer.rrapi.request.RequestEnvelope;
+import io.github.dsheirer.rrapi.response.Fault;
 import io.github.dsheirer.rrapi.response.GetApco25SystemsResponse;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
@@ -728,22 +729,28 @@ public class RadioReferenceService
                 throw new RadioReferenceException("Interrupted while submitting HTML SOAP request to web service", ie);
             }
 
-            if(response != null && response.statusCode() == 200)
+            if(response != null)
             {
                 try
                 {
-                    return deserialize(response.body());
+                    if(response.statusCode() == 200)
+                    {
+                        return deserialize(response.body());
+                    }
+                    else
+                    {
+                        ResponseEnvelope responseEnvelope = deserialize(response.body());
+
+                        if(responseEnvelope.getResponseBody() instanceof Fault)
+                        {
+                            throw new RadioReferenceException("Error", response.statusCode(), (Fault)responseEnvelope.getResponseBody());
+                        }
+                    }
                 }
                 catch(IOException ioe)
                 {
-                    throw new RadioReferenceException("Error deserializing XML response", ioe);
+                    throw new RadioReferenceException("Error deserializing XML response: " + response.body(), ioe);
                 }
-            }
-            else
-            {
-                throw new RadioReferenceException("Http Error: " +
-                    (response != null ? response.statusCode(): "unknown") +
-                    " Message:" + response.body());
             }
         }
 
@@ -770,7 +777,7 @@ public class RadioReferenceService
     public static void main(String[] args)
     {
         Scanner keyboard = new Scanner(java.lang.System.in);
-        java.lang.System.out.println("Please enter radio reference password?");
+        java.lang.System.out.print("Password:");
         String password = keyboard.next();
         mLog.debug("Using password: " + password);
         AuthorizationInformation authorizationInformation = new AuthorizationInformation("88969092", "dsheirer", password);
@@ -778,20 +785,19 @@ public class RadioReferenceService
         try
         {
             RadioReferenceService service = new RadioReferenceService(authorizationInformation);
-            List<TalkgroupCategory> categories = service.getTalkgroupCategories(5298);
-
-            TalkgroupCategory category = categories.get(0);
-
-            mLog.debug("Category: " + category.getName());
-
-            TalkgroupRequestFilter filter = TalkgroupRequestFilter.createCategoryFilter(5298, category.getTalkgroupCategoryId());
-            List<Talkgroup> talkgroups = service.getTalkgroups(filter);
-
-            for(Talkgroup talkgroup: talkgroups)
+            UserInfo userInfo = service.getUserInfo();
+            mLog.info("User: " + userInfo.getUserName() + " Account Expires:" + userInfo.getExpirationDate());
+        }
+        catch(RadioReferenceException rre)
+        {
+            if(rre.hasFault())
             {
-                mLog.debug(talkgroup.getAlphaTag());
+                mLog.info(rre.getFault().toString());
             }
-
+            else
+            {
+                mLog.info("RRE", rre);
+            }
         }
         catch(Exception e)
         {
