@@ -37,5 +37,5 @@ A client library for accessing the web services methods available from the radio
     <dependency>
       <groupId>io.github.dsheirer</groupId>
       <artifactId>radio-reference-api</artifactId>
-      <version>15.0</version>
+      <version>15.0.2</version>
     </dependency>
