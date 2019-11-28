@@ -32,7 +32,7 @@ public class Fault extends ResponseBody
     private String mDetail;
 
     /**
-     * Default constructor
+     * Default constructor for this class
      */
     public Fault()
     {
