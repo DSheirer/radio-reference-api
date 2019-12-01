@@ -17,40 +17,42 @@
  * ****************************************************************************
  */
 
-package io.github.dsheirer.rrapi.type;
+package io.github.dsheirer.rrapi.request;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
-import java.util.Objects;
+import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Metropolitan area
+ * Metro information request
  */
-public class Metro implements Comparable<Metro>
+public class GetMetroInfo extends RequestBody
 {
     private int mMetroId;
-    private String mName;
 
     /**
-     * Constructs an instance
+     * Constructs the request
+     * @param authorizationInformation for the user
+     * @param metroId to request
      */
-    public Metro()
+    public GetMetroInfo(AuthorizationInformation authorizationInformation, int metroId)
     {
+        super(authorizationInformation);
+        mMetroId = metroId;
     }
 
     /**
-     * Metro identifier
+     * Metro id
      * @return id
      */
-    @JacksonXmlProperty(localName = "mid")
+    @JacksonXmlProperty(localName = "request")
     public int getMetroId()
     {
         return mMetroId;
     }
 
     /**
-     * Sets the metro id
-     * @param metroId value
+     * Sets the Metro id
+     * @param metroId to query
      */
     public void setMetroId(int metroId)
     {
@@ -58,54 +60,13 @@ public class Metro implements Comparable<Metro>
     }
 
     /**
-     * Name of the metro area
-     * @return name
+     * Request envelope
+     * @param authorizationInformation credentials
+     * @param metroId to query
+     * @return request
      */
-    @JacksonXmlProperty(localName = "metroName")
-    public String getName()
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int metroId)
     {
-        return mName;
-    }
-
-    /**
-     * Sets the name
-     * @param name value
-     */
-    public void setName(String name)
-    {
-        mName = name;
-    }
-
-    @Override
-    public int compareTo(Metro o)
-    {
-        return getName().compareTo(o.getName());
-    }
-
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if(this == o)
-        {
-            return true;
-        }
-        if(o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-        Metro metro = (Metro)o;
-        return getMetroId() == metro.getMetroId();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getMetroId());
+        return RequestBody.create(new GetMetroInfo(authorizationInformation, metroId));
     }
 }

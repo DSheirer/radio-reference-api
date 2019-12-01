@@ -21,10 +21,12 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Objects;
+
 /**
  * County
  */
-public class County
+public class County implements Comparable<County>
 {
     private int mCountyId;
     private String mName;
@@ -92,5 +94,38 @@ public class County
     public void setCountyHeader(String countyHeader)
     {
         mCountyHeader = countyHeader;
+    }
+
+    @Override
+    public String toString()
+    {
+        return mName;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        County county = (County)o;
+        return getCountyId() == county.getCountyId();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCountyId());
+    }
+
+    @Override
+    public int compareTo(County o)
+    {
+        return getName().compareTo(o.getName());
     }
 }
