@@ -21,15 +21,22 @@ package io.github.dsheirer.rrapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import io.github.dsheirer.rrapi.request.FccGetCallsign;
+import io.github.dsheirer.rrapi.request.FccGetProximityCallsigns;
+import io.github.dsheirer.rrapi.request.FccGetRadioServiceCode;
 import io.github.dsheirer.rrapi.request.GetApco25Systems;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
+import io.github.dsheirer.rrapi.request.GetCountyFrequenciesByTag;
 import io.github.dsheirer.rrapi.request.GetCountyInfo;
 import io.github.dsheirer.rrapi.request.GetFlavors;
+import io.github.dsheirer.rrapi.request.GetMetroInfo;
+import io.github.dsheirer.rrapi.request.GetMetros;
 import io.github.dsheirer.rrapi.request.GetModes;
 import io.github.dsheirer.rrapi.request.GetSites;
 import io.github.dsheirer.rrapi.request.GetStateInfo;
 import io.github.dsheirer.rrapi.request.GetStatesByList;
+import io.github.dsheirer.rrapi.request.GetSubCategoryFrequenciesRequest;
 import io.github.dsheirer.rrapi.request.GetSystemInformation;
 import io.github.dsheirer.rrapi.request.GetTags;
 import io.github.dsheirer.rrapi.request.GetTalkgroupCategories;
@@ -40,16 +47,26 @@ import io.github.dsheirer.rrapi.request.GetUserFeedBroadcasts;
 import io.github.dsheirer.rrapi.request.GetVoices;
 import io.github.dsheirer.rrapi.request.GetZipcodeInfo;
 import io.github.dsheirer.rrapi.request.RequestEnvelope;
+import io.github.dsheirer.rrapi.request.SearchCountyFrequency;
+import io.github.dsheirer.rrapi.request.SearchMetroFrequency;
+import io.github.dsheirer.rrapi.request.SearchStateFrequency;
 import io.github.dsheirer.rrapi.response.Fault;
+import io.github.dsheirer.rrapi.response.FccGetCallsignResponse;
+import io.github.dsheirer.rrapi.response.FccGetProximityCallsignResponse;
+import io.github.dsheirer.rrapi.response.FccGetRadioServiceCodeResponse;
+import io.github.dsheirer.rrapi.response.FrequenciesResponse;
 import io.github.dsheirer.rrapi.response.GetApco25SystemsResponse;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
 import io.github.dsheirer.rrapi.response.GetCountyInfoResponse;
 import io.github.dsheirer.rrapi.response.GetFlavorsResponse;
+import io.github.dsheirer.rrapi.response.GetMetroInfoResponse;
+import io.github.dsheirer.rrapi.response.GetMetrosResponse;
 import io.github.dsheirer.rrapi.response.GetModesResponse;
 import io.github.dsheirer.rrapi.response.GetSitesResponse;
 import io.github.dsheirer.rrapi.response.GetStateInfoResponse;
 import io.github.dsheirer.rrapi.response.GetStatesByListResponse;
+import io.github.dsheirer.rrapi.response.GetSubCategoryFrequenciesResponse;
 import io.github.dsheirer.rrapi.response.GetSystemInformationResponse;
 import io.github.dsheirer.rrapi.response.GetTagsResponse;
 import io.github.dsheirer.rrapi.response.GetTalkgroupCategoriesResponse;
@@ -60,12 +77,20 @@ import io.github.dsheirer.rrapi.response.GetUserFeedBroadcastsResponse;
 import io.github.dsheirer.rrapi.response.GetVoicesResponse;
 import io.github.dsheirer.rrapi.response.GetZipcodeInfoResponse;
 import io.github.dsheirer.rrapi.response.ResponseEnvelope;
+import io.github.dsheirer.rrapi.response.SearchFrequencyResponse;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
+import io.github.dsheirer.rrapi.type.County;
 import io.github.dsheirer.rrapi.type.CountyInfo;
+import io.github.dsheirer.rrapi.type.FccCallsignDetails;
+import io.github.dsheirer.rrapi.type.FccRadioServiceCode;
 import io.github.dsheirer.rrapi.type.Flavor;
+import io.github.dsheirer.rrapi.type.Frequency;
+import io.github.dsheirer.rrapi.type.Metro;
 import io.github.dsheirer.rrapi.type.Mode;
+import io.github.dsheirer.rrapi.type.ProximityCallsignResult;
+import io.github.dsheirer.rrapi.type.SearchFrequencyResult;
 import io.github.dsheirer.rrapi.type.Site;
 import io.github.dsheirer.rrapi.type.State;
 import io.github.dsheirer.rrapi.type.StateInfo;
@@ -88,6 +113,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +139,8 @@ public class RadioReferenceService
     private HttpClient mHttpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
     private AuthorizationInformation mAuthorizationInformation;
     private Map<Integer,Flavor> mFlavorMap;
+    private Map<Integer,Metro> mMetroMap;
+    private Map<Integer,List<County>> mMetroCountiesMap;
     private Map<Integer,Mode> mModeMap;
     private Map<Integer,Tag> mTagMap;
     private Map<Integer,Type> mTypeMap;
@@ -301,6 +329,45 @@ public class RadioReferenceService
         return null;
     }
 
+    /**
+     * County frequencies by tag
+     * @param countyId to query
+     * @param tagId to query
+     * @return frequencies list
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Frequency> getCountyFrequenciesByTag(int countyId, int tagId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetCountyFrequenciesByTag.create(mAuthorizationInformation, countyId, tagId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FrequenciesResponse)
+        {
+            return ((FrequenciesResponse)response.getResponseBody()).getFrequencies();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Agency frequencies by tag
+     * @param agencyId to query
+     * @param tagId to query
+     * @return frequencies list
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Frequency> getAgencyFrequenciesByTag(int agencyId, int tagId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetCountyFrequenciesByTag.create(mAuthorizationInformation, agencyId, tagId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FrequenciesResponse)
+        {
+            return ((FrequenciesResponse)response.getResponseBody()).getFrequencies();
+        }
+
+        return Collections.emptyList();
+    }
 
     /**
      * Radio system information and details
@@ -520,6 +587,157 @@ public class RadioReferenceService
     }
 
     /**
+     * Metro information
+     * @param metroId to query
+     * @return metro or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Metro getMetro(int metroId) throws RadioReferenceException
+    {
+        getMetrosMap();
+
+        if(mMetroMap != null)
+        {
+            return mMetroMap.get(metroId);
+        }
+
+        return null;
+    }
+
+    /**
+     * Map of metros and metro identifiers.
+     *
+     * Note: metro values are cached on the first web service call and reused for subsequent method invocations.
+     *
+     * @return metros map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,Metro> getMetrosMap() throws RadioReferenceException
+    {
+        if(mMetroMap == null)
+        {
+            RequestEnvelope request = GetMetros.create(mAuthorizationInformation);
+            ResponseEnvelope response = submitSync(request);
+
+            if(response != null && response.getResponseBody() instanceof GetMetrosResponse)
+            {
+                List<Metro> metros = ((GetMetrosResponse)response.getResponseBody()).getMetros();
+
+                mMetroMap = new TreeMap<>();
+
+                for(Metro metro: metros)
+                {
+                    mMetroMap.put(metro.getMetroId(), metro);
+                }
+            }
+        }
+
+        return mMetroMap;
+    }
+
+    /**
+     * Map of counties to metro identifiers.
+     *
+     * Note: this is an expensive service call the first time.  Metro values are cached on the first web service call
+     * and reused for subsequent method invocations.
+     *
+     * @return metro counties map or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public Map<Integer,List<County>> getMetroCountiesMap() throws RadioReferenceException
+    {
+        if(mMetroCountiesMap == null)
+        {
+            Map<Integer,Metro> metrosMap = getMetrosMap();
+
+            if(metrosMap != null)
+            {
+                mMetroCountiesMap = new TreeMap<>();
+
+                for(Metro metro: metrosMap.values())
+                {
+                    RequestEnvelope request = GetMetroInfo.create(mAuthorizationInformation, metro.getMetroId());
+                    ResponseEnvelope response = submitSync(request);
+
+                    if(response != null && response.getResponseBody() instanceof GetMetroInfoResponse)
+                    {
+                        List<County> counties = ((GetMetroInfoResponse)response.getResponseBody()).getCounties();
+                        mMetroCountiesMap.put(metro.getMetroId(), counties);
+                    }
+                }
+            }
+        }
+
+        return mMetroCountiesMap;
+    }
+
+    /**
+     * Get counties for a metro area
+     *
+     * @param metroId to query
+     * @return list of counties
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<County> getMetroCounties(int metroId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetMetroInfo.create(mAuthorizationInformation, metroId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetMetroInfoResponse)
+        {
+            return ((GetMetroInfoResponse)response.getResponseBody()).getCounties();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * List of metro areas for a state
+     *
+     * WARNING: the first call to this method is expensive because it uses getMetroCountiesMap() which is expensive.
+     *
+     * Note: this is performed by first querying the state info for the list of counties and finding the matching metro
+     * areas from the getMetrosMap() method.
+     *
+     * @param stateId to query
+     * @return list of metros
+     * @throws RadioReferenceException if there is an error with the web service
+     */
+    public List<Metro> getMetrosByState(int stateId) throws RadioReferenceException
+    {
+        List<Metro> metros = new ArrayList<>();
+
+        StateInfo stateInfo = getStateInfo(stateId);
+        Map<Integer,List<County>> metroMap = getMetroCountiesMap();
+
+        if(metroMap != null)
+        {
+            for(County county: stateInfo.getCounties())
+            {
+                for(Map.Entry<Integer,List<County>> entry: metroMap.entrySet())
+                {
+                    for(County metroCounty: entry.getValue())
+                    {
+                        if(county.getCountyId() == metroCounty.getCountyId())
+                        {
+                            Metro metro = getMetro(entry.getKey());
+
+                            if(!metros.contains(metro))
+                            {
+                                metros.add(metro);
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return metros;
+    }
+
+
+    /**
      * Map of tags and tag identifiers
      *
      * Note: map is cached on first call to the web service and reused on subsequent method invocations.
@@ -685,6 +903,208 @@ public class RadioReferenceService
     }
 
     /**
+     * Sub-Category frequencies
+     * @param subCategoryId that identifies a set of frequencies
+     * @return list of frequencies
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<Frequency> getSubCategoryFrequencies(int subCategoryId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetSubCategoryFrequenciesRequest.create(mAuthorizationInformation, subCategoryId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetSubCategoryFrequenciesResponse)
+        {
+            return ((GetSubCategoryFrequenciesResponse)response.getResponseBody()).getFrequencies();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Search county frequencies
+     * @param countyId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchCountyFrequencies(int countyId, double frequency) throws RadioReferenceException
+    {
+        return searchCountyFrequencies(countyId, frequency, null);
+    }
+
+    /**
+     * Search county frequencies
+     * @param countyId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @param tone description (optional - can be null)
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchCountyFrequencies(int countyId, double frequency, String tone) throws RadioReferenceException
+    {
+        RequestEnvelope request = SearchCountyFrequency.create(mAuthorizationInformation, countyId, frequency, tone);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof SearchFrequencyResponse)
+        {
+            return ((SearchFrequencyResponse)response.getResponseBody()).getResults();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Search state frequencies
+     * @param stateId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchStateFrequencies(int stateId, double frequency) throws RadioReferenceException
+    {
+        return searchStateFrequencies(stateId, frequency, null);
+    }
+
+    /**
+     * Search state frequencies
+     * @param stateId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @param tone description (optional - can be null)
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchStateFrequencies(int stateId, double frequency, String tone) throws RadioReferenceException
+    {
+        RequestEnvelope request = SearchStateFrequency.create(mAuthorizationInformation, stateId, frequency, tone);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof SearchFrequencyResponse)
+        {
+            return ((SearchFrequencyResponse)response.getResponseBody()).getResults();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Search metro frequencies
+     * @param metroId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchMetroFrequencies(int metroId, double frequency) throws RadioReferenceException
+    {
+        return searchMetroFrequencies(metroId, frequency, null);
+    }
+
+    /**
+     * Search metro frequencies
+     * @param metroId that identifies a set of frequencies
+     * @param frequency in MHz
+     * @param tone description (optional - can be null)
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<SearchFrequencyResult> searchMetroFrequencies(int metroId, double frequency, String tone) throws RadioReferenceException
+    {
+        RequestEnvelope request = SearchMetroFrequency.create(mAuthorizationInformation, metroId, frequency, tone);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof SearchFrequencyResponse)
+        {
+            return ((SearchFrequencyResponse)response.getResponseBody()).getResults();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get FCC callsign details.
+     *
+     * @param callsign to query
+     * @return callsign details or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public FccCallsignDetails getFccCallsignDetails(String callsign) throws RadioReferenceException
+    {
+        RequestEnvelope request = FccGetCallsign.create(mAuthorizationInformation, callsign);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FccGetCallsignResponse)
+        {
+            return ((FccGetCallsignResponse)response.getResponseBody()).getFccCallsignDetails();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get FCC Radio Service Code Information
+     * @return list of FCC radio service codes
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<FccRadioServiceCode> getFccRadioServiceCodes() throws RadioReferenceException
+    {
+        RequestEnvelope request = FccGetRadioServiceCode.create(mAuthorizationInformation);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FccGetRadioServiceCodeResponse)
+        {
+            return ((FccGetRadioServiceCodeResponse)response.getResponseBody()).getFccRadioServiceCodes();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get FCC Radio Service Code Information for a specific code
+     * @param code to lookup
+     * @return FCC radio service code or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public FccRadioServiceCode getFccRadioServiceCode(String code) throws RadioReferenceException
+    {
+        RequestEnvelope request = FccGetRadioServiceCode.create(mAuthorizationInformation, code);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FccGetRadioServiceCodeResponse)
+        {
+            List<FccRadioServiceCode> codes = ((FccGetRadioServiceCodeResponse)response.getResponseBody()).getFccRadioServiceCodes();
+
+            if(codes != null && !codes.isEmpty())
+            {
+                return codes.get(0);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get FCC Callsigns near a location
+     * @param latitude of the search location
+     * @param longitude of the search location
+     * @param range from the search location (0 - 4.82 km)
+     * @return list of search results
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<ProximityCallsignResult> getFccCallsignsNearLocation(double latitude, double longitude, double range)
+                    throws RadioReferenceException
+    {
+        RequestEnvelope request = FccGetProximityCallsigns.create(mAuthorizationInformation, latitude, longitude, range);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof FccGetProximityCallsignResponse)
+        {
+            return ((FccGetProximityCallsignResponse)response.getResponseBody()).getProximityCallsignResults();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
      * Submits the request envelope and returns a response envelope.
      *
      * @param requestEnvelope to submit
@@ -749,6 +1169,7 @@ public class RadioReferenceService
                 }
                 catch(IOException ioe)
                 {
+                    mLog.debug("Response: " + response.body());
                     throw new RadioReferenceException("Error deserializing XML response: " + response.body(), ioe);
                 }
             }

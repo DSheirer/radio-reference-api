@@ -30,11 +30,17 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = FccGetCallsign.class, name = "fccGetCallsign"),
+    @JsonSubTypes.Type(value = FccGetProximityCallsigns.class, name = "fccGetProxCallsigns"),
+    @JsonSubTypes.Type(value = FccGetRadioServiceCode.class, name = "fccGetRadioServiceCode"),
+    @JsonSubTypes.Type(value = GetAgencyFrequenciesByTag.class, name = "getAgencyFreqsByTag"),
     @JsonSubTypes.Type(value = GetAgencyInfo.class, name = "getAgencyInfo"),
     @JsonSubTypes.Type(value = GetCountryInfo.class, name = "getCountryInfo"),
     @JsonSubTypes.Type(value = GetCountryList.class, name = "getCountryList"),
     @JsonSubTypes.Type(value = GetCountiesByList.class, name = "getCountiesByList"),
+    @JsonSubTypes.Type(value = GetCountyFrequenciesByTag.class, name = "getCountyFreqsByTag"),
     @JsonSubTypes.Type(value = GetCountyInfo.class, name = "getCountyInfo"),
+    @JsonSubTypes.Type(value = GetMetros.class, name = "getMetroArea"),
+    @JsonSubTypes.Type(value = GetMetroInfo.class, name = "getMetroAreaInfo"),
     @JsonSubTypes.Type(value = GetModes.class, name = "getMode"),
     @JsonSubTypes.Type(value = GetStatesByList.class, name = "getStatesByList"),
     @JsonSubTypes.Type(value = GetStateInfo.class, name = "getStateInfo"),
@@ -43,6 +49,7 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
     @JsonSubTypes.Type(value = GetSystemInformation.class, name = "getTrsDetails"),
     @JsonSubTypes.Type(value = GetSites.class, name = "getTrsSites"),
     @JsonSubTypes.Type(value = GetFlavors.class, name = "getTrsFlavor"),
+    @JsonSubTypes.Type(value = GetSubCategoryFrequenciesRequest.class, name = "getSubcatFreqs"),
     @JsonSubTypes.Type(value = GetTalkgroupCategories.class, name = "getTrsTalkgroupCats"),
     @JsonSubTypes.Type(value = GetTalkgroups.class, name = "getTrsTalkgroups"),
     @JsonSubTypes.Type(value = GetTypes.class, name = "getTrsType"),
@@ -50,6 +57,9 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
     @JsonSubTypes.Type(value = GetUserData.class, name = "getUserData"),
     @JsonSubTypes.Type(value = GetUserFeedBroadcasts.class, name = "getUserFeedBroadcasts"),
     @JsonSubTypes.Type(value = GetZipcodeInfo.class, name = "getZipcodeInfo"),
+    @JsonSubTypes.Type(value = SearchCountyFrequency.class, name = "searchCountyFreq"),
+    @JsonSubTypes.Type(value = SearchMetroFrequency.class, name = "searchMetroFreq"),
+    @JsonSubTypes.Type(value = SearchStateFrequency.class, name = "searchStateFreq"),
 })
 public class RequestBody
 {

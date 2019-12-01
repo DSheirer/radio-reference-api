@@ -21,10 +21,12 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Objects;
+
 /**
  * State
  */
-public class State
+public class State implements Comparable<State>
 {
     private int mStateId;
     private String mName;
@@ -92,5 +94,38 @@ public class State
     public void setStateCode(String stateCode)
     {
         mStateCode = stateCode;
+    }
+
+    @Override
+    public int compareTo(State o)
+    {
+        return getName().compareTo(o.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        State state = (State)o;
+        return getStateId() == state.getStateId();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getStateId());
     }
 }

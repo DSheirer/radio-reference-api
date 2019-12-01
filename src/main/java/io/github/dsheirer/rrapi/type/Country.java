@@ -21,10 +21,12 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Objects;
+
 /**
  * Country
  */
-public class Country
+public class Country implements Comparable<Country>
 {
     private int mCountryId;
     private String mName;
@@ -89,5 +91,38 @@ public class Country
     public void setCountryCode(String countryCode)
     {
         mCountryCode = countryCode;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        Country country = (Country)o;
+        return getCountryId() == country.getCountryId();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCountryId());
+    }
+
+    @Override
+    public int compareTo(Country o)
+    {
+        return getName().compareTo(o.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
     }
 }

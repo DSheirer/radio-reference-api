@@ -22,11 +22,12 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Radio system basic details
  */
-public class System
+public class System implements Comparable<System>
 {
     private int mSystemId;
     private String mName;
@@ -180,5 +181,38 @@ public class System
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;
+    }
+
+    @Override
+    public int compareTo(System o)
+    {
+        return getName().compareTo(o.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        System system = (System)o;
+        return getSystemId() == system.getSystemId();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getSystemId());
     }
 }
