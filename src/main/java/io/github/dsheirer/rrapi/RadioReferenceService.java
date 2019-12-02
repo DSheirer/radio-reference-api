@@ -24,6 +24,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.github.dsheirer.rrapi.request.FccGetCallsign;
 import io.github.dsheirer.rrapi.request.FccGetProximityCallsigns;
 import io.github.dsheirer.rrapi.request.FccGetRadioServiceCode;
+import io.github.dsheirer.rrapi.request.GetAgencyInfo;
 import io.github.dsheirer.rrapi.request.GetApco25Systems;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
@@ -55,6 +56,7 @@ import io.github.dsheirer.rrapi.response.FccGetCallsignResponse;
 import io.github.dsheirer.rrapi.response.FccGetProximityCallsignResponse;
 import io.github.dsheirer.rrapi.response.FccGetRadioServiceCodeResponse;
 import io.github.dsheirer.rrapi.response.FrequenciesResponse;
+import io.github.dsheirer.rrapi.response.GetAgencyInfoResponse;
 import io.github.dsheirer.rrapi.response.GetApco25SystemsResponse;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
@@ -78,6 +80,8 @@ import io.github.dsheirer.rrapi.response.GetVoicesResponse;
 import io.github.dsheirer.rrapi.response.GetZipcodeInfoResponse;
 import io.github.dsheirer.rrapi.response.ResponseEnvelope;
 import io.github.dsheirer.rrapi.response.SearchFrequencyResponse;
+import io.github.dsheirer.rrapi.type.Agency;
+import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
@@ -243,6 +247,36 @@ public class RadioReferenceService
         if(response != null && response.getResponseBody() instanceof GetCountryInfoResponse)
         {
             return ((GetCountryInfoResponse)response.getResponseBody()).getCountryInfo();
+        }
+
+        return null;
+    }
+
+    /**
+     * Agency information for a specific agency
+     * @param agency to query
+     * @return agency information or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public AgencyInfo getAgencyInfo(Agency agency) throws RadioReferenceException
+    {
+        return getAgencyInfo(agency.getAgencyId());
+    }
+
+    /**
+     * Agency information for a specific agency
+     * @param agencyId to query
+     * @return agency information or null
+     * @throws RadioReferenceException if there is an error
+     */
+    public AgencyInfo getAgencyInfo(int agencyId) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetAgencyInfo.create(mAuthorizationInformation, agencyId);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetAgencyInfoResponse)
+        {
+            return ((GetAgencyInfoResponse)response.getResponseBody()).getAgencyInfo();
         }
 
         return null;
