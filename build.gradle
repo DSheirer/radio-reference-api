@@ -38,7 +38,7 @@ dependencies {
 
 group 'io.github.dsheirer'
 archivesBaseName = "radio-reference-api"
-version '15.1.1'
+version '15.1.2'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 ext.moduleName = 'io.github.dsheirer.rrapi'
@@ -121,6 +121,10 @@ publishing {
             }
         }
     }
+}
+
+processResources {
+    exclude('logback.xml')
 }
 
 signing {
