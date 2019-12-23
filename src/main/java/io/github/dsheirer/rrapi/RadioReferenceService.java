@@ -890,7 +890,7 @@ public class RadioReferenceService
 
                 for(Voice voice: voices)
                 {
-                    mVoiceMap.put(voice.getTypeId(), voice);
+                    mVoiceMap.put(voice.getVoiceId(), voice);
                 }
             }
         }
