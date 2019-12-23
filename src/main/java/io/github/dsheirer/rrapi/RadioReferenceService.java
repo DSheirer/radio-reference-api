@@ -563,7 +563,7 @@ public class RadioReferenceService
 
                 for(Flavor flavor: flavors)
                 {
-                    mFlavorMap.put(flavor.getTypeId(), flavor);
+                    mFlavorMap.put(flavor.getFlavorId(), flavor);
                 }
             }
         }
