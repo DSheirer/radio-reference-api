@@ -1,6 +1,6 @@
 /*
  * *****************************************************************************
- * Copyright (C) 2019 Dennis Sheirer
+ * Copyright (C) 2020 Dennis Sheirer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +83,7 @@ import io.github.dsheirer.rrapi.response.SearchFrequencyResponse;
 import io.github.dsheirer.rrapi.type.Agency;
 import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
+import io.github.dsheirer.rrapi.type.Bandplan;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.County;
@@ -416,6 +417,7 @@ public class RadioReferenceService
 
         if(response != null && response.getResponseBody() instanceof GetSystemInformationResponse)
         {
+            mLog.debug(response.getResponseBody().toString());
             return ((GetSystemInformationResponse)response.getResponseBody()).getSystemInformation();
         }
 
@@ -1242,6 +1244,12 @@ public class RadioReferenceService
             RadioReferenceService service = new RadioReferenceService(authorizationInformation);
             UserInfo userInfo = service.getUserInfo();
             mLog.info("User: " + userInfo.getUserName() + " Account Expires:" + userInfo.getExpirationDate());
+
+            SystemInformation systemInformation = service.getSystemInformation(2560);
+
+            List<Bandplan> bandplans = systemInformation.getBandplans();
+
+            mLog.debug("Got bandplans [" + bandplans.size() + "]");
         }
         catch(RadioReferenceException rre)
         {
