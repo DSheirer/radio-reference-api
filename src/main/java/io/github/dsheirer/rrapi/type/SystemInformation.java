@@ -1,6 +1,6 @@
 /*
  * *****************************************************************************
- * Copyright (C) 2019 Dennis Sheirer
+ * Copyright (C) 2020 Dennis Sheirer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class SystemInformation
     private double mRange;
     private Date mLastUpdated;
     private List<RadioNetwork> mRadioNetworks = new ArrayList<>();
-    private Bandplan mBandplan;
+    private List<Bandplan> mBandplans;
     private Fleetmap mFleetmap;
 
     /**
@@ -316,22 +316,22 @@ public class SystemInformation
     }
 
     /**
-     * Bandplan
-     * @return bandplan
+     * Bandplans
+     * @return bandplans
      */
     @JacksonXmlProperty(localName = "bandplan")
-    public Bandplan getBandplan()
+    public List<Bandplan> getBandplans()
     {
-        return mBandplan;
+        return mBandplans;
     }
 
     /**
-     * Sets the bandplan
-     * @param bandplan value
+     * Sets the bandplans
+     * @param bandplans value
      */
-    public void setBandplan(Bandplan bandplan)
+    public void setBandplans(List<Bandplan> bandplans)
     {
-        mBandplan = bandplan;
+        mBandplans = bandplans;
     }
 
     /**
