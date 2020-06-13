@@ -417,7 +417,6 @@ public class RadioReferenceService
 
         if(response != null && response.getResponseBody() instanceof GetSystemInformationResponse)
         {
-            mLog.debug(response.getResponseBody().toString());
             return ((GetSystemInformationResponse)response.getResponseBody()).getSystemInformation();
         }
 
