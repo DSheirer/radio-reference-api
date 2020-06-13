@@ -1,6 +1,6 @@
 /*
  * *****************************************************************************
- * Copyright (C) 2019 Dennis Sheirer
+ * Copyright (C) 2020 Dennis Sheirer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public class Site
     private String mNeighbors;
     private String mLocation;
     private int mCountyId;
-    private String mCountyName;
+    private String mConnectTone;
     private String mModulation;
     private String mNotes;
     private double mLatitude;
@@ -291,22 +291,22 @@ public class Site
     }
 
     /**
-     * County name.
-     * @return name or null
+     * Connect Tone
+     * @return tone or null
      */
     @JacksonXmlProperty(localName = "siteCt")
-    public String getCountyName()
+    public String getConnectTone()
     {
-        return mCountyName;
+        return mConnectTone;
     }
 
     /**
-     * Sets the county name
-     * @param countyName value
+     * Sets the connect tone
+     * @param connectTone value
      */
-    public void setCountyName(String countyName)
+    public void setConnectTone(String connectTone)
     {
-        mCountyName = countyName;
+        mConnectTone = connectTone;
     }
 
     /**
