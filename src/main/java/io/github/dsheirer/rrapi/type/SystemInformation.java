@@ -19,6 +19,7 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.ArrayList;
@@ -297,7 +298,8 @@ public class SystemInformation
      * List of radio system identifiers
      * @return system id listing
      */
-    @JacksonXmlProperty(localName = "sysid")
+    @JacksonXmlElementWrapper(localName = "sysid")
+    @JacksonXmlProperty(localName = "item")
     public List<RadioNetwork> getRadioNetworks()
     {
         return mRadioNetworks;
