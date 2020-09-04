@@ -19,6 +19,7 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class Site
     private int mRebanded;
     private List<SiteLicense> mSiteLicenses = new ArrayList<>();
     private List<SiteFrequency> mSiteFrequencies = new ArrayList<>();
-    private Bandplan mBandplan;
+    private List<Bandplan> mBandplans = new ArrayList<>();
 
     /**
      * Constructs an instance
@@ -481,21 +482,22 @@ public class Site
     }
 
     /**
-     * Bandplan for the site
-     * @return bandplan
+     * Bandplans for the site
+     * @return bandplans
      */
-    @JacksonXmlProperty(localName = "bandplan")
-    public Bandplan getBandplan()
+    @JacksonXmlElementWrapper(localName = "bandplan")
+    @JacksonXmlProperty(localName = "item")
+    public List<Bandplan> getBandplans()
     {
-        return mBandplan;
+        return mBandplans;
     }
 
     /**
-     * Sets the bandplan
-     * @param bandplan value
+     * Sets the bandplans
+     * @param bandplans value
      */
-    public void setBandplan(Bandplan bandplan)
+    public void setBandplans(List<Bandplan> bandplans)
     {
-        mBandplan = bandplan;
+        mBandplans = bandplans;
     }
 }

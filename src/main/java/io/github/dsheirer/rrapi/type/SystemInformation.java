@@ -44,7 +44,7 @@ public class SystemInformation
     private double mRange;
     private Date mLastUpdated;
     private List<RadioNetwork> mRadioNetworks = new ArrayList<>();
-    private List<Bandplan> mBandplans;
+    private List<Bandplan> mBandplans = new ArrayList<>();
     private Fleetmap mFleetmap;
 
     /**
