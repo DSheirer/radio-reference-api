@@ -1204,7 +1204,7 @@ public class RadioReferenceService
                 }
                 catch(IOException ioe)
                 {
-                    mLog.debug("Response: " + response.body());
+                    mLog.error("Error parsing response: " + response.body());
                     throw new RadioReferenceException("Error deserializing XML response: " + response.body(), ioe);
                 }
             }
@@ -1244,11 +1244,13 @@ public class RadioReferenceService
             UserInfo userInfo = service.getUserInfo();
             mLog.info("User: " + userInfo.getUserName() + " Account Expires:" + userInfo.getExpirationDate());
 
-            SystemInformation systemInformation = service.getSystemInformation(2560);
+            SystemInformation systemInformation = service.getSystemInformation(601);
 
             List<Bandplan> bandplans = systemInformation.getBandplans();
+            mLog.debug("Got bandplans [" + (bandplans != null ? bandplans.size() : "0") + "]");
 
-            mLog.debug("Got bandplans [" + bandplans.size() + "]");
+            List<Site> sites = service.getSites(601);
+            mLog.debug("Got sites [" + sites.size() + "]");
         }
         catch(RadioReferenceException rre)
         {
