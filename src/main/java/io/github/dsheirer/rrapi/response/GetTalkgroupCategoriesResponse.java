@@ -24,20 +24,34 @@ import io.github.dsheirer.rrapi.type.TalkgroupCategory;
 
 import java.util.List;
 
+/**
+ * Get talkgroup categroies response
+ */
 public class GetTalkgroupCategoriesResponse extends ResponseBody
 {
     private List<TalkgroupCategory> mTalkgroupCategories;
 
+    /**
+     * Constructs an instance
+     */
     public GetTalkgroupCategoriesResponse()
     {
     }
 
+    /**
+     * Talkgroup categories payload
+     * @return categories
+     */
     @JacksonXmlProperty(localName = "return")
     public List<TalkgroupCategory> getTalkgroupCategories()
     {
         return mTalkgroupCategories;
     }
 
+    /**
+     * Sets the payload
+     * @param talkgroupCategories payload
+     */
     public void setTalkgroupCategories(List<TalkgroupCategory> talkgroupCategories)
     {
         mTalkgroupCategories = talkgroupCategories;

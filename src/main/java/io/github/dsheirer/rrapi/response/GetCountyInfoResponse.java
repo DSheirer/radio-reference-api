@@ -23,20 +23,34 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.CountyInfo;
 
+/**
+ * Get county info response
+ */
 public class GetCountyInfoResponse extends ResponseBody
 {
     private CountyInfo mCountyInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetCountyInfoResponse()
     {
     }
 
+    /**
+     * County info to request
+     * @return county info
+     */
     @JacksonXmlProperty(localName = "return")
     public CountyInfo getCountyInfo()
     {
         return mCountyInfo;
     }
 
+    /**
+     * Sets the county info to requeset
+     * @param countyInfo to set
+     */
     public void setCountyInfo(CountyInfo countyInfo)
     {
         mCountyInfo = countyInfo;

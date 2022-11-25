@@ -24,20 +24,34 @@ import io.github.dsheirer.rrapi.type.System;
 
 import java.util.List;
 
+/**
+ * Get APCO25 systems response
+ */
 public class GetApco25SystemsResponse extends ResponseBody
 {
     private List<System> mSystems;
 
+    /**
+     * Constructs an instance
+     */
     public GetApco25SystemsResponse()
     {
     }
 
+    /**
+     * Systems paylaod
+     * @return systems
+     */
     @JacksonXmlProperty(localName = "return")
     public List<System> getSystems()
     {
         return mSystems;
     }
 
+    /**
+     * Sets the payload
+     * @param systems paylaod
+     */
     public void setSystems(List<System> systems)
     {
         mSystems = systems;

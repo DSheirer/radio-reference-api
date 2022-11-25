@@ -111,6 +111,10 @@ public class FccCallsignDetails
         return mGrantDate;
     }
 
+    /**
+     * Sets the grant date
+     * @param grantDate to set
+     */
     public void setGrantDate(String grantDate)
     {
         mGrantDate = grantDate;

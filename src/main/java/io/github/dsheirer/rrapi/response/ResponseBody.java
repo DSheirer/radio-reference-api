@@ -24,6 +24,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.dsheirer.rrapi.request.GetCountyFrequenciesByTag;
 import io.github.dsheirer.rrapi.request.GetMetroInfo;
 
+/**
+ * Base SOAP response body
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Fault.class, name = "Fault"),
@@ -61,6 +64,9 @@ import io.github.dsheirer.rrapi.request.GetMetroInfo;
 })
 public class ResponseBody
 {
+    /**
+     * Constructs an instance
+     */
     public ResponseBody()
     {
     }

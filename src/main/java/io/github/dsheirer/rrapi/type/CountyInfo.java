@@ -44,6 +44,9 @@ public class CountyInfo
     private List<System> mSystems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public CountyInfo()
     {
     }

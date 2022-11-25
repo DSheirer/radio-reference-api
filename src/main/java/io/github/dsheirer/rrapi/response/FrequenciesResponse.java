@@ -26,22 +26,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common frequencies response for getCountyFreqsByTag, ...
+ * Common frequencies response for getCountyFreqsByTag
  */
 public class FrequenciesResponse extends ResponseBody
 {
     private List<Frequency> mFrequencies = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public FrequenciesResponse()
     {
     }
 
+    /**
+     * Frequencies payload
+     * @return frequencies
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Frequency> getFrequencies()
     {
         return mFrequencies;
     }
 
+    /**
+     * Sets the payload
+     * @param frequencies payload
+     */
     public void setFrequencies(List<Frequency> frequencies)
     {
         if(frequencies != null)

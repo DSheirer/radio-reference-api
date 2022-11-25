@@ -23,20 +23,34 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.FccCallsignDetails;
 
+/**
+ * Get FCC callsign response
+ */
 public class FccGetCallsignResponse extends ResponseBody
 {
     private FccCallsignDetails mFccCallsignDetails;
 
+    /**
+     * Constructs an instance
+     */
     public FccGetCallsignResponse()
     {
     }
 
+    /**
+     * Payload details
+     * @return fcc callsign details
+     */
     @JacksonXmlProperty(localName = "return")
     public FccCallsignDetails getFccCallsignDetails()
     {
         return mFccCallsignDetails;
     }
 
+    /**
+     * Sets the payload
+     * @param fccCallsignDetails results
+     */
     public void setFccCallsignDetails(FccCallsignDetails fccCallsignDetails)
     {
         mFccCallsignDetails = fccCallsignDetails;

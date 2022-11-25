@@ -30,6 +30,9 @@ public class Agency
     private String mName;
     private int mType;
 
+    /**
+     * Constructs an instance
+     */
     public Agency()
     {
     }
@@ -44,6 +47,10 @@ public class Agency
         return mAgencyId;
     }
 
+    /**
+     * Sets the agency ID
+     * @param agencyId to set
+     */
     public void setAgencyId(int agencyId)
     {
         mAgencyId = agencyId;
@@ -59,6 +66,10 @@ public class Agency
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name to set
+     */
     public void setName(String name)
     {
         mName = name;
@@ -74,6 +85,10 @@ public class Agency
         return mType;
     }
 
+    /**
+     * Sets the type
+     * @param type to set
+     */
     public void setType(int type)
     {
         mType = type;

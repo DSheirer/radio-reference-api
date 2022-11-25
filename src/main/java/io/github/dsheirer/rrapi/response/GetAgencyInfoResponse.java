@@ -23,20 +23,34 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 
+/**
+ * Get agency info response
+ */
 public class GetAgencyInfoResponse extends ResponseBody
 {
     private AgencyInfo mAgencyInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetAgencyInfoResponse()
     {
     }
 
+    /**
+     * Agency info payload
+     * @return agency info
+     */
     @JacksonXmlProperty(localName = "return")
     public AgencyInfo getAgencyInfo()
     {
         return mAgencyInfo;
     }
 
+    /**
+     * Sets the payload
+     * @param agencyInfo payload
+     */
     public void setAgencyInfo(AgencyInfo agencyInfo)
     {
         mAgencyInfo = agencyInfo;

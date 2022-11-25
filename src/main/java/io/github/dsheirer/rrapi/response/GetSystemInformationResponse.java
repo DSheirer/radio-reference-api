@@ -22,20 +22,34 @@ package io.github.dsheirer.rrapi.response;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.SystemInformation;
 
+/**
+ * Get system info response
+ */
 public class GetSystemInformationResponse extends ResponseBody
 {
     private SystemInformation mSystemInformation;
 
+    /**
+     * Constructs an instance
+     */
     public GetSystemInformationResponse()
     {
     }
 
+    /**
+     * System information
+     * @return system info
+     */
     @JacksonXmlProperty(localName = "return")
     public SystemInformation getSystemInformation()
     {
         return mSystemInformation;
     }
 
+    /**
+     * Sets the system information for the response
+     * @param systemInformation to set
+     */
     public void setSystemInformation(SystemInformation systemInformation)
     {
         mSystemInformation = systemInformation;

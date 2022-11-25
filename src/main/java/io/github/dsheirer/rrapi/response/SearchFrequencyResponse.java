@@ -33,16 +33,27 @@ public class SearchFrequencyResponse extends ResponseBody
 {
     private List<SearchFrequencyResult> mResults = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public SearchFrequencyResponse()
     {
     }
 
+    /**
+     * Results
+     * @return results
+     */
     @JacksonXmlProperty(localName = "return")
     public List<SearchFrequencyResult> getResults()
     {
         return mResults;
     }
 
+    /**
+     * Sets the results
+     * @param results to set
+     */
     public void setResults(List<SearchFrequencyResult> results)
     {
         mResults = results;

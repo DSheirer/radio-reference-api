@@ -49,6 +49,10 @@ public class Fault extends ResponseBody
         return mFaultCode;
     }
 
+    /**
+     * Sets the fault code
+     * @param faultCode to set
+     */
     public void setFaultCode(String faultCode)
     {
         mFaultCode = faultCode;
@@ -64,6 +68,10 @@ public class Fault extends ResponseBody
         return mFaultActor;
     }
 
+    /**
+     * Sets the fault actor
+     * @param faultActor to set
+     */
     public void setFaultActor(String faultActor)
     {
         mFaultActor = faultActor;
@@ -79,6 +87,10 @@ public class Fault extends ResponseBody
         return mFaultString;
     }
 
+    /**
+     * Sets the fault string
+     * @param faultString to set
+     */
     public void setFaultString(String faultString)
     {
         mFaultString = faultString;
@@ -94,6 +106,10 @@ public class Fault extends ResponseBody
         return mDetail;
     }
 
+    /**
+     * Sets the detail
+     * @param detail to set
+     */
     public void setDetail(String detail)
     {
         mDetail = detail;

@@ -18,6 +18,7 @@
  */
 
 plugins {
+    id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
@@ -30,15 +31,18 @@ repositories {
 }
 
 dependencies {
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.8'
-    compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'org.slf4j:slf4j-api:2.0.4'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
 group 'io.github.dsheirer'
 archivesBaseName = "radio-reference-api"
-version '15.1.8'
+version '15.1.9'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 ext.moduleName = 'io.github.dsheirer.rrapi'
@@ -53,9 +57,23 @@ compileJava {
     }
 }
 
+test {
+    useJUnitPlatform()
+
+    //Disable all tests by default
+    exclude '**/*'
+}
+
+tasks.withType(Test) {
+    //Store radio reference login credentials in your gradle.properties file
+    println "### User: " + project.properties['radio.reference.user']
+    environment('RADIO_REFERENCE_USER', project.properties['radio.reference.user'])
+    environment('RADIO_REFERENCE_PASSWORD', project.properties['radio.reference.password'])
+}
+
 javadoc {
     options.addBooleanOption('html5', true)
-    options.addStringOption('-module-path', classpath.asPath)
+    options.modulePath(classpath.asCollection())
 }
 
 task packageJavadoc(type: Jar, dependsOn: 'javadoc') {

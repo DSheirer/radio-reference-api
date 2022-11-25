@@ -21,21 +21,46 @@ package io.github.dsheirer.rrapi;
 
 import io.github.dsheirer.rrapi.response.Fault;
 
+/**
+ * Radio reference API exception
+ */
 public class RadioReferenceException extends Exception
 {
+    /**
+     * HTTP status code
+     */
     private Integer mHttpStatusCode;
+
+    /**
+     * Fault
+     */
     private Fault mFault;
 
+    /**
+     * Constructs an instance
+     * @param message to report
+     * @param throwable cause
+     */
     public RadioReferenceException(String message, Throwable throwable)
     {
         super(message, throwable);
     }
 
+    /**
+     * Constructs an instance
+     * @param message to report
+     */
     public RadioReferenceException(String message)
     {
         super(message);
     }
 
+    /**
+     * Constructs an instance
+     * @param message to report
+     * @param httpStatusCode for the request
+     * @param fault being reported
+     */
     public RadioReferenceException(String message, int httpStatusCode, Fault fault)
     {
         super(message);
@@ -43,21 +68,37 @@ public class RadioReferenceException extends Exception
         mFault = fault;
     }
 
+    /**
+     * HTTP status code
+     * @return status code
+     */
     public Integer getHttpStatusCode()
     {
         return mHttpStatusCode;
     }
 
+    /**
+     * Indicates if this exception has an HTTP status code
+     * @return true if non-null
+     */
     public boolean hasHttpStatusCode()
     {
         return mHttpStatusCode != null;
     }
 
+    /**
+     * SOAP fault
+     * @return fault
+     */
     public Fault getFault()
     {
         return mFault;
     }
 
+    /**
+     * Indicates if this exception contains a SOAP fault
+     * @return true if non-null
+     */
     public boolean hasFault()
     {
         return mFault != null;

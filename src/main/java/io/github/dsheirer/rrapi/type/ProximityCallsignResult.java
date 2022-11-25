@@ -49,6 +49,10 @@ public class ProximityCallsignResult
         return mCallsign;
     }
 
+    /**
+     * Sets the callsign
+     * @param callsign to set
+     */
     public void setCallsign(String callsign)
     {
         mCallsign = callsign;
@@ -64,6 +68,10 @@ public class ProximityCallsignResult
         return mLicensee;
     }
 
+    /**
+     * Sets the licenses
+     * @param licensee to set
+     */
     public void setLicensee(String licensee)
     {
         mLicensee = licensee;
@@ -79,6 +87,10 @@ public class ProximityCallsignResult
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude to set
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
@@ -94,6 +106,10 @@ public class ProximityCallsignResult
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude to set
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
@@ -109,6 +125,10 @@ public class ProximityCallsignResult
         return mDistance;
     }
 
+    /**
+     * Sets the distance
+     * @param distance to set
+     */
     public void setDistance(double distance)
     {
         mDistance = distance;

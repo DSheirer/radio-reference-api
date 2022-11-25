@@ -59,45 +59,77 @@ public class FccGetProximityCallsigns extends RequestBody
         }
     }
 
+    /**
+     * Latitude
+     * @return latitude
+     */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
     {
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude to set
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
     }
 
+    /**
+     * Longitude
+     * @return longitude
+     */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
     {
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude to set
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
     }
 
+    /**
+     * Range
+     * @return range
+     */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
     {
         return mRange;
     }
 
+    /**
+     * Sets the range
+     * @param range to set
+     */
     public void setRange(double range)
     {
         mRange = range;
     }
 
+    /**
+     * Unit
+     * @return unit
+     */
     @JacksonXmlProperty(localName = "unit")
     public String getUnit()
     {
         return mUnit;
     }
 
+    /**
+     * Sets the unit
+     * @param unit to set
+     */
     public void setUnit(String unit)
     {
         mUnit = unit;

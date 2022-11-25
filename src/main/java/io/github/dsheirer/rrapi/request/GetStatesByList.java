@@ -43,6 +43,10 @@ public class GetStatesByList extends RequestBody
         super(authorizationInformation);
     }
 
+    /**
+     * State request item list
+     * @return list
+     */
     @JacksonXmlElementWrapper(localName = "request")
     @JacksonXmlProperty(localName = "item")
     public List<StateRequestItem> getStateIdItems()
@@ -50,16 +54,30 @@ public class GetStatesByList extends RequestBody
         return mStateIdItems;
     }
 
+    /**
+     * Sets the state id items
+     * @param stateIdItems to set
+     */
     public void setStateIdItems(List<StateRequestItem> stateIdItems)
     {
         mStateIdItems = stateIdItems;
     }
 
+    /**
+     * Adds a state ID
+     * @param stateId to add
+     */
     public void addState(int stateId)
     {
         mStateIdItems.add(StateRequestItem.create(stateId));
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation for the requester
+     * @param stateIds to request
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int ... stateIds)
     {
         GetStatesByList body = new GetStatesByList(authorizationInformation);
@@ -71,6 +89,12 @@ public class GetStatesByList extends RequestBody
         return RequestEnvelope.create(body);
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation for the requester
+     * @param stateIds to request
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, List<Integer> stateIds)
     {
         GetStatesByList body = new GetStatesByList(authorizationInformation);

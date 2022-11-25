@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get types response
+ */
 public class GetTypesResponse extends ResponseBody
 {
     private List<Type> mTypes = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetTypesResponse()
     {
     }
 
+    /**
+     * Types payload
+     * @return types
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Type> getTypes()
     {
         return mTypes;
     }
 
+    /**
+     * Sets the payload
+     * @param types payload
+     */
     public void setTypes(List<Type> types)
     {
         mTypes = types;

@@ -20,23 +20,36 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.StateInfo;
 
+/**
+ * Get state info response
+ */
 public class GetStateInfoResponse extends ResponseBody
 {
     private StateInfo mStateInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetStateInfoResponse()
     {
     }
 
+    /**
+     * State info object
+     * @return state info
+     */
     @JacksonXmlProperty(localName = "return")
     public StateInfo getStateInfo()
     {
         return mStateInfo;
     }
 
+    /**
+     * Sets the state info object
+     * @param stateInfo to set
+     */
     public void setStateInfo(StateInfo stateInfo)
     {
         mStateInfo = stateInfo;

@@ -26,20 +26,34 @@ import io.github.dsheirer.rrapi.type.CountryInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get country info response
+ */
 public class GetCountryInfoResponse extends ResponseBody
 {
     private CountryInfo mCountryInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetCountryInfoResponse()
     {
     }
 
+    /**
+     * Country info paylaod
+     * @return country info
+     */
     @JacksonXmlProperty(localName = "return")
     public CountryInfo getCountryInfo()
     {
         return mCountryInfo;
     }
 
+    /**
+     * Sets the payload
+     * @param countryInfo payload
+     */
     public void setCountryInfo(CountryInfo countryInfo)
     {
         mCountryInfo = countryInfo;

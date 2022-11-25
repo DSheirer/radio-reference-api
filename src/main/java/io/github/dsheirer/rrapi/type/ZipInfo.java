@@ -50,6 +50,10 @@ public class ZipInfo
         return mZipcode;
     }
 
+    /**
+     * Sets the zip code
+     * @param zipcode to set
+     */
     public void setZipcode(int zipcode)
     {
         mZipcode = zipcode;
@@ -65,6 +69,10 @@ public class ZipInfo
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude to set
+     */
     public void setLatitude(String latitude)
     {
         mLatitude = latitude;
@@ -80,6 +88,10 @@ public class ZipInfo
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude to set
+     */
     public void setLongitude(String longitude)
     {
         mLongitude = longitude;
@@ -95,6 +107,10 @@ public class ZipInfo
         return mCity;
     }
 
+    /**
+     * Sets the city
+     * @param city to set
+     */
     public void setCity(String city)
     {
         mCity = city;
@@ -113,6 +129,10 @@ public class ZipInfo
         return mStateId;
     }
 
+    /**
+     * Sets the state ID
+     * @param stateId to set
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
@@ -131,6 +151,10 @@ public class ZipInfo
         return mCountyId;
     }
 
+    /**
+     * Sets the county ID
+     * @param countyId to set
+     */
     public void setCountyId(int countyId)
     {
         mCountyId = countyId;

@@ -22,27 +22,49 @@ package io.github.dsheirer.rrapi.request;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
+/**
+ * Get sytem info request
+ */
 public class GetSystemInformation extends RequestBody
 {
     private int mSystemId;
 
+    /**
+     * Constructs an instance
+     * @param authorizationInformation for the requester
+     * @param systemId to request
+     */
     public GetSystemInformation(AuthorizationInformation authorizationInformation, int systemId)
     {
         super(authorizationInformation);
         mSystemId = systemId;
     }
 
+    /**
+     * SystemID
+     * @return system ID
+     */
     @JacksonXmlProperty(localName = "sid")
     public int getSystemId()
     {
         return mSystemId;
     }
 
+    /**
+     * Sets the system ID
+     * @param systemId to set
+     */
     public void setSystemId(int systemId)
     {
         mSystemId = systemId;
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation for the requeseter
+     * @param systemId to request
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
     {
         return RequestBody.create(new GetSystemInformation(authorizationInformation, systemId));

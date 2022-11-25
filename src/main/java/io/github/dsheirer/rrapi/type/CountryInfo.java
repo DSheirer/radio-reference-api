@@ -35,6 +35,9 @@ public class CountryInfo
     private List<Agency> mAgencies = new ArrayList<>();
     private List<State> mStates = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public CountryInfo()
     {
     }

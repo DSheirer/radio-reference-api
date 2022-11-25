@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.ProximityCallsignResult;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FCC get proximity callsigns response
+ */
 public class FccGetProximityCallsignResponse extends ResponseBody
 {
     private List<ProximityCallsignResult> mProximityCallsignResults = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public FccGetProximityCallsignResponse()
     {
     }
 
+    /**
+     * Proximity callsign result payload
+     * @return result
+     */
     @JacksonXmlProperty(localName = "return")
     public List<ProximityCallsignResult> getProximityCallsignResults()
     {
         return mProximityCallsignResults;
     }
 
+    /**
+     * Sets the payload
+     * @param results payload
+     */
     public void setProximityCallsignResults(List<ProximityCallsignResult> results)
     {
         if(results != null)
