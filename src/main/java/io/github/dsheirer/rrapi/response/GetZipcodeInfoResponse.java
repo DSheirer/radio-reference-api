@@ -23,20 +23,34 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.StateInfo;
 import io.github.dsheirer.rrapi.type.ZipInfo;
 
+/**
+ * Get zipcode info response
+ */
 public class GetZipcodeInfoResponse extends ResponseBody
 {
     private ZipInfo mZipcodeInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetZipcodeInfoResponse()
     {
     }
 
+    /**
+     * Zipcode info
+     * @return zipcode info
+     */
     @JacksonXmlProperty(localName = "return")
     public ZipInfo getZipcodeInfo()
     {
         return mZipcodeInfo;
     }
 
+    /**
+     * Sets the zipcode info
+     * @param zipcodeInfo to set
+     */
     public void setZipcodeInfo(ZipInfo zipcodeInfo)
     {
         mZipcodeInfo = zipcodeInfo;

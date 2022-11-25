@@ -22,27 +22,49 @@ package io.github.dsheirer.rrapi.request;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
+/**
+ * Get sites request
+ */
 public class GetSites extends RequestBody
 {
     private int mSystemId;
 
+    /**
+     * Constructs an instance
+     * @param authorizationInformation for the requestor
+     * @param systemId for the sites
+     */
     public GetSites(AuthorizationInformation authorizationInformation, int systemId)
     {
         super(authorizationInformation);
         mSystemId = systemId;
     }
 
+    /**
+     * System ID
+     * @return system ID
+     */
     @JacksonXmlProperty(localName = "sid")
     public int getSystemId()
     {
         return mSystemId;
     }
 
+    /**
+     * Sets the system ID
+     * @param systemId to set
+     */
     public void setSystemId(int systemId)
     {
         mSystemId = systemId;
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation for the requester
+     * @param systemId for the sites
+     * @return request envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int systemId)
     {
         return RequestBody.create(new GetSites(authorizationInformation, systemId));

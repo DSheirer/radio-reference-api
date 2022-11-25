@@ -58,6 +58,10 @@ public class AgencyInfo
         return mAgencyId;
     }
 
+    /**
+     * Sets the agency ID
+     * @param agencyId to set
+     */
     public void setAgencyId(int agencyId)
     {
         mAgencyId = agencyId;
@@ -73,6 +77,10 @@ public class AgencyInfo
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name to set
+     */
     public void setName(String name)
     {
         mName = name;
@@ -88,6 +96,10 @@ public class AgencyInfo
         return mType;
     }
 
+    /**
+     * Sets the type
+     * @param type to set
+     */
     public void setType(String type)
     {
         mType = type;
@@ -103,6 +115,10 @@ public class AgencyInfo
         return mCountyId;
     }
 
+    /**
+     * Sets the county ID
+     * @param countyId to set
+     */
     public void setCountyId(int countyId)
     {
         mCountyId = countyId;
@@ -118,6 +134,10 @@ public class AgencyInfo
         return mStateId;
     }
 
+    /**
+     * Sets the state ID
+     * @param stateId to set
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
@@ -133,6 +153,10 @@ public class AgencyInfo
         return mLatitude;
     }
 
+    /**
+     * Sets the latitude
+     * @param latitude to set
+     */
     public void setLatitude(double latitude)
     {
         mLatitude = latitude;
@@ -148,6 +172,10 @@ public class AgencyInfo
         return mLongitude;
     }
 
+    /**
+     * Sets the longitude
+     * @param longitude to set
+     */
     public void setLongitude(double longitude)
     {
         mLongitude = longitude;
@@ -163,6 +191,10 @@ public class AgencyInfo
         return mRange;
     }
 
+    /**
+     * Sets the range
+     * @param range to set
+     */
     public void setRange(double range)
     {
         mRange = range;
@@ -178,6 +210,10 @@ public class AgencyInfo
         return mLastUpdated;
     }
 
+    /**
+     * Sets the last updated date
+     * @param lastUpdated to set
+     */
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;
@@ -193,6 +229,10 @@ public class AgencyInfo
         return mCategories;
     }
 
+    /**
+     * Sets the categories
+     * @param categories to set
+     */
     public void setCategories(List<Category> categories)
     {
         mCategories = categories;

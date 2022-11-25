@@ -33,16 +33,27 @@ public class GetMetrosResponse extends ResponseBody
 {
     private List<Metro> mMetros = new ArrayList<>();
 
+    /**
+     * Constructs an instancee
+     */
     public GetMetrosResponse()
     {
     }
 
+    /**
+     * Metros payload
+     * @return metros
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Metro> getMetros()
     {
         return mMetros;
     }
 
+    /**
+     * Sets the metros payload
+     * @param metros payload
+     */
     public void setMetros(List<Metro> metros)
     {
         mMetros = metros;

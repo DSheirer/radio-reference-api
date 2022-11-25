@@ -56,24 +56,39 @@ public class RadioNetwork
         mSystemId = systemId;
     }
 
-
+    /**
+     * Connect tone?
+     * @return value
+     */
     @JacksonXmlProperty(localName = "ct")
     public String getCt()
     {
         return mCt;
     }
 
+    /**
+     * Sets the connect tone?
+     * @param ct value
+     */
     public void setCt(String ct)
     {
         mCt = ct;
     }
 
+    /**
+     * WACN value
+     * @return wacn
+     */
     @JacksonXmlProperty(localName = "wacn")
     public String getWacn()
     {
         return mWacn;
     }
 
+    /**
+     * Sets the WACN value
+     * @param wacn to set
+     */
     public void setWacn(String wacn)
     {
         mWacn = wacn;

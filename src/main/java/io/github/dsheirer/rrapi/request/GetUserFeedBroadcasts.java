@@ -26,11 +26,20 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
  */
 public class GetUserFeedBroadcasts extends RequestBody
 {
+    /**
+     * Constructs an instance
+     * @param authorizationInformation for the requester
+     */
     public GetUserFeedBroadcasts(AuthorizationInformation authorizationInformation)
     {
         super(authorizationInformation);
     }
 
+    /**
+     * Creates an envelope
+     * @param authorizationInformation for the requester
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
         return RequestBody.create(new GetUserFeedBroadcasts(authorizationInformation));

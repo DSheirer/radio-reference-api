@@ -21,8 +21,6 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import java.util.List;
-
 /**
  * Federal Communications Commission (FCC) radio service code
  */
@@ -48,6 +46,10 @@ public class FccRadioServiceCode
         return mCode;
     }
 
+    /**
+     * Sets the code
+     * @param code to set
+     */
     public void setCode(String code)
     {
         mCode = code;
@@ -63,6 +65,10 @@ public class FccRadioServiceCode
         return mDescription;
     }
 
+    /**
+     * Sets the description
+     * @param description to set
+     */
     public void setDescription(String description)
     {
         mDescription = description;

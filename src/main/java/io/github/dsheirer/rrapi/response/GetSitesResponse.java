@@ -24,20 +24,34 @@ import io.github.dsheirer.rrapi.type.Site;
 
 import java.util.List;
 
+/**
+ * Gets sites response
+ */
 public class GetSitesResponse extends ResponseBody
 {
     private List<Site> mSites;
 
+    /**
+     * Constructs an instance
+     */
     public GetSitesResponse()
     {
     }
 
+    /**
+     * Sites returned
+     * @return sites
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Site> getSites()
     {
         return mSites;
     }
 
+    /**
+     * Sets the sites values
+     * @param sites to set
+     */
     public void setSites(List<Site> sites)
     {
         mSites = sites;

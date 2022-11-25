@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Talkgroup;
 
 import java.util.List;
 
+/**
+ * Gets talkgroups response
+ */
 public class GetTalkgroupsResponse extends ResponseBody
 {
     private List<Talkgroup> mTalkgroups;
 
+    /**
+     * Constructs an instance
+     */
     public GetTalkgroupsResponse()
     {
     }
 
+    /**
+     * Talkgroups payload
+     * @return talkgroups
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Talkgroup> getTalkgroups()
     {
         return mTalkgroups;
     }
 
+    /**
+     * Sets the talkgroups paylaod
+     * @param talkgroups payload
+     */
     public void setTalkgroups(List<Talkgroup> talkgroups)
     {
         mTalkgroups = talkgroups;

@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Flavor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get flavors response
+ */
 public class GetFlavorsResponse extends ResponseBody
 {
     private List<Flavor> mFlavors = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetFlavorsResponse()
     {
     }
 
+    /**
+     * Flavors payload
+     * @return flavors
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Flavor> getFlavors()
     {
         return mFlavors;
     }
 
+    /**
+     * Sets the flavors payload
+     * @param flavors to set
+     */
     public void setFlavors(List<Flavor> flavors)
     {
         mFlavors = flavors;

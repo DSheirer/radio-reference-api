@@ -50,6 +50,10 @@ public class UserFeedBroadcast
         return mFeedId;
     }
 
+    /**
+     * Sets the feed ID
+     * @param feedId to set
+     */
     public void setFeedId(int feedId)
     {
         mFeedId = feedId;
@@ -65,6 +69,10 @@ public class UserFeedBroadcast
         return mDescription;
     }
 
+    /**
+     * Sets the description
+     * @param description to set
+     */
     public void setDescription(String description)
     {
         mDescription = description;
@@ -80,6 +88,10 @@ public class UserFeedBroadcast
         return mHostname;
     }
 
+    /**
+     * Sets the host name
+     * @param hostname to set
+     */
     public void setHostname(String hostname)
     {
         mHostname = hostname;
@@ -95,6 +107,10 @@ public class UserFeedBroadcast
         return mPort;
     }
 
+    /**
+     * Sets the port
+     * @param port to set
+     */
     public void setPort(String port)
     {
         mPort = port;
@@ -110,6 +126,10 @@ public class UserFeedBroadcast
         return mMount;
     }
 
+    /**
+     * Sets the mount
+     * @param mount to set
+     */
     public void setMount(String mount)
     {
         mMount = mount;
@@ -125,6 +145,10 @@ public class UserFeedBroadcast
         return mPassword;
     }
 
+    /**
+     * Sets the password for the feed
+     * @param password to set
+     */
     public void setPassword(String password)
     {
         mPassword = password;

@@ -43,6 +43,10 @@ public class GetCountiesByList extends RequestBody
         super(authorizationInformation);
     }
 
+    /**
+     * Requested counties
+     * @return counties
+     */
     @JacksonXmlElementWrapper(localName = "request")
     @JacksonXmlProperty(localName = "item")
     public List<CountyRequestItem> getCountyRequestItems()
@@ -50,16 +54,29 @@ public class GetCountiesByList extends RequestBody
         return mCountyRequestItems;
     }
 
+    /**
+     * Sets the request items
+     * @param countyRequestItems to request
+     */
     public void setCountyRequestItems(List<CountyRequestItem> countyRequestItems)
     {
         mCountyRequestItems = countyRequestItems;
     }
 
+    /**
+     * Adds a county to the request list
+     * @param countyId to add
+     */
     public void addCounty(int countyId)
     {
         mCountyRequestItems.add(CountyRequestItem.create(countyId));
     }
 
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation of the requester
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
         return RequestBody.create(new GetCountiesByList(authorizationInformation));

@@ -32,6 +32,9 @@ public class Country implements Comparable<Country>
     private String mName;
     private String mCountryCode;
 
+    /**
+     * Constructs an instance
+     */
     public Country()
     {
     }

@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.FccRadioServiceCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get FCC radio service code response
+ */
 public class FccGetRadioServiceCodeResponse extends ResponseBody
 {
     private List<FccRadioServiceCode> mFccRadioServiceCodes = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public FccGetRadioServiceCodeResponse()
     {
     }
 
+    /**
+     * Code payload
+     * @return code
+     */
     @JacksonXmlProperty(localName = "return")
     public List<FccRadioServiceCode> getFccRadioServiceCodes()
     {
         return mFccRadioServiceCodes;
     }
 
+    /**
+     * Sets the payload
+     * @param codes to set
+     */
     public void setFccRadioServiceCodes(List<FccRadioServiceCode> codes)
     {
         if(codes != null)

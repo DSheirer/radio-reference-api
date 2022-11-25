@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Mode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gets modes response
+ */
 public class GetModesResponse extends ResponseBody
 {
     private List<Mode> mModes = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetModesResponse()
     {
     }
 
+    /**
+     * List of modes payload
+     * @return modes
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Mode> getModes()
     {
         return mModes;
     }
 
+    /**
+     * Sets the modes payload
+     * @param modes returned
+     */
     public void setModes(List<Mode> modes)
     {
         mModes = modes;

@@ -26,20 +26,34 @@ import io.github.dsheirer.rrapi.type.County;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get metro info response
+ */
 public class GetMetroInfoResponse extends ResponseBody
 {
     private List<County> mCounties = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetMetroInfoResponse()
     {
     }
 
+    /**
+     * Counties payload
+     * @return counties
+     */
     @JacksonXmlProperty(localName = "return")
     public List<County> getCounties()
     {
         return mCounties;
     }
 
+    /**
+     * Sets the counties payload
+     * @param counties to set
+     */
     public void setCounties(List<County> counties)
     {
         if(counties != null)

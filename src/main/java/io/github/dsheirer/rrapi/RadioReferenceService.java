@@ -83,7 +83,6 @@ import io.github.dsheirer.rrapi.response.SearchFrequencyResponse;
 import io.github.dsheirer.rrapi.type.Agency;
 import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
-import io.github.dsheirer.rrapi.type.Bandplan;
 import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.County;
@@ -110,9 +109,6 @@ import io.github.dsheirer.rrapi.type.UserFeedBroadcast;
 import io.github.dsheirer.rrapi.type.UserInfo;
 import io.github.dsheirer.rrapi.type.Voice;
 import io.github.dsheirer.rrapi.type.ZipInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -122,8 +118,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Java client for accessing the radioreference.com web services API
@@ -134,6 +131,9 @@ public class RadioReferenceService
 {
     private final static Logger mLog = LoggerFactory.getLogger(RadioReferenceService.class);
 
+    /**
+     * Radio Reference API version supported by this service.
+     */
     public static final String API_VERSION_15 = "15";
     private static final String RADIO_REFERENCE_API_URL = "http://api.radioreference.com/soap2/";
     private static final String CONTENT_TYPE = "Content-Type";
@@ -794,12 +794,36 @@ public class RadioReferenceService
 
                 for(Tag tag: tags)
                 {
-                    mTagMap.put(tag.getTagId(), tag);
+                    try
+                    {
+                        mTagMap.put(tag.getTagId(), tag);
+                    }
+                    catch(Exception e)
+                    {
+                        mLog.error("Error while parsing tags response into tags map");
+
+                        try
+                        {
+                            mLog.info("Get Tags Response Message:\n" + response.toXmlString());
+                        }
+                        catch(Exception e2)
+                        {
+                            mLog.error("Error serializing message to xml (again)", e2);
+                        }
+                    }
                 }
             }
         }
 
         return mTagMap;
+    }
+
+    /**
+     * Clears the tags map so that it can be downloaded again on the next getTagsMap() invocation
+     */
+    public void clearTagMap()
+    {
+        mTagMap = null;
     }
 
     /**
@@ -1228,46 +1252,5 @@ public class RadioReferenceService
         }
 
         return null;
-    }
-
-    public static void main(String[] args)
-    {
-        Scanner keyboard = new Scanner(java.lang.System.in);
-        java.lang.System.out.print("Password:");
-        String password = keyboard.next();
-        mLog.debug("Using password: " + password);
-        AuthorizationInformation authorizationInformation = new AuthorizationInformation("88969092", "dsheirer", password);
-
-        try
-        {
-            RadioReferenceService service = new RadioReferenceService(authorizationInformation);
-            UserInfo userInfo = service.getUserInfo();
-            mLog.info("User: " + userInfo.getUserName() + " Account Expires:" + userInfo.getExpirationDate());
-
-            SystemInformation systemInformation = service.getSystemInformation(601);
-
-            List<Bandplan> bandplans = systemInformation.getBandplans();
-            mLog.debug("Got bandplans [" + (bandplans != null ? bandplans.size() : "0") + "]");
-
-            List<Site> sites = service.getSites(601);
-            mLog.debug("Got sites [" + sites.size() + "]");
-        }
-        catch(RadioReferenceException rre)
-        {
-            if(rre.hasFault())
-            {
-                mLog.info(rre.getFault().toString());
-            }
-            else
-            {
-                mLog.info("RRE", rre);
-            }
-        }
-        catch(Exception e)
-        {
-            mLog.error("Error", e);
-        }
-
-        mLog.debug("Finished");
     }
 }

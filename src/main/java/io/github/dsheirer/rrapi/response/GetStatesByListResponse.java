@@ -20,26 +20,38 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.Country;
 import io.github.dsheirer.rrapi.type.State;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get state by list response
+ */
 public class GetStatesByListResponse extends ResponseBody
 {
     private List<State> mStates = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetStatesByListResponse()
     {
     }
 
+    /**
+     * List of states
+     * @return states
+     */
     @JacksonXmlProperty(localName = "return")
     public List<State> getStates()
     {
         return mStates;
     }
 
+    /**
+     * Sets the list of states for the response
+     * @param states to set
+     */
     public void setStates(List<State> states)
     {
         mStates = states;

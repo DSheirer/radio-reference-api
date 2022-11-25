@@ -22,20 +22,34 @@ package io.github.dsheirer.rrapi.response;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.UserInfo;
 
+/**
+ * Get user data response
+ */
 public class GetUserDataResponse extends ResponseBody
 {
     private UserInfo mUserInfo;
 
+    /**
+     * Constructs an instance
+     */
     public GetUserDataResponse()
     {
     }
 
+    /**
+     * User info payload
+     * @return user info
+     */
     @JacksonXmlProperty(localName = "return")
     public UserInfo getUserInfo()
     {
         return mUserInfo;
     }
 
+    /**
+     * Sets the user info payload
+     * @param userInfo payload
+     */
     public void setUserInfo(UserInfo userInfo)
     {
         mUserInfo = userInfo;

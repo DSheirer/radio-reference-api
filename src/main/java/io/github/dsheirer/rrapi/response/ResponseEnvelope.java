@@ -19,40 +19,79 @@
 
 package io.github.dsheirer.rrapi.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+/**
+ * Base response envelope
+ */
 @JacksonXmlRootElement(localName = "Envelope")
 public class ResponseEnvelope
 {
     private ResponseBody mResponseBody;
     private String mEncodingStyle;
 
+    /**
+     * Constructs an instance
+     */
     public ResponseEnvelope()
     {
         //Empty deserializer constructor
     }
 
+    /**
+     * Response body/payload
+     * @return body
+     */
     @JacksonXmlProperty(localName = "Body")
     public ResponseBody getResponseBody()
     {
         return mResponseBody;
     }
 
+    /**
+     * Sets the response body
+     * @param responseBody to set
+     */
     public void setResponseBody(ResponseBody responseBody)
     {
         mResponseBody = responseBody;
     }
 
+    /**
+     * Encoding style
+     * @return style
+     */
     @JacksonXmlProperty(localName = "encodingStyle")
     public String getEncodingStyle()
     {
         return mEncodingStyle;
     }
 
+    /**
+     * Sets the encoding style
+     * @param style to set
+     */
     public void setEncodingStyle(String style)
     {
         mEncodingStyle = style;
+    }
+
+    /**
+     * XML as string
+     * @return string xml
+     * @throws JsonProcessingException if there is an error
+     */
+    public String toXmlString() throws JsonProcessingException
+    {
+        JacksonXmlModule module = new JacksonXmlModule();
+        XmlMapper mapper = new XmlMapper(module);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        return mapper.writeValueAsString(this);
     }
 }

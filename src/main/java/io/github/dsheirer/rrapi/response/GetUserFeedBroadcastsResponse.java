@@ -25,21 +25,34 @@ import io.github.dsheirer.rrapi.type.UserFeedBroadcast;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get user feed broadcast response
+ */
 public class GetUserFeedBroadcastsResponse extends ResponseBody
 {
     private List<UserFeedBroadcast> mUserFeedBroadcasts = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetUserFeedBroadcastsResponse()
     {
     }
 
-
+    /**
+     * User feed broadcasts payload
+     * @return broadcasts
+     */
     @JacksonXmlProperty(localName = "return")
     public List<UserFeedBroadcast> getUserFeedBroadcasts()
     {
         return mUserFeedBroadcasts;
     }
 
+    /**
+     * Sets the payload
+     * @param userFeedBroadcasts paylaod
+     */
     public void setUserFeedBroadcasts(List<UserFeedBroadcast> userFeedBroadcasts)
     {
         mUserFeedBroadcasts = userFeedBroadcasts;

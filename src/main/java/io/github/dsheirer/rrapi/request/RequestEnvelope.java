@@ -26,44 +26,75 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+/**
+ * Base SOAP request envelope
+ */
 @JacksonXmlRootElement(localName = "Envelope")
 public class RequestEnvelope
 {
     private RequestHeader mRequestHeader = new RequestHeader();
     private RequestBody mRequestBody;
 
+    /**
+     * Constructs an instance
+     */
     public RequestEnvelope()
     {
 
     }
 
+    /**
+     * Constructs an instance
+     * @param requestBody to stuff in the envelope
+     */
     public RequestEnvelope(RequestBody requestBody)
     {
         mRequestBody = requestBody;
     }
 
+    /**
+     * Request header
+     * @return header
+     */
     @JacksonXmlProperty(localName = "Header")
     public RequestHeader getRequestHeader()
     {
         return mRequestHeader;
     }
 
+    /**
+     * Sets the request headedr
+     * @param requestHeader to set
+     */
     public void setRequestHeader(RequestHeader requestHeader)
     {
         mRequestHeader = requestHeader;
     }
 
+    /**
+     * Request body
+     * @return body
+     */
     @JacksonXmlProperty(localName = "Body")
     public RequestBody getRequestBody()
     {
         return mRequestBody;
     }
 
+    /**
+     * Sets the request body
+     * @param requestBody to set
+     */
     public void setRequestBody(RequestBody requestBody)
     {
         mRequestBody = requestBody;
     }
 
+    /**
+     * XML as string
+     * @return string xml
+     * @throws JsonProcessingException if there is an error
+     */
     public String toXmlString() throws JsonProcessingException
     {
         JacksonXmlModule module = new JacksonXmlModule();
@@ -72,6 +103,11 @@ public class RequestEnvelope
         return mapper.writeValueAsString(this);
     }
 
+    /**
+     * Creates an envelope from the request body
+     * @param requestBody to stuff in the envelope
+     * @return envelope
+     */
     public static RequestEnvelope create(RequestBody requestBody)
     {
         return new RequestEnvelope(requestBody);

@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get tags response
+ */
 public class GetTagsResponse extends ResponseBody
 {
     private List<Tag> mTags = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetTagsResponse()
     {
     }
 
+    /**
+     * Tags from the response
+     * @return tags
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Tag> getTags()
     {
         return mTags;
     }
 
+    /**
+     * Sets the tags payload
+     * @param tags to set
+     */
     public void setTags(List<Tag> tags)
     {
         mTags = tags;

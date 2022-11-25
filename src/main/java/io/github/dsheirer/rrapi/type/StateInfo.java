@@ -36,6 +36,9 @@ public class StateInfo
     private List<Agency> mAgencies = new ArrayList<>();
     private List<County> mCounties = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public StateInfo()
     {
     }
@@ -50,6 +53,10 @@ public class StateInfo
         return mStateId;
     }
 
+    /**
+     * Sets the state ID
+     * @param stateId to set
+     */
     public void setStateId(int stateId)
     {
         mStateId = stateId;
@@ -65,6 +72,10 @@ public class StateInfo
         return mName;
     }
 
+    /**
+     * Sets the name
+     * @param name to set
+     */
     public void setName(String name)
     {
         mName = name;
@@ -80,6 +91,10 @@ public class StateInfo
         return mStateEntityType;
     }
 
+    /**
+     * Sets the state entity type
+     * @param stateEntityType to set
+     */
     public void setStateEntityType(String stateEntityType)
     {
         mStateEntityType = stateEntityType;
@@ -95,6 +110,10 @@ public class StateInfo
         return mSystems;
     }
 
+    /**
+     * Sets the systems
+     * @param systems to set
+     */
     public void setSystems(List<System> systems)
     {
         if(systems != null)
@@ -113,6 +132,10 @@ public class StateInfo
         return mAgencies;
     }
 
+    /**
+     * Sets the agencies
+     * @param agencies to set
+     */
     public void setAgencies(List<Agency> agencies)
     {
         if(agencies != null)
@@ -131,6 +154,10 @@ public class StateInfo
         return mCounties;
     }
 
+    /**
+     * Sets the counties
+     * @param counties to set
+     */
     public void setCounties(List<County> counties)
     {
         if(counties != null)

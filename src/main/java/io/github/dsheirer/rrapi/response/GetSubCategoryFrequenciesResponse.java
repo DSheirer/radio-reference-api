@@ -27,20 +27,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Get sub category frequencies response
+ */
 public class GetSubCategoryFrequenciesResponse extends ResponseBody
 {
     private List<Frequency> mFrequencies = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetSubCategoryFrequenciesResponse()
     {
     }
 
+    /**
+     * Frequencies response
+     * @return frequencies
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Frequency> getFrequencies()
     {
         return mFrequencies;
     }
 
+    /**
+     * Sets the frequencies for the response
+     * @param frequencies to set
+     */
     public void setFrequencies(List<Frequency> frequencies)
     {
         if(frequencies != null)

@@ -25,20 +25,34 @@ import io.github.dsheirer.rrapi.type.Voice;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Get voices response
+ */
 public class GetVoicesResponse extends ResponseBody
 {
     private List<Voice> mVoices = new ArrayList<>();
 
+    /**
+     * Constructs an instance
+     */
     public GetVoicesResponse()
     {
     }
 
+    /**
+     * Voices payload
+     * @return voices
+     */
     @JacksonXmlProperty(localName = "return")
     public List<Voice> getVoices()
     {
         return mVoices;
     }
 
+    /**
+     * Sets the voices payload
+     * @param voices payload
+     */
     public void setVoices(List<Voice> voices)
     {
         mVoices = voices;

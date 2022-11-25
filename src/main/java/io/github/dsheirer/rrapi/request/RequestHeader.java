@@ -19,8 +19,14 @@
 
 package io.github.dsheirer.rrapi.request;
 
+/**
+ * Base request header
+ */
 public class RequestHeader
 {
+    /**
+     * Constructs an instance
+     */
     public RequestHeader()
     {
     }

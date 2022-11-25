@@ -46,6 +46,10 @@ public class UserInfo
         return mUserName;
     }
 
+    /**
+     * Sets the user name
+     * @param userName to set
+     */
     public void setUserName(String userName)
     {
         mUserName = userName;
@@ -61,6 +65,10 @@ public class UserInfo
         return mExpirationDate;
     }
 
+    /**
+     * Sets the expiration date for the current subscription
+     * @param expirationDate to set
+     */
     public void setExpirationDate(String expirationDate)
     {
         mExpirationDate = expirationDate;

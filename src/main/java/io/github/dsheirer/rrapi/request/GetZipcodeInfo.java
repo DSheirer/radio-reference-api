@@ -40,17 +40,31 @@ public class GetZipcodeInfo extends RequestBody
         mZipcode = zipcode;
     }
 
+    /**
+     * Zipcodes to request
+     * @return zip codes
+     */
     @JacksonXmlProperty(localName = "request")
     public int getZipcode()
     {
         return mZipcode;
     }
 
+    /**
+     * Sets the requested zip code
+     * @param zipcode to request
+     */
     public void setZipcode(int zipcode)
     {
         mZipcode = zipcode;
     }
 
+    /**
+     * Creates a request envelope
+     * @param authorizationInformation for the requester
+     * @param zipcode being requested
+     * @return envelope
+     */
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation, int zipcode)
     {
         return RequestBody.create(new GetZipcodeInfo(authorizationInformation, zipcode));
