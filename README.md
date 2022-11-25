@@ -29,7 +29,7 @@ A client library for accessing the web services methods available from the radio
         compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.8'
         compile 'ch.qos.logback:logback-classic:1.2.3'
         compile 'org.slf4j:slf4j-api:1.7.25'
-        compile 'io.github.dsheirer:radio-reference-api:15.1.8'
+        compile 'io.github.dsheirer:radio-reference-api:15.1.9'
     }
     
 ### Maven
@@ -37,5 +37,5 @@ A client library for accessing the web services methods available from the radio
     <dependency>
       <groupId>io.github.dsheirer</groupId>
       <artifactId>radio-reference-api</artifactId>
-      <version>15.1.8</version>
+      <version>15.1.9</version>
     </dependency>
