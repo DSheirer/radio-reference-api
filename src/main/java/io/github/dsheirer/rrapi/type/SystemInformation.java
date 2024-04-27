@@ -42,6 +42,7 @@ public class SystemInformation
     private double mLatitude;
     private double mLongitude;
     private double mRange;
+    private List<Rectangle> mRectangles = new ArrayList<>();
     private Date mLastUpdated;
     private List<RadioNetwork> mRadioNetworks = new ArrayList<>();
     private List<Bandplan> mBandplans = new ArrayList<>();
@@ -273,6 +274,25 @@ public class SystemInformation
     public void setRange(double range)
     {
         mRange = range;
+    }
+
+    /**
+     * Rectangle geo-bounds.
+     * @return rectangles
+     */
+    @JacksonXmlProperty(localName = "rectangles")
+    public List<Rectangle> getRectangles()
+    {
+        return mRectangles;
+    }
+
+    /**
+     * Sets the rectangle geo-bounds
+     * @param rectangles values.
+     */
+    public void setRectangles(List<Rectangle> rectangles)
+    {
+        mRectangles = rectangles;
     }
 
     /**

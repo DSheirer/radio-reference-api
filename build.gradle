@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
-    implementation 'ch.qos.logback:logback-classic:1.4.5'
+    implementation 'ch.qos.logback:logback-classic:1.4.14'
     implementation 'org.slf4j:slf4j-api:2.0.4'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
@@ -42,7 +42,7 @@ dependencies {
 
 group 'io.github.dsheirer'
 archivesBaseName = "radio-reference-api"
-version '15.1.9'
+version '18.0.0'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 ext.moduleName = 'io.github.dsheirer.rrapi'
@@ -59,7 +59,6 @@ compileJava {
 
 test {
     useJUnitPlatform()
-
     //Disable all tests by default
     exclude '**/*'
 }

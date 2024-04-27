@@ -34,6 +34,7 @@ public class SubCategory
     private double mLatitude;
     private double mLongitude;
     private double mRange;
+    private List<Rectangle> mRectangles = new ArrayList<>();
     private List<SystemReference> mSystemReferences = new ArrayList<>();
 
     /**
@@ -136,6 +137,25 @@ public class SubCategory
     public void setRange(double range)
     {
         mRange = range;
+    }
+
+    /**
+     * Rectangle geo-bounds.
+     * @return rectangles
+     */
+    @JacksonXmlProperty(localName = "rectangles")
+    public List<Rectangle> getRectangles()
+    {
+        return mRectangles;
+    }
+
+    /**
+     * Sets the rectangle geo-bounds
+     * @param rectangles values.
+     */
+    public void setRectangles(List<Rectangle> rectangles)
+    {
+        mRectangles = rectangles;
     }
 
     /**

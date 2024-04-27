@@ -279,7 +279,7 @@ public class Talkgroup
      * Encryption state
      *
      * 0 - Unencrypted
-     * 1 - Sometimes encrypted
+     * 1 - Mixed encryption
      * 2 = Encrypted
      *
      * @return encryption
