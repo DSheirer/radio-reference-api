@@ -32,7 +32,7 @@ public class AuthorizationInformation
     private String mApplicationKey;
     private String mUserName;
     private String mPassword;
-    private String mVersion = RadioReferenceService.API_VERSION_15;
+    private String mVersion = RadioReferenceService.API_VERSION;
     private String mStyle = "doc";
 
     /**

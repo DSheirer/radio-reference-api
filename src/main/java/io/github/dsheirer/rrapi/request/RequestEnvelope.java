@@ -40,7 +40,6 @@ public class RequestEnvelope
      */
     public RequestEnvelope()
     {
-
     }
 
     /**
@@ -63,7 +62,7 @@ public class RequestEnvelope
     }
 
     /**
-     * Sets the request headedr
+     * Sets the request header
      * @param requestHeader to set
      */
     public void setRequestHeader(RequestHeader requestHeader)

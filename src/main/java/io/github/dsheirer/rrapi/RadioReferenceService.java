@@ -134,7 +134,7 @@ public class RadioReferenceService
     /**
      * Radio Reference API version supported by this service.
      */
-    public static final String API_VERSION_15 = "15";
+    public static final String API_VERSION = "18";
     private static final String RADIO_REFERENCE_API_URL = "http://api.radioreference.com/soap2/";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String XML_CONTENT_TYPE = "text/xml;charset=UTF-8";
@@ -203,6 +203,27 @@ public class RadioReferenceService
         }
 
         return Collections.emptyList();
+    }
+
+    /**
+     * Retrieves the country by identifier
+     * @param id of the country
+     * @return country if found, otherwise throws exception
+     * @throws RadioReferenceException if there is an error
+     */
+    public Country getCountry(int id) throws RadioReferenceException
+    {
+        List<Country> countries = getCountries();
+
+        for(Country country : countries)
+        {
+            if(country.getCountryId() == id)
+            {
+                return country;
+            }
+        }
+
+        throw new RadioReferenceException("Country with id " + id + " not found");
     }
 
     /**
@@ -1119,12 +1140,17 @@ public class RadioReferenceService
 
     /**
      * Get FCC Radio Service Code Information for a specific code
-     * @param code to lookup
+     * @param code to lookup that is composed of two letters
      * @return FCC radio service code or null
      * @throws RadioReferenceException if there is an error
      */
     public FccRadioServiceCode getFccRadioServiceCode(String code) throws RadioReferenceException
     {
+        if(code == null || code.length() != 2)
+        {
+            throw new RadioReferenceException("Radio service code invalid [" + code + "] must be non-null and 2-digits");
+        }
+
         RequestEnvelope request = FccGetRadioServiceCode.create(mAuthorizationInformation, code);
         ResponseEnvelope response = submitSync(request);
 

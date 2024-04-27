@@ -48,8 +48,10 @@ public class Site
     private double mLatitude;
     private double mLongitude;
     private double mRange;
+    private List<Rectangle> mRectangles = new ArrayList<>();
     private int mSplinter;
     private int mRebanded;
+    private int mTdmaControlChannel;
     private List<SiteLicense> mSiteLicenses = new ArrayList<>();
     private List<SiteFrequency> mSiteFrequencies = new ArrayList<>();
     private List<Bandplan> mBandplans = new ArrayList<>();
@@ -406,6 +408,25 @@ public class Site
     }
 
     /**
+     * Rectangle geo-bounds.
+     * @return rectangles
+     */
+    @JacksonXmlProperty(localName = "rectangles")
+    public List<Rectangle> getRectangles()
+    {
+        return mRectangles;
+    }
+
+    /**
+     * Sets the rectangle geo-bounds
+     * @param rectangles values.
+     */
+    public void setRectangles(List<Rectangle> rectangles)
+    {
+        mRectangles = rectangles;
+    }
+
+    /**
      * Frequency splinter
      * @return splinter, 0 = false, 1 = true
      */
@@ -441,6 +462,25 @@ public class Site
     public void setRebanded(int rebanded)
     {
         mRebanded = rebanded;
+    }
+
+    /**
+     * TDMA control channel indicator
+     * @return 0 = false, 1 = true for TDMA control channel
+     */
+    @JacksonXmlProperty(localName = "tdma_cc")
+    public int getTdmaControlChannel()
+    {
+        return mTdmaControlChannel;
+    }
+
+    /**
+     * Sets TDMA control channel
+     * @param tdma control value
+     */
+    public void setTdmaControlChannel(int tdma)
+    {
+        mTdmaControlChannel = tdma;
     }
 
     /**

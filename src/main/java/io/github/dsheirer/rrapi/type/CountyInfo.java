@@ -35,11 +35,12 @@ public class CountyInfo
     private String mName;
     private String mHeader;
     private int mStateId;
+    private String mFips;
+    private Date mLastUpdated;
     private double mLatitude;
     private double mLongitude;
     private double mRange;
-    private String mFips;
-    private Date mLastUpdated;
+    private List<Rectangle> mRectangles = new ArrayList<>();
     private List<Category> mCategories = new ArrayList<>();
     private List<System> mSystems = new ArrayList<>();
     private List<Agency> mAgencies = new ArrayList<>();
@@ -182,6 +183,25 @@ public class CountyInfo
     public void setRange(double range)
     {
         mRange = range;
+    }
+
+    /**
+     * Rectangle geo-bounds.
+     * @return rectangles
+     */
+    @JacksonXmlProperty(localName = "rectangles")
+    public List<Rectangle> getRectangles()
+    {
+        return mRectangles;
+    }
+
+    /**
+     * Sets the rectangle geo-bounds
+     * @param rectangles values.
+     */
+    public void setRectangles(List<Rectangle> rectangles)
+    {
+        mRectangles = rectangles;
     }
 
     /**

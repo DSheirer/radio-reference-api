@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * List of states supported by the service
+ * List of counties supported by the service
  */
 public class GetCountiesByList extends RequestBody
 {

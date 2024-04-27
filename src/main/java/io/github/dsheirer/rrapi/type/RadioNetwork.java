@@ -29,6 +29,7 @@ public class RadioNetwork
     private String mSystemId;
     private String mCt;
     private String mWacn;
+    private String mModel;
 
     /**
      * Constructs an instance
@@ -92,5 +93,24 @@ public class RadioNetwork
     public void setWacn(String wacn)
     {
         mWacn = wacn;
+    }
+
+    /**
+     * Model
+     * @return model value
+     */
+    @JacksonXmlProperty(localName = "model")
+    public String getModel()
+    {
+        return mModel;
+    }
+
+    /**
+     * Sets the model
+     * @param model value
+     */
+    public void setModel(String model)
+    {
+        mModel = model;
     }
 }

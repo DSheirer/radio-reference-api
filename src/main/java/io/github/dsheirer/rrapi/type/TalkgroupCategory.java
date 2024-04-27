@@ -21,7 +21,9 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Talkgroup category or grouping
@@ -36,6 +38,7 @@ public class TalkgroupCategory
     private double mLatitude;
     private double mLongitude;
     private double mRange;
+    private List<Rectangle> mRectangles = new ArrayList<>();
     private Date mLastUpdated;
 
     /**
@@ -195,6 +198,25 @@ public class TalkgroupCategory
     public void setRange(double range)
     {
         mRange = range;
+    }
+
+    /**
+     * Rectangle geo-bounds.
+     * @return rectangles
+     */
+    @JacksonXmlProperty(localName = "rectangles")
+    public List<Rectangle> getRectangles()
+    {
+        return mRectangles;
+    }
+
+    /**
+     * Sets the rectangle geo-bounds
+     * @param rectangles values.
+     */
+    public void setRectangles(List<Rectangle> rectangles)
+    {
+        mRectangles = rectangles;
     }
 
     /**

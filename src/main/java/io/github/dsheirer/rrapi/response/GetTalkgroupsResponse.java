@@ -20,9 +20,7 @@
 package io.github.dsheirer.rrapi.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import io.github.dsheirer.rrapi.type.Site;
 import io.github.dsheirer.rrapi.type.Talkgroup;
-
 import java.util.List;
 
 /**
