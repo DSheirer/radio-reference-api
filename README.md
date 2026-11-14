@@ -78,8 +78,9 @@ Each version tag (e.g. `v18.0.0`) is published as a [GitHub release](https://git
 with the library, sources and javadoc jars and a `SHA256SUMS` file.  A rolling `nightly` pre-release is built from
 `master` after each merge.
 
-To release, set `version` in `gradle.properties` and push a matching tag: `v<version>`, or `v<version>-rc1` for a
-pre-release.
+To release, push a tag with the version: `v18.<minor>.<patch>`, or e.g. `v18.2.0-rc1` for a pre-release.  The
+tag's major version has to match the major version of `version` in `gradle.properties`, which follows the
+RadioReference API version; that file's version is otherwise only used for local and nightly builds.
 
 ### Gradle
 Add an ivy repository for the GitHub releases.  The jar has no dependency metadata, so also declare
@@ -95,7 +96,7 @@ Add an ivy repository for the GitHub releases.  The jar has no dependency metada
     }
 
     dependencies {
-        implementation 'io.github.dsheirer:radio-reference-api:18.0.0'
+        implementation 'io.github.dsheirer:radio-reference-api:18.1.0'
     }
 
 ### Building
