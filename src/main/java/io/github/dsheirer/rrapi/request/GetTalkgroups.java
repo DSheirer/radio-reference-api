@@ -27,7 +27,8 @@ import io.github.dsheirer.rrapi.type.TalkgroupRequestFilter;
 /**
  * Get talkgroups request
  */
-@JsonPropertyOrder({"sid", "tgCid", "tgTag", "tgDec"})
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"sid", "tgCid", "tgTag", "tgDec", "authInfo"})
 public class GetTalkgroups extends RequestBody
 {
     private int mSystemId;

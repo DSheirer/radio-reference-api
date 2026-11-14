@@ -19,7 +19,8 @@
 
 package io.github.dsheirer.rrapi.request;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.StateRequestItem;
@@ -30,6 +31,8 @@ import java.util.List;
 /**
  * List of states supported by the service
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"request", "authInfo"})
 public class GetStatesByList extends RequestBody
 {
     private List<StateRequestItem> mStateIdItems = new ArrayList<>();
@@ -44,11 +47,19 @@ public class GetStatesByList extends RequestBody
     }
 
     /**
+     * Request parameter, sent as a SOAP encoded array of stid items
+     */
+    @JacksonXmlProperty(localName = "request")
+    public RequestArray<StateRequestItem> getRequest()
+    {
+        return new RequestArray<>("tns:stid", mStateIdItems);
+    }
+
+    /**
      * State request item list
      * @return list
      */
-    @JacksonXmlElementWrapper(localName = "request")
-    @JacksonXmlProperty(localName = "item")
+    @JsonIgnore
     public List<StateRequestItem> getStateIdItems()
     {
         return mStateIdItems;

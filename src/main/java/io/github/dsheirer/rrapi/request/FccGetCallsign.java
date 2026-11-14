@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Get FCC callsign information
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"callsign", "authInfo"})
 public class FccGetCallsign extends RequestBody
 {
     private String mCallsign;
@@ -45,7 +48,7 @@ public class FccGetCallsign extends RequestBody
      * Callsign being queried
      * @return callsign
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "callsign")
     public String getCallsign()
     {
         return mCallsign;

@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Sub-Category Frequencies query
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"scid", "authInfo"})
 public class GetSubCategoryFrequenciesRequest extends RequestBody
 {
     private Integer mSubCategoryId;
@@ -44,7 +47,7 @@ public class GetSubCategoryFrequenciesRequest extends RequestBody
      * Sub-Category ID
      * @return id
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "scid")
     public Integer getSubCategoryId()
     {
         return mSubCategoryId;

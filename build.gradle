@@ -61,12 +61,18 @@ tasks.withType(Javadoc).configureEach {
 }
 
 /**
- * The tests call the live radioreference.com web service, so they only run when requested with -PliveTests and
- * credentials are stored in your gradle.properties file as radio.reference.user and radio.reference.password
+ * Offline tests always run.  Tests tagged 'live' call the radioreference.com web service and only run when requested
+ * with -PliveTests, using credentials stored in your gradle.properties file as radio.reference.user and
+ * radio.reference.password
  */
 tasks.named('test', Test) {
-    useJUnitPlatform()
-    enabled = providers.gradleProperty('liveTests').isPresent()
+    boolean liveTests = providers.gradleProperty('liveTests').isPresent()
+    useJUnitPlatform {
+        if(!liveTests)
+        {
+            excludeTags 'live'
+        }
+    }
     environment('RADIO_REFERENCE_USER', providers.gradleProperty('radio.reference.user').getOrElse(''))
     environment('RADIO_REFERENCE_PASSWORD', providers.gradleProperty('radio.reference.password').getOrElse(''))
 }

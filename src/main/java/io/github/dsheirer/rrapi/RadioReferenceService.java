@@ -26,6 +26,8 @@ import io.github.dsheirer.rrapi.request.FccGetProximityCallsigns;
 import io.github.dsheirer.rrapi.request.FccGetRadioServiceCode;
 import io.github.dsheirer.rrapi.request.GetAgencyInfo;
 import io.github.dsheirer.rrapi.request.GetApco25Systems;
+import io.github.dsheirer.rrapi.request.GetAgencyFrequenciesByTag;
+import io.github.dsheirer.rrapi.request.GetCountiesByList;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
 import io.github.dsheirer.rrapi.request.GetCountyFrequenciesByTag;
@@ -58,6 +60,7 @@ import io.github.dsheirer.rrapi.response.FccGetRadioServiceCodeResponse;
 import io.github.dsheirer.rrapi.response.FrequenciesResponse;
 import io.github.dsheirer.rrapi.response.GetAgencyInfoResponse;
 import io.github.dsheirer.rrapi.response.GetApco25SystemsResponse;
+import io.github.dsheirer.rrapi.response.GetCountiesByListResponse;
 import io.github.dsheirer.rrapi.response.GetCountryInfoResponse;
 import io.github.dsheirer.rrapi.response.GetCountryListResponse;
 import io.github.dsheirer.rrapi.response.GetCountyInfoResponse;
@@ -141,7 +144,7 @@ public class RadioReferenceService
     private static final String USER_AGENT = "User-Agent";
     private static final String USER_AGENT_RRAPI = "io.github.dsheirer.rrapi";
 
-    private HttpClient mHttpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+    private final SoapTransport mTransport;
     private AuthorizationInformation mAuthorizationInformation;
     private Map<Integer,Flavor> mFlavorMap;
     private Map<Integer,Metro> mMetroMap;
@@ -159,12 +162,44 @@ public class RadioReferenceService
      */
     public RadioReferenceService(AuthorizationInformation authorizationInformation) throws RadioReferenceException
     {
+        this(authorizationInformation, httpTransport());
+    }
+
+    /**
+     * Constructs an instance of the service that uses the transport to submit requests.  Package-private for testing.
+     *
+     * @param authorizationInformation with username and password for accessing the web service
+     * @param transport to submit requests
+     * @throws RadioReferenceException if the authorization information is null
+     */
+    RadioReferenceService(AuthorizationInformation authorizationInformation, SoapTransport transport) throws RadioReferenceException
+    {
         if(authorizationInformation == null)
         {
             throw new RadioReferenceException("Authorization information cannot be null");
         }
 
         mAuthorizationInformation = authorizationInformation;
+        mTransport = transport;
+    }
+
+    /**
+     * Transport that posts requests to the radioreference.com web service over HTTPS
+     */
+    private static SoapTransport httpTransport()
+    {
+        HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+
+        return requestXml -> {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(RADIO_REFERENCE_API_URL))
+                .header(CONTENT_TYPE, XML_CONTENT_TYPE)
+                .header(USER_AGENT, USER_AGENT_RRAPI)
+                .POST(HttpRequest.BodyPublishers.ofString(requestXml))
+                .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return new SoapTransport.Response(response.statusCode(), response.body());
+        };
     }
 
     /**
@@ -367,6 +402,25 @@ public class RadioReferenceService
     }
 
     /**
+     * Get a list of counties by county id
+     * @param countyIds to query
+     * @return list of counties or empty list
+     * @throws RadioReferenceException if there is an error
+     */
+    public List<County> getCounties(List<Integer> countyIds) throws RadioReferenceException
+    {
+        RequestEnvelope request = GetCountiesByList.create(mAuthorizationInformation, countyIds);
+        ResponseEnvelope response = submitSync(request);
+
+        if(response != null && response.getResponseBody() instanceof GetCountiesByListResponse)
+        {
+            return ((GetCountiesByListResponse)response.getResponseBody()).getCounties();
+        }
+
+        return Collections.emptyList();
+    }
+
+    /**
      * County information for a specific county
      * @param countyId to query
      * @return county information or null
@@ -414,7 +468,7 @@ public class RadioReferenceService
      */
     public List<Frequency> getAgencyFrequenciesByTag(int agencyId, int tagId) throws RadioReferenceException
     {
-        RequestEnvelope request = GetCountyFrequenciesByTag.create(mAuthorizationInformation, agencyId, tagId);
+        RequestEnvelope request = GetAgencyFrequenciesByTag.create(mAuthorizationInformation, agencyId, tagId);
         ResponseEnvelope response = submitSync(request);
 
         if(response != null && response.getResponseBody() instanceof FrequenciesResponse)
@@ -1212,18 +1266,11 @@ public class RadioReferenceService
 
         if(xml != null)
         {
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(RADIO_REFERENCE_API_URL))
-                .header(CONTENT_TYPE, XML_CONTENT_TYPE)
-                .header(USER_AGENT, USER_AGENT_RRAPI)
-                .POST(HttpRequest.BodyPublishers.ofString(xml))
-                .build();
-
-            HttpResponse<String> response = null;
+            SoapTransport.Response response = null;
 
             try
             {
-                response = mHttpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                response = mTransport.post(xml);
             }
             catch(IOException ioe)
             {
@@ -1269,7 +1316,7 @@ public class RadioReferenceService
      * @return deserialized response envelope or null if there is nothing to deserialize
      * @throws IOException if there are any errors
      */
-    private static ResponseEnvelope deserialize(String xml) throws IOException
+    static ResponseEnvelope deserialize(String xml) throws IOException
     {
         if(xml != null)
         {

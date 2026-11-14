@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * State information
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"stid", "authInfo"})
 public class GetStateInfo extends RequestBody
 {
     private int mStateId;
@@ -44,7 +47,7 @@ public class GetStateInfo extends RequestBody
      * State id
      * @return id
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "stid")
     public int getStateId()
     {
         return mStateId;

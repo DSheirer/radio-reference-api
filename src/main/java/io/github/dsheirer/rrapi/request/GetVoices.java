@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Radio System Voice information
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"id", "authInfo"})
 public class GetVoices extends RequestBody
 {
     private Integer mSystemVoiceId;
@@ -53,7 +56,7 @@ public class GetVoices extends RequestBody
      * System voice id
      * @return id
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "id")
     public Integer getSystemVoiceId()
     {
         return mSystemVoiceId;

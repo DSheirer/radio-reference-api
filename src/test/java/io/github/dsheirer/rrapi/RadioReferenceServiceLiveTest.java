@@ -17,8 +17,8 @@
  * ****************************************************************************
  */
 
-import io.github.dsheirer.rrapi.RadioReferenceException;
-import io.github.dsheirer.rrapi.RadioReferenceService;
+package io.github.dsheirer.rrapi;
+
 import io.github.dsheirer.rrapi.type.Agency;
 import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
@@ -45,6 +45,14 @@ import io.github.dsheirer.rrapi.type.Type;
 import io.github.dsheirer.rrapi.type.UserInfo;
 import io.github.dsheirer.rrapi.type.Voice;
 import io.github.dsheirer.rrapi.type.ZipInfo;
+import io.github.dsheirer.rrapi.type.Category;
+import io.github.dsheirer.rrapi.type.SubCategory;
+import io.github.dsheirer.rrapi.type.TalkgroupCategory;
+import io.github.dsheirer.rrapi.type.TalkgroupRequestFilter;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assumptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +64,15 @@ import org.slf4j.LoggerFactory;
 /**
  * JUnit testing for RR service
  */
-public class RadioReferenceServiceTest
+/**
+ * Calls the live radioreference.com web service.  Runs only with ./gradlew test -PliveTests, using credentials stored
+ * in your gradle.properties file as radio.reference.user and radio.reference.password
+ */
+@org.junit.jupiter.api.Tag("live")
+public class RadioReferenceServiceLiveTest
 {
     private static final String SDRTRUNK_APPLICATION_KEY = "88969092";
-    private static final Logger mLog = LoggerFactory.getLogger(RadioReferenceServiceTest.class);
+    private static final Logger mLog = LoggerFactory.getLogger(RadioReferenceServiceLiveTest.class);
     private static RadioReferenceService sRADIO_REFERENCE_SERVICE;
     private static State sSTATE_NEW_YORK;
     private static County sCOUNTY_OSWEGO;
@@ -67,7 +80,7 @@ public class RadioReferenceServiceTest
     private static System sSYSTEM_CNYICC;
     private static long mCounter = 0;
 
-    public RadioReferenceServiceTest()
+    public RadioReferenceServiceLiveTest()
     {
     }
 
@@ -258,6 +271,8 @@ public class RadioReferenceServiceTest
         RadioReferenceService service = getService();
         Country usa = service.getCountry(1);
         Assertions.assertNotNull(usa);
+        Assertions.assertEquals(1, usa.getCountryId());
+        Assertions.assertEquals("United States", usa.getName());
     }
 
     /**
@@ -271,6 +286,8 @@ public class RadioReferenceServiceTest
         RadioReferenceService service = getService();
         CountryInfo usa = service.getCountryInfo(1);
         Assertions.assertNotNull(usa);
+        Assertions.assertEquals(1, usa.getCountryId());
+        Assertions.assertTrue(usa.getStates().size() >= 50, "USA states");
     }
 
     /**
@@ -287,7 +304,27 @@ public class RadioReferenceServiceTest
         stateIds.add(2);
         stateIds.add(3);
         List<State> states = service.getStates(stateIds);
-        Assertions.assertTrue(states != null && states.size() > 0);
+        Assertions.assertNotNull(states);
+        Assertions.assertEquals(Set.copyOf(stateIds), states.stream().map(State::getStateId).collect(Collectors.toSet()),
+            "requested state ids");
+    }
+
+    /**
+     * Get counties by county ID, using the first counties of New York state
+     * @throws RadioReferenceException
+     */
+    @Test
+    void getCounties() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+        State newYork = getNewYork();
+        Assertions.assertNotNull(newYork);
+        List<Integer> countyIds = service.getStateInfo(newYork.getStateId()).getCounties().stream()
+            .limit(3).map(County::getCountyId).toList();
+        Assertions.assertFalse(countyIds.isEmpty());
+        List<County> counties = service.getCounties(countyIds);
+        Assertions.assertEquals(Set.copyOf(countyIds), counties.stream().map(County::getCountyId).collect(Collectors.toSet()),
+            "requested county ids");
     }
 
     /**
@@ -381,12 +418,20 @@ public class RadioReferenceServiceTest
 
             boolean found = false;
 
+            Set<Integer> agencySubCategories = subCategoryIds(agencyInfo.getCategories());
+
             for(Tag tag: tagMap.values())
             {
                 List<Frequency> frequencies = service.getAgencyFrequenciesByTag(agency.getAgencyId(), tag.getTagId());
 
                 if(frequencies.size() > 0)
                 {
+                    for(Frequency frequency: frequencies)
+                    {
+                        Assertions.assertTrue(agencySubCategories.contains(frequency.getSubCategoryId()),
+                            "frequency subcategory " + frequency.getSubCategoryId() + " belongs to agency " +
+                                agency.getAgencyId());
+                    }
                     found = true;
                     break;
                 }
@@ -433,12 +478,35 @@ public class RadioReferenceServiceTest
                 Map<Integer, Tag> tagMap = service.getTagsMap();
                 Assertions.assertNotNull(tagMap);
 
+                Set<Integer> countySubCategories = subCategoryIds(countyInfo.getCategories());
+
                 for(Tag tag: tagMap.values())
                 {
                     List<Frequency> frequencies = service.getCountyFrequenciesByTag(county.getCountyId(), tag.getTagId());
 
                     if(frequencies.size() > 0)
                     {
+                        //County results include the frequencies of the agencies in the county (e.g. Albany county
+                        //returns its Military agency frequencies)
+                        for(Frequency frequency: frequencies)
+                        {
+                            if(!countySubCategories.contains(frequency.getSubCategoryId()))
+                            {
+                                for(Agency agency: countyInfo.getAgencies())
+                                {
+                                    countySubCategories.addAll(subCategoryIds(service.getAgencyInfo(agency).getCategories()));
+
+                                    if(countySubCategories.contains(frequency.getSubCategoryId()))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            Assertions.assertTrue(countySubCategories.contains(frequency.getSubCategoryId()),
+                                "frequency subcategory " + frequency.getSubCategoryId() + " belongs to county " +
+                                    county.getCountyId() + " or one of its agencies");
+                        }
                         found = true;
                         break;
                     }
@@ -464,6 +532,7 @@ public class RadioReferenceServiceTest
         RadioReferenceService service = getService();
         FccCallsignDetails details = service.getFccCallsignDetails("WQDY448");
         Assertions.assertNotNull(details);
+        Assertions.assertEquals("WQDY448", details.getCallsign());
     }
 
     /**
@@ -477,7 +546,11 @@ public class RadioReferenceServiceTest
         List<ProximityCallsignResult> results = service.getFccCallsignsNearLocation(42.94833, -76.02389, 3.0); //Syracuse
 //        List<ProximityCallsignResult> results = service.getFccCallsignsNearLocation(29.42475, -98.49476, 15.0); //San Antonio
         Assertions.assertNotNull(results);
-        //Note: this doesn't seem to produce any results from the API.
+        Assertions.assertFalse(results.isEmpty(), "callsigns within 3 km of Syracuse");
+        for(ProximityCallsignResult result: results)
+        {
+            Assertions.assertTrue(result.getDistance() <= 3.0, "distance " + result.getDistance() + " within range");
+        }
     }
 
     /**
@@ -490,6 +563,7 @@ public class RadioReferenceServiceTest
         RadioReferenceService service = getService();
         FccRadioServiceCode code = service.getFccRadioServiceCode("AB");
         Assertions.assertNotNull(code);
+        Assertions.assertEquals("AB", code.getCode());
     }
 
     /**
@@ -638,6 +712,8 @@ public class RadioReferenceServiceTest
         RadioReferenceService service = getService();
         ZipInfo zipInfo = service.getZipcodeInfo(13069); //Fulton, NY
         Assertions.assertNotNull(zipInfo);
+        Assertions.assertEquals(13069, zipInfo.getZipcode());
+        Assertions.assertEquals("Fulton", zipInfo.getCity());
     }
 
     /**
@@ -683,5 +759,167 @@ public class RadioReferenceServiceTest
         List<SearchFrequencyResult> results = service.searchMetroFrequencies(syracuse.getMetroId(), 460.0375);
         Assertions.assertNotNull(results);
         Assertions.assertTrue(results.size() > 0);
+    }
+
+    /**
+     * Collects the subcategory ids of the categories
+     */
+    private static Set<Integer> subCategoryIds(List<Category> categories)
+    {
+        Set<Integer> ids = new HashSet<>();
+        for(Category category: categories)
+        {
+            for(SubCategory subCategory: category.getSubCategories())
+            {
+                ids.add(subCategory.getSubCategoryId());
+            }
+        }
+        return ids;
+    }
+
+    @Test
+    void getUserFeeds() throws RadioReferenceException
+    {
+        //Feed broadcast details include stream passwords, so only check that the call succeeds
+        Assertions.assertNotNull(getService().getUserFeeds());
+    }
+
+    @Test
+    void getStateById() throws RadioReferenceException
+    {
+        State newYork = getNewYork();
+        State state = getService().getState(newYork.getStateId());
+        Assertions.assertNotNull(state);
+        Assertions.assertEquals(newYork.getStateId(), state.getStateId());
+        Assertions.assertEquals(newYork.getName(), state.getName());
+    }
+
+    @Test
+    void getCountyInfo() throws RadioReferenceException
+    {
+        County oswego = getOswego();
+        CountyInfo countyInfo = getService().getCountyInfo(oswego.getCountyId());
+        Assertions.assertNotNull(countyInfo);
+        Assertions.assertEquals(oswego.getCountyId(), countyInfo.getCountyId());
+        Assertions.assertEquals(getNewYork().getStateId(), countyInfo.getStateId());
+        Assertions.assertFalse(countyInfo.getCategories().isEmpty(), "Oswego county frequency categories");
+    }
+
+    @Test
+    void getSubCategoryFrequencies() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+        CountyInfo countyInfo = service.getCountyInfo(getOswego().getCountyId());
+
+        for(Category category: countyInfo.getCategories())
+        {
+            for(SubCategory subCategory: category.getSubCategories())
+            {
+                List<Frequency> frequencies = service.getSubCategoryFrequencies(subCategory.getSubCategoryId());
+
+                if(!frequencies.isEmpty())
+                {
+                    for(Frequency frequency: frequencies)
+                    {
+                        Assertions.assertEquals(subCategory.getSubCategoryId(), frequency.getSubCategoryId());
+                        Assertions.assertTrue(frequency.getDownlink() > 0, "downlink frequency");
+                    }
+                    return;
+                }
+            }
+        }
+
+        Assertions.fail("No Oswego county subcategory has frequencies");
+    }
+
+    @Test
+    void getSystemInformationAndSites() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+        System cnyicc = getCNYICC();
+        Assertions.assertNotNull(cnyicc);
+
+        SystemInformation systemInformation = service.getSystemInformation(cnyicc.getSystemId());
+        Assertions.assertNotNull(systemInformation);
+        Assertions.assertFalse(systemInformation.getName().isBlank(), "system name");
+
+        List<Site> sites = service.getSites(cnyicc.getSystemId());
+        Assertions.assertFalse(sites.isEmpty(), "CNYICC sites");
+        for(Site site: sites)
+        {
+            Assertions.assertEquals(cnyicc.getSystemId(), site.getSystemId());
+        }
+        Assertions.assertTrue(sites.stream().anyMatch(site -> !site.getSiteFrequencies().isEmpty()), "site frequencies");
+    }
+
+    @Test
+    void getTalkgroupCategoriesAndFilteredTalkgroups() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+        System cnyicc = getCNYICC();
+        Assertions.assertNotNull(cnyicc);
+
+        List<TalkgroupCategory> categories = service.getTalkgroupCategories(cnyicc.getSystemId());
+        Assertions.assertFalse(categories.isEmpty(), "CNYICC talkgroup categories");
+
+        TalkgroupCategory category = categories.get(0);
+        TalkgroupRequestFilter filter = new TalkgroupRequestFilter(cnyicc.getSystemId());
+        filter.setCategoryId(category.getTalkgroupCategoryId());
+        List<Talkgroup> talkgroups = service.getTalkgroups(filter);
+        Assertions.assertFalse(talkgroups.isEmpty(), "talkgroups in category " + category.getName());
+
+        for(Talkgroup talkgroup: talkgroups)
+        {
+            Assertions.assertEquals(category.getTalkgroupCategoryId(), talkgroup.getTalkgroupCategoryId());
+        }
+
+        Talkgroup first = talkgroups.get(0);
+        TalkgroupRequestFilter decimalFilter = new TalkgroupRequestFilter(cnyicc.getSystemId());
+        decimalFilter.setDecimalValue(first.getDecimalValue());
+        List<Talkgroup> byDecimal = service.getTalkgroups(decimalFilter);
+        Assertions.assertFalse(byDecimal.isEmpty(), "talkgroup " + first.getDecimalValue());
+        for(Talkgroup talkgroup: byDecimal)
+        {
+            Assertions.assertEquals(first.getDecimalValue(), talkgroup.getDecimalValue());
+        }
+    }
+
+    @Test
+    void singleItemLookups() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+
+        int flavorId = service.getFlavorsMap().keySet().iterator().next();
+        Assertions.assertEquals(flavorId, service.getFlavor(flavorId).getFlavorId());
+
+        int modeId = service.getModesMap().keySet().iterator().next();
+        Assertions.assertEquals(modeId, service.getMode(modeId).getModeId());
+
+        int typeId = service.getTypesMap().keySet().iterator().next();
+        Assertions.assertEquals(typeId, service.getType(typeId).getTypeId());
+
+        int voiceId = service.getVoicesMap().keySet().iterator().next();
+        Assertions.assertEquals(voiceId, service.getVoice(voiceId).getVoiceId());
+
+        int tagId = service.getTagsMap().keySet().iterator().next();
+        Assertions.assertEquals(tagId, service.getTag(tagId).getTagId());
+    }
+
+    @Test
+    void searchCountyFrequenciesWithTone() throws RadioReferenceException
+    {
+        RadioReferenceService service = getService();
+        County oswego = getOswego();
+        List<SearchFrequencyResult> results = service.searchCountyFrequencies(oswego.getCountyId(), 460.0375);
+        String tone = results.stream().map(SearchFrequencyResult::getTone).filter(t -> t != null && !t.isBlank())
+            .findFirst().orElse(null);
+        Assumptions.assumeTrue(tone != null, "no 460.0375 result in Oswego county has a tone");
+
+        List<SearchFrequencyResult> toneResults = service.searchCountyFrequencies(oswego.getCountyId(), 460.0375, tone);
+        Assertions.assertFalse(toneResults.isEmpty(), "results with tone " + tone);
+        for(SearchFrequencyResult result: toneResults)
+        {
+            Assertions.assertEquals(tone, result.getTone());
+        }
     }
 }

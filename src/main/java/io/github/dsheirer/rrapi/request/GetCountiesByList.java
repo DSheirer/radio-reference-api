@@ -19,7 +19,8 @@
 
 package io.github.dsheirer.rrapi.request;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.CountyRequestItem;
@@ -30,6 +31,8 @@ import java.util.List;
 /**
  * List of counties supported by the service
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"request", "authInfo"})
 public class GetCountiesByList extends RequestBody
 {
     private List<CountyRequestItem> mCountyRequestItems = new ArrayList<>();
@@ -44,11 +47,19 @@ public class GetCountiesByList extends RequestBody
     }
 
     /**
+     * Request parameter, sent as a SOAP encoded array of ctid items
+     */
+    @JacksonXmlProperty(localName = "request")
+    public RequestArray<CountyRequestItem> getRequest()
+    {
+        return new RequestArray<>("tns:ctid", mCountyRequestItems);
+    }
+
+    /**
      * Requested counties
      * @return counties
      */
-    @JacksonXmlElementWrapper(localName = "request")
-    @JacksonXmlProperty(localName = "item")
+    @JsonIgnore
     public List<CountyRequestItem> getCountyRequestItems()
     {
         return mCountyRequestItems;
@@ -80,5 +91,22 @@ public class GetCountiesByList extends RequestBody
     public static RequestEnvelope create(AuthorizationInformation authorizationInformation)
     {
         return RequestBody.create(new GetCountiesByList(authorizationInformation));
+    }
+
+    /**
+     * Creates the request envelope
+     * @param authorizationInformation of the requester
+     * @param countyIds to request
+     * @return envelope
+     */
+    public static RequestEnvelope create(AuthorizationInformation authorizationInformation, List<Integer> countyIds)
+    {
+        GetCountiesByList body = new GetCountiesByList(authorizationInformation);
+        for(int countyId: countyIds)
+        {
+            body.addCounty(countyId);
+        }
+
+        return RequestBody.create(body);
     }
 }

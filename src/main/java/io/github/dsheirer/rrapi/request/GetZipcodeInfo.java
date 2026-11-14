@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Zipcode information
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"zipcode", "authInfo"})
 public class GetZipcodeInfo extends RequestBody
 {
     private int mZipcode;
@@ -44,7 +47,7 @@ public class GetZipcodeInfo extends RequestBody
      * Zipcodes to request
      * @return zip codes
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "zipcode")
     public int getZipcode()
     {
         return mZipcode;

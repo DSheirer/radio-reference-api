@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Get tags request
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"id", "authInfo"})
 public class GetTags extends RequestBody
 {
     private Integer mTagId;
@@ -53,7 +56,7 @@ public class GetTags extends RequestBody
      * Tag ID
      * @return id
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "id")
     public Integer getTagId()
     {
         return mTagId;

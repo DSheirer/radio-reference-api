@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Get FCC radio service code information
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"code", "authInfo"})
 public class FccGetRadioServiceCode extends RequestBody
 {
     private String mCode;
@@ -55,7 +58,7 @@ public class FccGetRadioServiceCode extends RequestBody
      * Radio service code being queried
      * @return radio service code
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "code")
     public String getCode()
     {
         return mCode;

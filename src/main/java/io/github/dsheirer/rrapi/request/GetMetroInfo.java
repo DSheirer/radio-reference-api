@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Metro information request
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"mid", "authInfo"})
 public class GetMetroInfo extends RequestBody
 {
     private int mMetroId;
@@ -44,7 +47,7 @@ public class GetMetroInfo extends RequestBody
      * Metro id
      * @return id
      */
-    @JacksonXmlProperty(localName = "request")
+    @JacksonXmlProperty(localName = "mid")
     public int getMetroId()
     {
         return mMetroId;

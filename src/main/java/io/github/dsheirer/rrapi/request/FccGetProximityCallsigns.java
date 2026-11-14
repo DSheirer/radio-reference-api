@@ -19,6 +19,7 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
@@ -30,6 +31,8 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
  *
  * The ICD requests that a max range of 3 miles (4.82 km) be used.  The constructor enforces this value.
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"lat", "lon", "range", "unit", "authInfo"})
 public class FccGetProximityCallsigns extends RequestBody
 {
     private static final double MAX_RANGE_KILOMETERS = 4.82803;

@@ -58,5 +58,11 @@ Add an ivy repository for the GitHub releases.  The jar has no dependency metada
     }
 
 ### Building
-Requires JDK 25 or newer: `./gradlew build`.  The tests call the live radioreference.com service and only run with
-`./gradlew test -PliveTests`, using `radio.reference.user` and `radio.reference.password` from your `gradle.properties`.
+Requires JDK 25 or newer: `./gradlew build`.
+
+The build runs offline tests that check the library against the committed WSDL: every operation, parameter name and
+order, and every field of every response type, using generated sample responses and recorded real responses in
+`src/test/resources/responses`.
+
+Tests tagged `live` call the radioreference.com service and only run with `./gradlew test -PliveTests`, using
+`radio.reference.user` and `radio.reference.password` from your `gradle.properties`.

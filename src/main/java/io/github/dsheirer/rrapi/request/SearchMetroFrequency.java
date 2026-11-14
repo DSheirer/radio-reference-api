@@ -19,12 +19,15 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
  * Search metro frequency
  */
+//RPC parameters are matched by position, so they are sent in WSDL order
+@JsonPropertyOrder({"mid", "freq", "tone", "authInfo"})
 public class SearchMetroFrequency extends RequestBody
 {
     private int mMetroId;
