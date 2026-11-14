@@ -18,143 +18,62 @@
  */
 
 plugins {
-    id 'java'
     id 'java-library'
-    id 'maven-publish'
-    id 'signing'
 }
 
-sourceCompatibility = 11
+group = 'io.github.dsheirer'
+
+// The release version is set in gradle.properties.  Workflows pass -Pversion for tagged, nightly and pull request builds.
+version = providers.gradleProperty('version').get()
+
+base {
+    archivesName = 'radio-reference-api'
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
-    implementation 'org.slf4j:slf4j-api:2.0.4'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.23.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.23.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.23'
+    implementation 'org.slf4j:slf4j-api:2.0.20'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation platform('org.junit:junit-bom:6.1.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.6.6'
 }
 
-group 'io.github.dsheirer'
-archivesBaseName = "radio-reference-api"
-version '18.0.0'
-
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-ext.moduleName = 'io.github.dsheirer.rrapi'
-
-compileJava {
-    inputs.property("moduleName", moduleName)
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath,
-        ]
-        classpath = files()
-    }
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
 }
 
-test {
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+/**
+ * The tests call the live radioreference.com web service, so they only run when requested with -PliveTests and
+ * credentials are stored in your gradle.properties file as radio.reference.user and radio.reference.password
+ */
+tasks.named('test', Test) {
     useJUnitPlatform()
-    //Disable all tests by default
-    exclude '**/*'
+    enabled = providers.gradleProperty('liveTests').isPresent()
+    environment('RADIO_REFERENCE_USER', providers.gradleProperty('radio.reference.user').getOrElse(''))
+    environment('RADIO_REFERENCE_PASSWORD', providers.gradleProperty('radio.reference.password').getOrElse(''))
 }
 
-tasks.withType(Test) {
-    //Store radio reference login credentials in your gradle.properties file
-    println "### User: " + project.properties['radio.reference.user']
-    environment('RADIO_REFERENCE_USER', project.properties['radio.reference.user'])
-    environment('RADIO_REFERENCE_PASSWORD', project.properties['radio.reference.password'])
-}
-
-javadoc {
-    options.addBooleanOption('html5', true)
-    options.modulePath(classpath.asCollection())
-}
-
-task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-task packageSources(type: Jar, dependsOn: 'classes') {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId 'radio-reference-api'
-            from components.java
-            artifact packageSources
-            artifact packageJavadoc
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
-            pom {
-                name = 'radioreference.com web services Java client'
-                description = 'Java client library for radioreference.com web services'
-                url = 'https://github.com/DSheirer/radio-reference-api'
-                licenses {
-                    license {
-                        name = 'GNU General Public License, Version 3.0'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'dsheirer'
-                        name = 'Dennis Sheirer'
-                        email = 'dsheirer@sonatype.com'
-                        organizationUrl = 'https://github.com/DSheirer'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/DSheirer/radio-reference-api.git'
-                    developerConnection = 'scm:git:ssh://github.com/DSheirer/radio-reference-api.git'
-                    url = 'https://github.com/DSheirer/radio-reference-api/tree/master'
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-    }
-}
-
-processResources {
-    exclude('logback.xml')
-}
-
-signing {
-    sign publishing.publications.mavenJava
-}
-
-artifacts {
-    archives packageJavadoc, packageSources
-}
-
-jar {
+tasks.named('jar', Jar) {
     manifest {
-        attributes 'Implementation-Title': "${project.archivesBaseName}",
-                   'Implementation-Version': archiveVersion
+        attributes 'Implementation-Title': 'radio-reference-api',
+                   'Implementation-Version': project.version
     }
 }

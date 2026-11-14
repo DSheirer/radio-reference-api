@@ -135,7 +135,7 @@ public class RadioReferenceService
      * Radio Reference API version supported by this service.
      */
     public static final String API_VERSION = "18";
-    private static final String RADIO_REFERENCE_API_URL = "http://api.radioreference.com/soap2/";
+    private static final String RADIO_REFERENCE_API_URL = "https://api.radioreference.com/soap2/";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String XML_CONTENT_TYPE = "text/xml;charset=UTF-8";
     private static final String USER_AGENT = "User-Agent";

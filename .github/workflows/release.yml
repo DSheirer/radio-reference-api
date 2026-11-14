@@ -1,0 +1,61 @@
+# Publishes a release when a version tag is pushed. The tag has to match the
+# version in gradle.properties: v19.0.0 for a release, or v19.0.0-rc1 for a
+# pre-release.
+name: Release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - id: version
+        run: |
+          base="$(sed -n 's/^version=//p' gradle.properties)"
+          case "$GITHUB_REF_NAME" in
+            "v$base" | "v$base"-*) ;;
+            *)
+              echo "::error::Tag $GITHUB_REF_NAME does not match version $base in gradle.properties"
+              exit 1
+              ;;
+          esac
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: jars
+          path: jars
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          (cd jars && sha256sum * > SHA256SUMS)
+          prerelease=()
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            prerelease=(--prerelease)
+          fi
+          gh release create "$GITHUB_REF_NAME" jars/* "${prerelease[@]}" \
+            --verify-tag --generate-notes --title "radio-reference-api ${GITHUB_REF_NAME#v}"

@@ -1,0 +1,55 @@
+# Builds the library, sources and javadoc jars and checks that the classes target
+# Java 25. Called by the ci, nightly and release workflows.
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Version of the jars
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: '25'
+
+jobs:
+  build:
+    name: Build jars
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      # The tests call the live radioreference.com service, so the build skips them.
+      - name: Build
+        env:
+          VERSION: ${{ inputs.version }}
+        run: ./gradlew build --console=plain -Pversion="$VERSION"
+
+      - name: Check the class file version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          major="$(javap -v -cp "build/libs/radio-reference-api-$VERSION.jar" \
+            io.github.dsheirer.rrapi.RadioReferenceService | sed -n 's/^ *major version: //p')"
+          if [ "$major" != 69 ]; then
+            echo "::error::Expected Java 25 class files (major version 69), found $major"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: jars
+          path: build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 7
