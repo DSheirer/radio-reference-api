@@ -19,8 +19,8 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -236,5 +236,14 @@ public class TalkgroupCategory
     public void setLastUpdated(Date lastUpdated)
     {
         mLastUpdated = lastUpdated;
+    }
+
+    /**
+     * Coverage area of the talkgroup category, for distance and containment checks
+     */
+    @JsonIgnore
+    public Coverage getCoverage()
+    {
+        return new Coverage(getLatitude(), getLongitude(), getRange(), getRectangles());
     }
 }

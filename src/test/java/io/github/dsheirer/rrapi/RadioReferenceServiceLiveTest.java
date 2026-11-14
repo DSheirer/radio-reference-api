@@ -922,4 +922,28 @@ public class RadioReferenceServiceLiveTest
             Assertions.assertEquals(tone, result.getTone());
         }
     }
+
+    @Test
+    void invalidIdIsReportedAsInvalidRequest()
+    {
+        RadioReferenceException exception = Assertions.assertThrows(RadioReferenceException.class,
+            () -> getService().getCountyInfo(999999999));
+
+        Assertions.assertEquals(RadioReferenceException.ErrorType.INVALID_REQUEST, exception.getErrorType());
+        Assertions.assertFalse(exception.isRetryable());
+        Assertions.assertEquals("SERVER", exception.getFault().getFaultCode());
+    }
+
+    @Test
+    void wrongApplicationKeyIsReported() throws RadioReferenceException
+    {
+        String name = java.lang.System.getenv("RADIO_REFERENCE_USER");
+        String password = java.lang.System.getenv("RADIO_REFERENCE_PASSWORD");
+        RadioReferenceService service = new RadioReferenceService(new AuthorizationInformation("00000000", name, password));
+
+        RadioReferenceException exception = Assertions.assertThrows(RadioReferenceException.class,
+            () -> service.getCountyInfo(getOswego().getCountyId()));
+
+        Assertions.assertEquals(RadioReferenceException.ErrorType.APPLICATION_KEY, exception.getErrorType());
+    }
 }

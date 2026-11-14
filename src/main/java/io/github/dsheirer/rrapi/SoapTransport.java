@@ -20,6 +20,7 @@
 package io.github.dsheirer.rrapi;
 
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Sends a SOAP request envelope and returns the HTTP response.  Package-private so that tests can replace the HTTP
@@ -30,8 +31,17 @@ interface SoapTransport
 {
     /**
      * HTTP status code and body of a response
+     * @param statusCode HTTP status code
+     * @param body of the response
+     * @param retryAfter delay from the Retry-After header, or null if the response doesn't have one
      */
-    record Response(int statusCode, String body) {}
+    record Response(int statusCode, String body, Duration retryAfter)
+    {
+        Response(int statusCode, String body)
+        {
+            this(statusCode, body, null);
+        }
+    }
 
     /**
      * Posts the request envelope XML to the web service.

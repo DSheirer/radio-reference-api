@@ -27,6 +27,47 @@ A client library for accessing the web services methods available from the radio
         //Handle error
     }
 
+The service is thread safe.  Requests time out after 10 seconds connecting and 30 seconds waiting for the response;
+use `new RadioReferenceService(authorizationInformation, connectTimeout, requestTimeout)` to change the limits.
+
+Any call can run in the background on a virtual thread.  Cancelling the returned future aborts the HTTP request:
+
+    CompletableFuture<List<SearchFrequencyResult>> future =
+        service.async(s -> s.searchCountyFrequencies(countyId, 460.0375));
+
+Frequencies are in MHz, as the service provides them.  Use `getDownlinkHz()`, `getUplinkHz()` and
+`getFrequencyHz()`, or `FrequencyConversion`, for whole Hz values rounded to the nearest Hz.
+
+Counties, agencies, frequency subcategories, trunked systems, sites and talkgroup categories provide their coverage
+area with `getCoverage()`: the center, the range (a radius in miles) and any outline rectangles, with distance and
+containment checks.
+
+    Coverage coverage = service.getCountyInfo(countyId).getCoverage();
+    double kilometers = coverage.distanceToCoverageKilometers(latitude, longitude); //0 inside the coverage area
+
+Errors are categorized by `RadioReferenceException.getErrorType()`: `AUTHENTICATION`, `APPLICATION_KEY`,
+`SUBSCRIPTION`, `INVALID_REQUEST` (e.g. an id that doesn't exist), `RATE_LIMITED`, `SERVICE_ERROR`, `TIMEOUT`,
+`NETWORK`, `INTERRUPTED` or `UNKNOWN`.  `isRetryable()` indicates if the same request could succeed later, and
+`getRetryAfter()` returns the delay the service asked for, when it sends one.
+
+    catch(RadioReferenceException e)
+    {
+        if(e.isRetryable())
+        {
+            //Back off and try again later
+        }
+        else if(e.getErrorType() == RadioReferenceException.ErrorType.AUTHENTICATION)
+        {
+            //Ask the user for their username and password
+        }
+    }
+
+`RadioReferenceJson` saves and loads the data types as JSON, e.g. to cache results on disk.  Compare a saved copy's
+`getLastUpdated()` with the current value from the service to tell if it is stale.
+
+    RadioReferenceJson.write(path, frequencies);
+    List<Frequency> cached = RadioReferenceJson.read(path, new TypeReference<List<Frequency>>() {});
+
 ### WSDL
 `src/main/wsdl/radioreference-v18.wsdl` is the web service definition that this library implements.  The nightly
 workflow compares it with the live WSDL and fails, showing the differences in the job summary, when RadioReference

@@ -129,6 +129,7 @@ public class ServiceOperationsTest
 
         return List.of(
             call("getUserInfo", "getUserData", s -> s.getUserInfo()),
+            call("async", "getCountryList", s -> s.async(RadioReferenceService::getCountries).get()),
             call("getUserFeeds", "getUserFeedBroadcasts", s -> s.getUserFeeds()),
             call("getCountry", "getCountryList", s -> s.getCountry(1)),
             call("getCountries", "getCountryList", s -> s.getCountries()),

@@ -70,6 +70,16 @@ public class SiteFrequency
     }
 
     /**
+     * Site frequency in Hz, rounded to the nearest Hz
+     * @return frequency in Hz, or 0 if not set
+     */
+    @JsonIgnore
+    public long getFrequencyHz()
+    {
+        return FrequencyConversion.toHertz(getFrequency());
+    }
+
+    /**
      * Sets the frequency
      * @param frequency value
      */

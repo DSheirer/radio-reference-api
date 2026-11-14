@@ -19,9 +19,9 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -373,5 +373,14 @@ public class SystemInformation
     public void setFleetmap(Fleetmap fleetmap)
     {
         mFleetmap = fleetmap;
+    }
+
+    /**
+     * Coverage area of the trunked system, for distance and containment checks
+     */
+    @JsonIgnore
+    public Coverage getCoverage()
+    {
+        return new Coverage(getLatitude(), getLongitude(), getRange(), getRectangles());
     }
 }

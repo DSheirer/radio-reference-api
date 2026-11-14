@@ -110,4 +110,26 @@ public class Rectangle
     {
         mSouthEastLongitude = degrees;
     }
+
+    /**
+     * Indicates if the location is inside the rectangle, including its edges.  Handles rectangles that cross the
+     * 180 degree meridian.
+     * @param latitude in decimal degrees
+     * @param longitude in decimal degrees
+     */
+    public boolean contains(double latitude, double longitude)
+    {
+        if(latitude > mNorthWestLatitude || latitude < mSouthEastLatitude)
+        {
+            return false;
+        }
+
+        if(mNorthWestLongitude <= mSouthEastLongitude)
+        {
+            return longitude >= mNorthWestLongitude && longitude <= mSouthEastLongitude;
+        }
+
+        //Crosses the 180 degree meridian
+        return longitude >= mNorthWestLongitude || longitude <= mSouthEastLongitude;
+    }
 }

@@ -20,8 +20,8 @@
 package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -307,5 +307,14 @@ public class CountyInfo
         {
             mAgencies = agencies;
         }
+    }
+
+    /**
+     * Coverage area of the county, for distance and containment checks
+     */
+    @JsonIgnore
+    public Coverage getCoverage()
+    {
+        return new Coverage(getLatitude(), getLongitude(), getRange(), getRectangles());
     }
 }

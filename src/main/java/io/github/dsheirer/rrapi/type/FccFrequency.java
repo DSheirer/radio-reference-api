@@ -19,6 +19,7 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
@@ -68,6 +69,16 @@ public class FccFrequency
     public double getFrequency()
     {
         return mFrequency;
+    }
+
+    /**
+     * Licensed frequency in Hz, rounded to the nearest Hz
+     * @return frequency in Hz, or 0 if not set
+     */
+    @JsonIgnore
+    public long getFrequencyHz()
+    {
+        return FrequencyConversion.toHertz(getFrequency());
     }
 
     /**

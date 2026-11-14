@@ -19,8 +19,8 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +85,16 @@ public class Frequency
     }
 
     /**
+     * Downlink (output) frequency in Hz, rounded to the nearest Hz
+     * @return frequency in Hz, or 0 if not set
+     */
+    @JsonIgnore
+    public long getDownlinkHz()
+    {
+        return FrequencyConversion.toHertz(getDownlink());
+    }
+
+    /**
      * Sets the downlink frequency
      * @param downlink frequency in megahertz
      */
@@ -101,6 +111,16 @@ public class Frequency
     public double getUplink()
     {
         return mUplink;
+    }
+
+    /**
+     * Uplink (input) frequency in Hz, rounded to the nearest Hz
+     * @return frequency in Hz, or 0 if not set
+     */
+    @JsonIgnore
+    public long getUplinkHz()
+    {
+        return FrequencyConversion.toHertz(getUplink());
     }
 
     /**

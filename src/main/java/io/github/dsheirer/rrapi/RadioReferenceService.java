@@ -21,12 +21,13 @@ package io.github.dsheirer.rrapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import io.github.dsheirer.rrapi.RadioReferenceException.ErrorType;
 import io.github.dsheirer.rrapi.request.FccGetCallsign;
 import io.github.dsheirer.rrapi.request.FccGetProximityCallsigns;
 import io.github.dsheirer.rrapi.request.FccGetRadioServiceCode;
+import io.github.dsheirer.rrapi.request.GetAgencyFrequenciesByTag;
 import io.github.dsheirer.rrapi.request.GetAgencyInfo;
 import io.github.dsheirer.rrapi.request.GetApco25Systems;
-import io.github.dsheirer.rrapi.request.GetAgencyFrequenciesByTag;
 import io.github.dsheirer.rrapi.request.GetCountiesByList;
 import io.github.dsheirer.rrapi.request.GetCountryInfo;
 import io.github.dsheirer.rrapi.request.GetCountryList;
@@ -117,18 +118,28 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.ToIntFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Java client for accessing the radioreference.com web services API
  *
- * Uses the Java 11 HttpClient with no dependencies on legacy Axis 1.4 libraries.
+ * Uses the Java HttpClient with no dependencies on legacy Axis 1.4 libraries.
+ *
+ * Thread safe: methods can be called concurrently.  Each request is limited by the connect and request timeouts, and
+ * {@link #async(ServiceCall)} runs any call in the background with cancellation.
  */
 public class RadioReferenceService
 {
@@ -144,15 +155,25 @@ public class RadioReferenceService
     private static final String USER_AGENT = "User-Agent";
     private static final String USER_AGENT_RRAPI = "io.github.dsheirer.rrapi";
 
+    /**
+     * Default limit for establishing a connection to the web service
+     */
+    public static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+
+    /**
+     * Default limit for receiving the response to a request, after the request is sent
+     */
+    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
+
     private final SoapTransport mTransport;
-    private AuthorizationInformation mAuthorizationInformation;
-    private Map<Integer,Flavor> mFlavorMap;
-    private Map<Integer,Metro> mMetroMap;
-    private Map<Integer,List<County>> mMetroCountiesMap;
-    private Map<Integer,Mode> mModeMap;
-    private Map<Integer,Tag> mTagMap;
-    private Map<Integer,Type> mTypeMap;
-    private Map<Integer,Voice> mVoiceMap;
+    private final AuthorizationInformation mAuthorizationInformation;
+    private final CachedValue<Map<Integer,Flavor>> mFlavors = new CachedValue<>();
+    private final CachedValue<Map<Integer,Metro>> mMetros = new CachedValue<>();
+    private final CachedValue<Map<Integer,List<County>>> mMetroCounties = new CachedValue<>();
+    private final CachedValue<Map<Integer,Mode>> mModes = new CachedValue<>();
+    private final CachedValue<Map<Integer,Tag>> mTags = new CachedValue<>();
+    private final CachedValue<Map<Integer,Type>> mTypes = new CachedValue<>();
+    private final CachedValue<Map<Integer,Voice>> mVoices = new CachedValue<>();
 
     /**
      * Constructs an instance of the service
@@ -162,7 +183,22 @@ public class RadioReferenceService
      */
     public RadioReferenceService(AuthorizationInformation authorizationInformation) throws RadioReferenceException
     {
-        this(authorizationInformation, httpTransport());
+        this(authorizationInformation, DEFAULT_CONNECT_TIMEOUT, DEFAULT_REQUEST_TIMEOUT);
+    }
+
+    /**
+     * Constructs an instance of the service with custom timeouts
+     *
+     * @param authorizationInformation with username and password for accessing the web service
+     * @param connectTimeout limit for establishing a connection to the web service
+     * @param requestTimeout limit for receiving the response to each request
+     * @throws RadioReferenceException if the authorization information is null
+     * @throws IllegalArgumentException if a timeout is null, zero or negative
+     */
+    public RadioReferenceService(AuthorizationInformation authorizationInformation, Duration connectTimeout,
+                                 Duration requestTimeout) throws RadioReferenceException
+    {
+        this(authorizationInformation, httpTransport(URI.create(RADIO_REFERENCE_API_URL), connectTimeout, requestTimeout));
     }
 
     /**
@@ -176,7 +212,8 @@ public class RadioReferenceService
     {
         if(authorizationInformation == null)
         {
-            throw new RadioReferenceException("Authorization information cannot be null");
+            throw new RadioReferenceException(RadioReferenceException.ErrorType.INVALID_REQUEST,
+                "Authorization information cannot be null");
         }
 
         mAuthorizationInformation = authorizationInformation;
@@ -184,21 +221,38 @@ public class RadioReferenceService
     }
 
     /**
-     * Transport that posts requests to the radioreference.com web service over HTTPS
+     * Transport that posts requests to the web service with the HTTP client.  Package-private for testing against a
+     * local server.
+     *
+     * @param uri of the web service
+     * @param connectTimeout limit for establishing a connection
+     * @param requestTimeout limit for receiving the response to each request
      */
-    private static SoapTransport httpTransport()
+    static SoapTransport httpTransport(URI uri, Duration connectTimeout, Duration requestTimeout)
     {
-        HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+        if(connectTimeout == null || connectTimeout.isZero() || connectTimeout.isNegative() ||
+            requestTimeout == null || requestTimeout.isZero() || requestTimeout.isNegative())
+        {
+            throw new IllegalArgumentException("Timeouts must be positive durations");
+        }
+
+        HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
+            .connectTimeout(connectTimeout)
+            .build();
 
         return requestXml -> {
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(RADIO_REFERENCE_API_URL))
+                .uri(uri)
+                .timeout(requestTimeout)
                 .header(CONTENT_TYPE, XML_CONTENT_TYPE)
                 .header(USER_AGENT, USER_AGENT_RRAPI)
                 .POST(HttpRequest.BodyPublishers.ofString(requestXml))
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return new SoapTransport.Response(response.statusCode(), response.body());
+            Duration retryAfter = response.headers().firstValue("Retry-After")
+                .map(RadioReferenceService::parseRetryAfter).orElse(null);
+            return new SoapTransport.Response(response.statusCode(), response.body(), retryAfter);
         };
     }
 
@@ -258,7 +312,7 @@ public class RadioReferenceService
             }
         }
 
-        throw new RadioReferenceException("Country with id " + id + " not found");
+        throw new RadioReferenceException(RadioReferenceException.ErrorType.INVALID_REQUEST, "Country with id " + id + " not found");
     }
 
     /**
@@ -606,14 +660,8 @@ public class RadioReferenceService
      */
     public Flavor getFlavor(int flavorId) throws RadioReferenceException
     {
-        getFlavorsMap();
-
-        if(mFlavorMap != null)
-        {
-            return mFlavorMap.get(flavorId);
-        }
-
-        return null;
+        Map<Integer,Flavor> flavors = getFlavorsMap();
+        return flavors != null ? flavors.get(flavorId) : null;
     }
 
     /**
@@ -621,30 +669,21 @@ public class RadioReferenceService
      *
      * Note: flavor values are cached on the first web service call and reused for subsequent method invocations.
      *
-     * @return flavors map or null
+     * @return read-only flavors map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Flavor> getFlavorsMap() throws RadioReferenceException
     {
-        if(mFlavorMap == null)
-        {
-            RequestEnvelope request = GetFlavors.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mFlavors.get(() -> {
+            ResponseEnvelope response = submitSync(GetFlavors.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetFlavorsResponse)
+            if(response != null && response.getResponseBody() instanceof GetFlavorsResponse flavorsResponse)
             {
-                List<Flavor> flavors = ((GetFlavorsResponse)response.getResponseBody()).getFlavors();
-
-                mFlavorMap = new TreeMap<>();
-
-                for(Flavor flavor: flavors)
-                {
-                    mFlavorMap.put(flavor.getFlavorId(), flavor);
-                }
+                return toMap(flavorsResponse.getFlavors(), Flavor::getFlavorId);
             }
-        }
 
-        return mFlavorMap;
+            return null;
+        });
     }
 
     /**
@@ -655,14 +694,8 @@ public class RadioReferenceService
      */
     public Mode getMode(int modeId) throws RadioReferenceException
     {
-        getModesMap();
-
-        if(mModeMap != null)
-        {
-            return mModeMap.get(modeId);
-        }
-
-        return null;
+        Map<Integer,Mode> modes = getModesMap();
+        return modes != null ? modes.get(modeId) : null;
     }
 
     /**
@@ -670,30 +703,21 @@ public class RadioReferenceService
      *
      * Note: mode values are cached on the first web service call and reused for subsequent method invocations.
      *
-     * @return modes map or null
+     * @return read-only modes map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Mode> getModesMap() throws RadioReferenceException
     {
-        if(mModeMap == null)
-        {
-            RequestEnvelope request = GetModes.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mModes.get(() -> {
+            ResponseEnvelope response = submitSync(GetModes.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetModesResponse)
+            if(response != null && response.getResponseBody() instanceof GetModesResponse modesResponse)
             {
-                List<Mode> modes = ((GetModesResponse)response.getResponseBody()).getModes();
-
-                mModeMap = new TreeMap<>();
-
-                for(Mode mode: modes)
-                {
-                    mModeMap.put(mode.getModeId(), mode);
-                }
+                return toMap(modesResponse.getModes(), Mode::getModeId);
             }
-        }
 
-        return mModeMap;
+            return null;
+        });
     }
 
     /**
@@ -704,14 +728,8 @@ public class RadioReferenceService
      */
     public Metro getMetro(int metroId) throws RadioReferenceException
     {
-        getMetrosMap();
-
-        if(mMetroMap != null)
-        {
-            return mMetroMap.get(metroId);
-        }
-
-        return null;
+        Map<Integer,Metro> metros = getMetrosMap();
+        return metros != null ? metros.get(metroId) : null;
     }
 
     /**
@@ -719,30 +737,21 @@ public class RadioReferenceService
      *
      * Note: metro values are cached on the first web service call and reused for subsequent method invocations.
      *
-     * @return metros map or null
+     * @return read-only metros map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Metro> getMetrosMap() throws RadioReferenceException
     {
-        if(mMetroMap == null)
-        {
-            RequestEnvelope request = GetMetros.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mMetros.get(() -> {
+            ResponseEnvelope response = submitSync(GetMetros.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetMetrosResponse)
+            if(response != null && response.getResponseBody() instanceof GetMetrosResponse metrosResponse)
             {
-                List<Metro> metros = ((GetMetrosResponse)response.getResponseBody()).getMetros();
-
-                mMetroMap = new TreeMap<>();
-
-                for(Metro metro: metros)
-                {
-                    mMetroMap.put(metro.getMetroId(), metro);
-                }
+                return toMap(metrosResponse.getMetros(), Metro::getMetroId);
             }
-        }
 
-        return mMetroMap;
+            return null;
+        });
     }
 
     /**
@@ -751,34 +760,35 @@ public class RadioReferenceService
      * Note: this is an expensive service call the first time.  Metro values are cached on the first web service call
      * and reused for subsequent method invocations.
      *
-     * @return metro counties map or null
+     * @return read-only metro counties map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,List<County>> getMetroCountiesMap() throws RadioReferenceException
     {
-        if(mMetroCountiesMap == null)
-        {
+        return mMetroCounties.get(() -> {
             Map<Integer,Metro> metrosMap = getMetrosMap();
 
-            if(metrosMap != null)
+            if(metrosMap == null)
             {
-                mMetroCountiesMap = new TreeMap<>();
+                return null;
+            }
 
-                for(Metro metro: metrosMap.values())
+            Map<Integer,List<County>> metroCounties = new TreeMap<>();
+
+            for(Metro metro: metrosMap.values())
+            {
+                ResponseEnvelope response = submitSync(GetMetroInfo.create(mAuthorizationInformation, metro.getMetroId()));
+
+                if(response != null && response.getResponseBody() instanceof GetMetroInfoResponse metroInfoResponse)
                 {
-                    RequestEnvelope request = GetMetroInfo.create(mAuthorizationInformation, metro.getMetroId());
-                    ResponseEnvelope response = submitSync(request);
-
-                    if(response != null && response.getResponseBody() instanceof GetMetroInfoResponse)
-                    {
-                        List<County> counties = ((GetMetroInfoResponse)response.getResponseBody()).getCounties();
-                        mMetroCountiesMap.put(metro.getMetroId(), counties);
-                    }
+                    List<County> counties = metroInfoResponse.getCounties();
+                    metroCounties.put(metro.getMetroId(),
+                        counties != null ? Collections.unmodifiableList(counties) : Collections.emptyList());
                 }
             }
-        }
 
-        return mMetroCountiesMap;
+            return Collections.unmodifiableMap(metroCounties);
+        });
     }
 
     /**
@@ -820,7 +830,7 @@ public class RadioReferenceService
         StateInfo stateInfo = getStateInfo(stateId);
         Map<Integer,List<County>> metroMap = getMetroCountiesMap();
 
-        if(metroMap != null)
+        if(stateInfo != null && metroMap != null)
         {
             for(County county: stateInfo.getCounties())
             {
@@ -832,11 +842,10 @@ public class RadioReferenceService
                         {
                             Metro metro = getMetro(entry.getKey());
 
-                            if(!metros.contains(metro))
+                            if(metro != null && !metros.contains(metro))
                             {
                                 metros.add(metro);
                             }
-                            continue;
                         }
                     }
                 }
@@ -846,51 +855,25 @@ public class RadioReferenceService
         return metros;
     }
 
-
     /**
      * Map of tags and tag identifiers
      *
      * Note: map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return tags map or null
+     * @return read-only tags map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Tag> getTagsMap() throws RadioReferenceException
     {
-        if(mTagMap == null)
-        {
-            RequestEnvelope request = GetTags.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mTags.get(() -> {
+            ResponseEnvelope response = submitSync(GetTags.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetTagsResponse)
+            if(response != null && response.getResponseBody() instanceof GetTagsResponse tagsResponse)
             {
-                mTagMap = new TreeMap<>();
-
-                List<Tag> tags = ((GetTagsResponse)response.getResponseBody()).getTags();
-
-                for(Tag tag: tags)
-                {
-                    try
-                    {
-                        mTagMap.put(tag.getTagId(), tag);
-                    }
-                    catch(Exception e)
-                    {
-                        mLog.error("Error while parsing tags response into tags map");
-
-                        try
-                        {
-                            mLog.info("Get Tags Response Message:\n" + response.toXmlString());
-                        }
-                        catch(Exception e2)
-                        {
-                            mLog.error("Error serializing message to xml (again)", e2);
-                        }
-                    }
-                }
+                return toMap(tagsResponse.getTags(), Tag::getTagId);
             }
-        }
 
-        return mTagMap;
+            return null;
+        });
     }
 
     /**
@@ -898,7 +881,7 @@ public class RadioReferenceService
      */
     public void clearTagMap()
     {
-        mTagMap = null;
+        mTags.clear();
     }
 
     /**
@@ -909,16 +892,9 @@ public class RadioReferenceService
      */
     public Tag getTag(int tagId) throws RadioReferenceException
     {
-        getTagsMap();
-
-        if(mTagMap != null)
-        {
-            return mTagMap.get(tagId);
-        }
-
-        return null;
+        Map<Integer,Tag> tags = getTagsMap();
+        return tags != null ? tags.get(tagId) : null;
     }
-
 
     /**
      * Type (protocol) information
@@ -928,74 +904,50 @@ public class RadioReferenceService
      */
     public Type getType(int typeId) throws RadioReferenceException
     {
-        getTypesMap();
-
-        if(mTypeMap != null)
-        {
-            return mTypeMap.get(typeId);
-        }
-
-        return null;
+        Map<Integer,Type> types = getTypesMap();
+        return types != null ? types.get(typeId) : null;
     }
 
     /**
      * Map of types (protocols) and type identifiers
      *
      * Note: type map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return types map or null
+     * @return read-only types map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Type> getTypesMap() throws RadioReferenceException
     {
-        if(mTypeMap == null)
-        {
-            RequestEnvelope request = GetTypes.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mTypes.get(() -> {
+            ResponseEnvelope response = submitSync(GetTypes.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetTypesResponse)
+            if(response != null && response.getResponseBody() instanceof GetTypesResponse typesResponse)
             {
-                mTypeMap = new TreeMap<>();
-
-                List<Type> types = ((GetTypesResponse)response.getResponseBody()).getTypes();
-
-                for(Type type: types)
-                {
-                    mTypeMap.put(type.getTypeId(), type);
-                }
+                return toMap(typesResponse.getTypes(), Type::getTypeId);
             }
-        }
 
-        return mTypeMap;
+            return null;
+        });
     }
 
     /**
      * Map of voices and voice identifiers
      *
      * Note: map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return voices map or null
+     * @return read-only voices map or null
      * @throws RadioReferenceException if there is an error
      */
     public Map<Integer,Voice> getVoicesMap() throws RadioReferenceException
     {
-        if(mVoiceMap == null)
-        {
-            RequestEnvelope request = GetVoices.create(mAuthorizationInformation);
-            ResponseEnvelope response = submitSync(request);
+        return mVoices.get(() -> {
+            ResponseEnvelope response = submitSync(GetVoices.create(mAuthorizationInformation));
 
-            if(response != null && response.getResponseBody() instanceof GetVoicesResponse)
+            if(response != null && response.getResponseBody() instanceof GetVoicesResponse voicesResponse)
             {
-                mVoiceMap = new TreeMap<>();
-
-                List<Voice> voices = ((GetVoicesResponse)response.getResponseBody()).getVoices();
-
-                for(Voice voice: voices)
-                {
-                    mVoiceMap.put(voice.getVoiceId(), voice);
-                }
+                return toMap(voicesResponse.getVoices(), Voice::getVoiceId);
             }
-        }
 
-        return mVoiceMap;
+            return null;
+        });
     }
 
     /**
@@ -1006,16 +958,9 @@ public class RadioReferenceService
      */
     public Voice getVoice(int voiceId) throws RadioReferenceException
     {
-        getVoicesMap();
-
-        if(mVoiceMap != null)
-        {
-            return mVoiceMap.get(voiceId);
-        }
-
-        return null;
+        Map<Integer,Voice> voices = getVoicesMap();
+        return voices != null ? voices.get(voiceId) : null;
     }
-
 
     /**
      * Zipcode information
@@ -1202,7 +1147,8 @@ public class RadioReferenceService
     {
         if(code == null || code.length() != 2)
         {
-            throw new RadioReferenceException("Radio service code invalid [" + code + "] must be non-null and 2-digits");
+            throw new RadioReferenceException(RadioReferenceException.ErrorType.INVALID_REQUEST,
+                "Radio service code invalid [" + code + "] must be non-null and 2-digits");
         }
 
         RequestEnvelope request = FccGetRadioServiceCode.create(mAuthorizationInformation, code);
@@ -1244,6 +1190,170 @@ public class RadioReferenceService
     }
 
     /**
+     * A call of one or more service methods, for running with {@link #async(ServiceCall)}
+     * @param <T> result type
+     */
+    @FunctionalInterface
+    public interface ServiceCall<T>
+    {
+        /**
+         * Calls the service
+         * @param service to call
+         * @return result
+         * @throws RadioReferenceException if there is an error
+         */
+        T call(RadioReferenceService service) throws RadioReferenceException;
+    }
+
+    /**
+     * Runs the call on a new virtual thread and returns its result as a future, for example:
+     *
+     * <pre>{@code
+     * CompletableFuture<List<SearchFrequencyResult>> results =
+     *     service.async(s -> s.searchCountyFrequencies(countyId, 460.0375));
+     * }</pre>
+     *
+     * Cancelling the returned future interrupts the call, which aborts the HTTP request in progress.  Cancel the
+     * returned future itself: cancelling a future derived from it, e.g. with thenApply(), doesn't interrupt the call.
+     *
+     * @param call of one or more service methods
+     * @param <T> result type
+     * @return future that completes with the result, or exceptionally with a RadioReferenceException
+     */
+    public <T> CompletableFuture<T> async(ServiceCall<T> call)
+    {
+        InterruptibleFuture<T> future = new InterruptibleFuture<>();
+
+        Thread.ofVirtual().name("rrapi-async").start(() -> {
+            if(!future.started(Thread.currentThread()))
+            {
+                return; //Cancelled before the call started
+            }
+
+            try
+            {
+                future.complete(call.call(this));
+            }
+            catch(Throwable t)
+            {
+                future.completeExceptionally(t);
+            }
+            finally
+            {
+                future.finished();
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Future that interrupts the thread running its call when it is cancelled
+     */
+    private static final class InterruptibleFuture<T> extends CompletableFuture<T>
+    {
+        private Thread mThread;
+        private boolean mFinished;
+
+        /**
+         * Records the thread running the call
+         * @return false if the future was already cancelled
+         */
+        private synchronized boolean started(Thread thread)
+        {
+            mThread = thread;
+            return !isCancelled();
+        }
+
+        private synchronized void finished()
+        {
+            mFinished = true;
+            mThread = null;
+        }
+
+        @Override
+        public boolean cancel(boolean mayInterruptIfRunning)
+        {
+            boolean cancelled = super.cancel(mayInterruptIfRunning);
+
+            if(cancelled)
+            {
+                synchronized(this)
+                {
+                    if(mThread != null && !mFinished)
+                    {
+                        mThread.interrupt();
+                    }
+                }
+            }
+
+            return cancelled;
+        }
+    }
+
+    /**
+     * Value loaded on first use and cached.  Concurrent callers wait for a single load instead of each calling the web
+     * service.  A null load result isn't cached, so the next call tries again.
+     */
+    private static final class CachedValue<T>
+    {
+        private volatile T mValue;
+
+        T get(Loader<T> loader) throws RadioReferenceException
+        {
+            T value = mValue;
+
+            if(value == null)
+            {
+                synchronized(this)
+                {
+                    value = mValue;
+
+                    if(value == null)
+                    {
+                        value = loader.load();
+                        mValue = value;
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        void clear()
+        {
+            mValue = null;
+        }
+    }
+
+    @FunctionalInterface
+    private interface Loader<T>
+    {
+        T load() throws RadioReferenceException;
+    }
+
+    /**
+     * Read-only map of the items by id
+     */
+    private static <T> Map<Integer,T> toMap(List<T> items, ToIntFunction<T> id)
+    {
+        Map<Integer,T> map = new TreeMap<>();
+
+        if(items != null)
+        {
+            for(T item: items)
+            {
+                if(item != null)
+                {
+                    map.put(id.applyAsInt(item), item);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(map);
+    }
+
+    /**
      * Submits the request envelope and returns a response envelope.
      *
      * @param requestEnvelope to submit
@@ -1261,53 +1371,146 @@ public class RadioReferenceService
         }
         catch(JsonProcessingException jpe)
         {
-            throw new RadioReferenceException("Error serializing request envelope to XML", jpe);
+            throw new RadioReferenceException(ErrorType.UNKNOWN, "Error serializing request envelope to XML", jpe);
         }
 
-        if(xml != null)
-        {
-            SoapTransport.Response response = null;
+        SoapTransport.Response response;
 
+        try
+        {
+            response = mTransport.post(xml);
+        }
+        catch(HttpTimeoutException hte)
+        {
+            throw new RadioReferenceException(ErrorType.TIMEOUT, "Timed out waiting for the radioreference.com web service", hte);
+        }
+        catch(IOException ioe)
+        {
+            throw new RadioReferenceException(ErrorType.NETWORK, "Unable to reach the radioreference.com web service: " +
+                ioe.getMessage(), ioe);
+        }
+        catch(InterruptedException ie)
+        {
+            //Preserve the interrupt for the caller, e.g. a cancelled async call
+            Thread.currentThread().interrupt();
+            throw new RadioReferenceException(ErrorType.INTERRUPTED,
+                "Interrupted while waiting for the radioreference.com web service", ie);
+        }
+
+        if(response == null)
+        {
+            throw new RadioReferenceException(ErrorType.SERVICE_ERROR, "No response from the radioreference.com web service");
+        }
+
+        String body = response.body();
+        ResponseEnvelope envelope = null;
+        IOException parseError = null;
+
+        if(body != null && !body.isBlank())
+        {
             try
             {
-                response = mTransport.post(xml);
+                envelope = deserialize(body);
             }
             catch(IOException ioe)
             {
-                throw new RadioReferenceException("Error submitting HTML SOAP request to web service", ioe);
-            }
-            catch(InterruptedException ie)
-            {
-                throw new RadioReferenceException("Interrupted while submitting HTML SOAP request to web service", ie);
-            }
-
-            if(response != null)
-            {
-                try
-                {
-                    if(response.statusCode() == 200)
-                    {
-                        return deserialize(response.body());
-                    }
-                    else
-                    {
-                        ResponseEnvelope responseEnvelope = deserialize(response.body());
-
-                        if(responseEnvelope.getResponseBody() instanceof Fault)
-                        {
-                            throw new RadioReferenceException("Error", response.statusCode(), (Fault)responseEnvelope.getResponseBody());
-                        }
-                    }
-                }
-                catch(IOException ioe)
-                {
-                    mLog.error("Error parsing response: " + response.body());
-                    throw new RadioReferenceException("Error deserializing XML response: " + response.body(), ioe);
-                }
+                parseError = ioe;
             }
         }
 
-        return null;
+        //Faults are errors whatever the HTTP status.  The service sends them with HTTP 500.
+        if(envelope != null && envelope.getResponseBody() instanceof Fault fault)
+        {
+            throw new RadioReferenceException(RadioReferenceException.typeOf(fault, response.statusCode()),
+                fault.getFaultCode() + ": " + fault.getFaultString(), response.statusCode(), fault)
+                .withRetryAfter(response.retryAfter());
+        }
+
+        if(response.statusCode() != 200 || envelope == null)
+        {
+            ErrorType errorType;
+            String description;
+
+            if(body == null || body.isBlank())
+            {
+                errorType = response.statusCode() == 200 ? ErrorType.SERVICE_ERROR :
+                    RadioReferenceException.typeOf(null, response.statusCode());
+                description = "an empty response";
+            }
+            else if(parseError != null && body.contains("Envelope"))
+            {
+                //A SOAP response that doesn't match the library's classes: the API may have changed
+                errorType = response.statusCode() == 200 ? ErrorType.UNKNOWN :
+                    RadioReferenceException.typeOf(null, response.statusCode());
+                description = "a SOAP response that can't be parsed (" + parseError.getMessage() + ")";
+            }
+            else
+            {
+                errorType = response.statusCode() == 200 ? ErrorType.SERVICE_ERROR :
+                    RadioReferenceException.typeOf(null, response.statusCode());
+                description = "an unexpected response: " + excerpt(body);
+            }
+
+            mLog.debug("Unexpected response with HTTP status " + response.statusCode() + ": " + excerpt(body));
+
+            RadioReferenceException exception = new RadioReferenceException(errorType,
+                "The radioreference.com web service returned HTTP " + response.statusCode() + " with " + description,
+                response.statusCode(), null);
+
+            if(parseError != null)
+            {
+                exception.initCause(parseError);
+            }
+
+            throw exception.withRetryAfter(response.retryAfter());
+        }
+
+        return envelope;
+    }
+
+    /**
+     * Start of the text, with whitespace collapsed, for error messages
+     */
+    private static String excerpt(String text)
+    {
+        if(text == null)
+        {
+            return "";
+        }
+
+        String collapsed = text.replaceAll("\\s+", " ").trim();
+        return collapsed.length() > 200 ? collapsed.substring(0, 200) + "..." : collapsed;
+    }
+
+    /**
+     * Parses an HTTP Retry-After header value: a number of seconds or an HTTP date.  Package-private for testing.
+     * @param value of the header
+     * @return delay, or null if the value can't be parsed
+     */
+    static Duration parseRetryAfter(String value)
+    {
+        if(value == null || value.isBlank())
+        {
+            return null;
+        }
+
+        String trimmed = value.trim();
+
+        try
+        {
+            if(trimmed.chars().allMatch(Character::isDigit))
+            {
+                return Duration.ofSeconds(Long.parseLong(trimmed));
+            }
+
+            Duration delay = Duration.between(Instant.now(),
+                ZonedDateTime.parse(trimmed, DateTimeFormatter.RFC_1123_DATE_TIME).toInstant());
+            return delay.isNegative() ? Duration.ZERO : delay;
+        }
+        catch(RuntimeException e)
+        {
+            return null;
+        }
     }
 
     /**

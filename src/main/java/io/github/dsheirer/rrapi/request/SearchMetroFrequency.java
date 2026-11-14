@@ -19,9 +19,11 @@
 
 package io.github.dsheirer.rrapi.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
+import io.github.dsheirer.rrapi.type.FrequencyConversion;
 
 /**
  * Search metro frequency
@@ -83,10 +85,21 @@ public class SearchMetroFrequency extends RequestBody
      * Frequency to search for
      * @return frequency in MHz
      */
-    @JacksonXmlProperty(localName = "freq")
+    @JsonIgnore
     public double getFrequency()
     {
         return mFrequency;
+    }
+
+    /**
+     * Frequency parameter as sent to the service: MHz rounded to the nearest Hz, without floating point artifacts,
+     * so a frequency computed from Hz, e.g. hz / 1E6, matches the database value.
+     * @return frequency text in MHz
+     */
+    @JacksonXmlProperty(localName = "freq")
+    public String getFrequencyText()
+    {
+        return FrequencyConversion.toMegahertzText(mFrequency);
     }
 
     /**

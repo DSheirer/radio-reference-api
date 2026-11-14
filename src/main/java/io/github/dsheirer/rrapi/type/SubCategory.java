@@ -19,8 +19,8 @@
 
 package io.github.dsheirer.rrapi.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,5 +178,14 @@ public class SubCategory
         {
             mSystemReferences = systemReferences;
         }
+    }
+
+    /**
+     * Coverage area of the frequency subcategory, for distance and containment checks
+     */
+    @JsonIgnore
+    public Coverage getCoverage()
+    {
+        return new Coverage(getLatitude(), getLongitude(), getRange(), getRectangles());
     }
 }
