@@ -24,7 +24,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Metro information request
+ * Request for the {@code getMetroAreaInfo} operation: counties of a metro area.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code mid} - metro area id</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getMetroCounties(int)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"mid", "authInfo"})

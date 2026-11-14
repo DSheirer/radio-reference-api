@@ -27,7 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common search frequency response for searchCountyFreq, searchMetroFreq and searchStateFreq
+ * Response body of the {@code searchCountyFreq}, {@code searchStateFreq} and {@code searchMetroFreq} operations, with a
+ * list of {@link SearchFrequencyResult} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#searchCountyFrequencies(int, double)}, {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#searchStateFrequencies(int, double)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#searchMetroFrequencies(int, double)}.</p>
  */
 public class SearchFrequencyResponse extends ResponseBody
 {

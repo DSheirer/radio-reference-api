@@ -26,7 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get FCC radio service code response
+ * Response body of the {@code fccGetRadioServiceCode} operation, with a list of {@link FccRadioServiceCode} in the
+ * {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccRadioServiceCodes()} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getFccRadioServiceCode(String)}.</p>
  */
 public class FccGetRadioServiceCodeResponse extends ResponseBody
 {

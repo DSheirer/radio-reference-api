@@ -21,6 +21,10 @@ package io.github.dsheirer.rrapi.type;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+/**
+ * Rectangle in decimal degrees, from its north west corner to its south east corner.  Rectangles outline the coverage
+ * area of counties, agencies, subcategories, trunked systems, sites and talkgroup categories: see {@link Coverage}.
+ */
 public class Rectangle
 {
     private double mNorthWestLatitude;
@@ -116,6 +120,7 @@ public class Rectangle
      * 180 degree meridian.
      * @param latitude in decimal degrees
      * @param longitude in decimal degrees
+     * @return true if the location is inside the rectangle
      */
     public boolean contains(double latitude, double longitude)
     {

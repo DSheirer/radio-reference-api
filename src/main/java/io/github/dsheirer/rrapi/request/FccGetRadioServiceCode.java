@@ -24,7 +24,17 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Get FCC radio service code information
+ * Request for the {@code fccGetRadioServiceCode} operation: FCC radio service codes with their descriptions, or one
+ * code.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code code} - two letter radio service code, or empty for all codes</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccRadioServiceCodes()}, {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getFccRadioServiceCode(String)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"code", "authInfo"})

@@ -22,7 +22,11 @@ package io.github.dsheirer.rrapi.request;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * User data for the authenticated user, includes user name and premium subscription expiration date.
+ * Request for the {@code getUserData} operation: account details of the authenticated user.
+ *
+ * <p>The only parameter is {@code authInfo}, the credentials from {@link RequestBody}.</p>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getUserInfo()}.</p>
  */
 public class GetUserData extends RequestBody
 {

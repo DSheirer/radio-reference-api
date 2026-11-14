@@ -25,7 +25,9 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * Radio system basic details
+ * Trunked radio system summary: id, name, type, flavor, voice and city.  Listed in {@link StateInfo} and {@link
+ * CountyInfo} and returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getApco25Systems(String)}; request
+ * the details with {@link io.github.dsheirer.rrapi.RadioReferenceService#getSystemInformation(int)}.
  */
 public class System implements Comparable<System>
 {

@@ -26,7 +26,18 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.FrequencyConversion;
 
 /**
- * Search state frequency
+ * Request for the {@code searchStateFreq} operation: frequencies in a state that match a frequency.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code stid} - state id</li>
+ *     <li>{@code freq} - frequency in MHz, rounded to the nearest Hz</li>
+ *     <li>{@code tone} - tone to match, optional</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#searchStateFrequencies(int, double)}, {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#searchStateFrequencies(int, double, String)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"stid", "freq", "tone", "authInfo"})

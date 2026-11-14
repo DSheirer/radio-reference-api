@@ -24,7 +24,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Trunked System Flavor query
+ * Request for the {@code getTrsFlavor} operation: trunked system flavors.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code id} - flavor id, or empty for all flavors</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFlavorsMap()}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"id", "authInfo"})

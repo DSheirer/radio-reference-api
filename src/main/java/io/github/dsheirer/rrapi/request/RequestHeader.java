@@ -20,7 +20,7 @@
 package io.github.dsheirer.rrapi.request;
 
 /**
- * Base request header
+ * Header of the SOAP request envelope.  The web service doesn't use headers, so it is always empty.
  */
 public class RequestHeader
 {

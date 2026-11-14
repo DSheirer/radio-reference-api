@@ -24,7 +24,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Radio System Voice information
+ * Request for the {@code getTrsVoice} operation: voice codecs.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code id} - voice id, or empty for all voice codecs</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getVoicesMap()}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"id", "authInfo"})

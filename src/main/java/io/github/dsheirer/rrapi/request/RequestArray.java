@@ -33,6 +33,9 @@ import java.util.List;
  */
 public class RequestArray<T>
 {
+    /**
+     * XML namespace of the SOAP encoding, for the arrayType attribute
+     */
     public static final String SOAP_ENCODING_NAMESPACE = "http://schemas.xmlsoap.org/soap/encoding/";
 
     private final String mItemType;
@@ -51,6 +54,7 @@ public class RequestArray<T>
 
     /**
      * SOAP encoding array type with the item count, for example tns:stid[3]
+     * @return array type
      */
     @JacksonXmlProperty(isAttribute = true, namespace = SOAP_ENCODING_NAMESPACE, localName = "arrayType")
     public String getArrayType()
@@ -60,6 +64,7 @@ public class RequestArray<T>
 
     /**
      * Items of the array
+     * @return items
      */
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "item")

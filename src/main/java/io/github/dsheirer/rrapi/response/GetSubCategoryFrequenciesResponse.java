@@ -28,7 +28,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Get sub category frequencies response
+ * Response body of the {@code getSubcatFreqs} operation, with a list of {@link Frequency} in the {@code return}
+ * element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getSubCategoryFrequencies(int)}.</p>
  */
 public class GetSubCategoryFrequenciesResponse extends ResponseBody
 {

@@ -22,9 +22,9 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Flavor of protocol that identifies a specific type or variant of a digital protocol.
- *
- * @see Type
+ * Trunked system flavor: a variant of a system {@link Type}, e.g. a phase or a vendor variant of a protocol.  Returned
+ * by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFlavorsMap()}; {@link SystemInformation#getFlavorId()}
+ * holds the flavor id.
  */
 public class Flavor
 {

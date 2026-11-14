@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get flavors response
+ * Response body of the {@code getTrsFlavor} operation, with a list of {@link Flavor} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFlavorsMap()}.</p>
  */
 public class GetFlavorsResponse extends ResponseBody
 {

@@ -25,7 +25,9 @@ import io.github.dsheirer.rrapi.request.GetCountyFrequenciesByTag;
 import io.github.dsheirer.rrapi.request.GetMetroInfo;
 
 /**
- * Base SOAP response body
+ * Base class of the response messages.  Jackson reads the element in the SOAP body as the subclass registered for its
+ * name in the {@link JsonSubTypes} annotation of this class: the operation name followed by {@code Response}, or {@code
+ * Fault} when the service reports an error.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonSubTypes({

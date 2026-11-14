@@ -1,0 +1,79 @@
+# Publishes the GitHub Pages site: the README, rendered with the Jekyll theme in
+# _config.yml, and the javadoc of the latest release under /javadoc/.
+#
+# Runs when the README or the site configuration changes on master, and after
+# each release (the release workflow starts it on master, which the Pages
+# environment allows to deploy).
+#
+# Requires Settings > Pages > Build and deployment > Source: GitHub Actions.
+name: Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - README.md
+      - _config.yml
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v7
+
+      # Only the README and the site configuration, so the site doesn't publish the rest of the repository
+      - name: Stage the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          mkdir site
+          cp README.md _config.yml site/
+
+          tag="$(gh release view --json tagName --jq .tagName)"
+          version="${tag#v}"
+          gh release download "$tag" --pattern "radio-reference-api-${version}-javadoc.jar" --dir "$RUNNER_TEMP"
+          unzip -q "$RUNNER_TEMP/radio-reference-api-${version}-javadoc.jar" -d site/javadoc
+          rm -rf site/javadoc/META-INF
+          test -f site/javadoc/index.html
+          echo "Javadoc of release $tag" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./site
+          destination: ./_site
+
+      - name: Check the site
+        run: |
+          test -f _site/index.html
+          test -f _site/javadoc/index.html
+          test -f _site/javadoc/io.github.dsheirer.rrapi/io/github/dsheirer/rrapi/RadioReferenceService.html
+
+      - uses: actions/upload-pages-artifact@v5
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

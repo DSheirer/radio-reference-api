@@ -26,7 +26,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Frequency or channel details
+ * Conventional frequency or channel of a subcategory: downlink and uplink frequencies in MHz, tone, mode, alpha tag and
+ * function tags.  Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getSubCategoryFrequencies(int)},
+ * {@link io.github.dsheirer.rrapi.RadioReferenceService#getCountyFrequenciesByTag(int, int)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getAgencyFrequenciesByTag(int, int)}.
  */
 public class Frequency
 {
@@ -75,8 +78,8 @@ public class Frequency
     }
 
     /**
-     * Downlink (tower to mobile) or output frequency of the repeater channel
-     * @return frequency in megahertz (MHz)
+     * Downlink (tower to mobile) or repeater output frequency in MHz.  See {@link #getDownlinkHz()} for Hz.
+     * @return frequency in MHz, or 0 if not set
      */
     @JacksonXmlProperty(localName = "out")
     public double getDownlink()
@@ -104,8 +107,8 @@ public class Frequency
     }
 
     /**
-     * Uplink (mobile to tower) or input frequency of the repeater channel
-     * @return frequency in megahertz (MHz)
+     * Uplink (mobile to tower) or repeater input frequency in MHz.  See {@link #getUplinkHz()} for Hz.
+     * @return frequency in MHz, or 0 if not set
      */
     @JacksonXmlProperty(localName = "in")
     public double getUplink()
@@ -266,8 +269,9 @@ public class Frequency
     }
 
     /**
-     * Mode for the channel
-     * @return mode
+     * Operating mode id of the channel, as text.  Look up the mode with
+     * {@link io.github.dsheirer.rrapi.RadioReferenceService#getModesMap()}.
+     * @return mode id
      */
     @JacksonXmlProperty(localName = "mode")
     public String getMode()

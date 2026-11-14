@@ -22,7 +22,12 @@ package io.github.dsheirer.rrapi.request;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * List of countries supported by the service
+ * Request for the {@code getCountryList} operation: all countries.  The WSDL declares no parameters for this operation,
+ * and the service answers it without checking the credentials.
+ *
+ * <p>The library sends {@code authInfo}, the credentials from {@link RequestBody}, as with every request.</p>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCountries()}.</p>
  */
 public class GetCountryList extends RequestBody
 {

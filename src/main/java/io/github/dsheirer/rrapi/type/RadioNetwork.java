@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Radio Network information
+ * Radio network identity of a trunked system, e.g. the APCO-25 system id and WACN.  Listed in {@link
+ * SystemInformation#getRadioNetworks()}.
  */
 public class RadioNetwork
 {

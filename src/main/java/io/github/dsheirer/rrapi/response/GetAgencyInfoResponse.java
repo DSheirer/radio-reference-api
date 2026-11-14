@@ -24,7 +24,9 @@ import io.github.dsheirer.rrapi.type.AgencyInfo;
 import io.github.dsheirer.rrapi.type.CountryInfo;
 
 /**
- * Get agency info response
+ * Response body of the {@code getAgencyInfo} operation, with {@link AgencyInfo} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getAgencyInfo(int)}.</p>
  */
 public class GetAgencyInfoResponse extends ResponseBody
 {

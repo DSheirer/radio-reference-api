@@ -22,7 +22,7 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Federal Communications Commission (FCC) (transmitter) location information.
+ * Transmitter location of an FCC license.  Listed in {@link FccCallsignDetails}.
  */
 public class FccLocation
 {
@@ -180,8 +180,8 @@ public class FccLocation
     }
 
     /**
-     * Site latitude
-     * @return value in decimal degrees
+     * Latitude in decimal degrees.
+     * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
@@ -199,8 +199,8 @@ public class FccLocation
     }
 
     /**
-     * Site longitude
-     * @return  latitude value in decimal degrees
+     * Longitude in decimal degrees.
+     * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()

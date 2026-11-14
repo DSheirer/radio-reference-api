@@ -257,10 +257,11 @@ public class RadioReferenceService
     }
 
     /**
-     * User information containing user name and account expiration date
+     * Account details of the authenticated user: user name and premium subscription expiration date (operation
+     * {@code getUserData}).  Useful for checking the credentials and the subscription status.
      *
-     * @return user information instance or null
-     * @throws RadioReferenceException if there is an error
+     * @return user information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails, with error type AUTHENTICATION for invalid credentials
      */
     public UserInfo getUserInfo() throws RadioReferenceException
     {
@@ -276,10 +277,11 @@ public class RadioReferenceService
     }
 
     /**
-     * List of icecast audio streaming feed configurations that the user is authorized to provide to broadcastify.com
+     * Broadcastify audio feeds that the user provides, with their stream connection details (operation
+     * {@code getUserFeedBroadcasts}).  The details include the stream passwords.
      *
-     * @return list of broadcastify.com feed configurations or an empty list
-     * @throws RadioReferenceException if there is an error
+     * @return feeds, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<UserFeedBroadcast> getUserFeeds() throws RadioReferenceException
     {
@@ -295,10 +297,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Retrieves the country by identifier
-     * @param id of the country
-     * @return country if found, otherwise throws exception
-     * @throws RadioReferenceException if there is an error
+     * Country with the id, from the list of countries (operation {@code getCountryList}).  Each call requests the list.
+     *
+     * @param id of the country, e.g. 1 for the United States
+     * @return country
+     * @throws RadioReferenceException with error type INVALID_REQUEST if no country has the id, or if the request fails
      */
     public Country getCountry(int id) throws RadioReferenceException
     {
@@ -316,9 +319,11 @@ public class RadioReferenceService
     }
 
     /**
-     * List of countries supported by the web service.
-     * @return list of countries or empty list
-     * @throws RadioReferenceException if there is an error
+     * Countries in the database (operation {@code getCountryList}).  The service answers this request without checking
+     * the credentials.
+     *
+     * @return countries, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Country> getCountries() throws RadioReferenceException
     {
@@ -334,10 +339,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Country information for a specific country
-     * @param country to query
-     * @return country information or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the country: its states and national agencies (operation {@code getCountryInfo}).
+     *
+     * @param country to query, by its id
+     * @return country information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public CountryInfo getCountryInfo(Country country) throws RadioReferenceException
     {
@@ -345,10 +351,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Country information for a specific country
-     * @param countryId to query
-     * @return country information or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the country: its states and national agencies (operation {@code getCountryInfo}).
+     *
+     * @param countryId of the country, e.g. 1 for the United States
+     * @return country information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public CountryInfo getCountryInfo(int countryId) throws RadioReferenceException
     {
@@ -364,10 +371,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Agency information for a specific agency
-     * @param agency to query
-     * @return agency information or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the agency: location, coverage, and frequency categories with their subcategories (operation
+     * {@code getAgencyInfo}).  The frequencies are listed by subcategory: see {@link #getSubCategoryFrequencies(int)}.
+     *
+     * @param agency to query, by its id
+     * @return agency information, or null if the response doesn't include it
+     * @throws RadioReferenceException with error type INVALID_REQUEST if the agency doesn't exist, or if the request
+     *     fails
      */
     public AgencyInfo getAgencyInfo(Agency agency) throws RadioReferenceException
     {
@@ -375,10 +385,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Agency information for a specific agency
-     * @param agencyId to query
-     * @return agency information or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the agency: location, coverage, and frequency categories with their subcategories (operation
+     * {@code getAgencyInfo}).  The frequencies are listed by subcategory: see {@link #getSubCategoryFrequencies(int)}.
+     *
+     * @param agencyId of the agency
+     * @return agency information, or null if the response doesn't include it
+     * @throws RadioReferenceException with error type INVALID_REQUEST if the agency doesn't exist, or if the request
+     *     fails
      */
     public AgencyInfo getAgencyInfo(int agencyId) throws RadioReferenceException
     {
@@ -394,10 +407,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get state
-     * @param stateId to query
-     * @return state or null
-     * @throws RadioReferenceException if there is an error
+     * State with the id (operation {@code getStatesByList} with one id).
+     *
+     * @param stateId of the state, e.g. 36 for New York
+     * @return state, or null if the service doesn't return exactly one state
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public State getState(int stateId) throws RadioReferenceException
     {
@@ -418,10 +432,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Get state info
-     * @param stateId to query
-     * @return state info or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the state: its counties, statewide agencies and trunked radio systems (operation
+     * {@code getStateInfo}).
+     *
+     * @param stateId of the state, e.g. 36 for New York
+     * @return state information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public StateInfo getStateInfo(int stateId) throws RadioReferenceException
     {
@@ -437,10 +453,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get a list of states by state id
-     * @param stateIds to query
-     * @return list of states or empty list
-     * @throws RadioReferenceException if there is an error
+     * States with the ids, in one request (operation {@code getStatesByList}).
+     *
+     * @param stateIds of the states
+     * @return states, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<State> getStates(List<Integer> stateIds) throws RadioReferenceException
     {
@@ -456,10 +473,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get a list of counties by county id
-     * @param countyIds to query
-     * @return list of counties or empty list
-     * @throws RadioReferenceException if there is an error
+     * Counties with the ids, in one request (operation {@code getCountiesByList}).
+     *
+     * @param countyIds of the counties
+     * @return counties, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<County> getCounties(List<Integer> countyIds) throws RadioReferenceException
     {
@@ -475,10 +493,15 @@ public class RadioReferenceService
     }
 
     /**
-     * County information for a specific county
-     * @param countyId to query
-     * @return county information or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the county: location, coverage, frequency categories with their subcategories, and the agencies and
+     * trunked radio systems in the county (operation {@code getCountyInfo}).  The frequencies are listed by
+     * subcategory: see
+     * {@link #getSubCategoryFrequencies(int)}.
+     *
+     * @param countyId of the county
+     * @return county information, or null if the response doesn't include it
+     * @throws RadioReferenceException with error type INVALID_REQUEST if the county doesn't exist, or if the request
+     *     fails
      */
     public CountyInfo getCountyInfo(int countyId) throws RadioReferenceException
     {
@@ -494,11 +517,13 @@ public class RadioReferenceService
     }
 
     /**
-     * County frequencies by tag
-     * @param countyId to query
-     * @param tagId to query
-     * @return frequencies list
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the county with the function tag (operation {@code getCountyFreqsByTag}).  The results include
+     * the frequencies of the agencies in the county, not only the county's own categories.
+     *
+     * @param countyId of the county
+     * @param tagId of the function tag: see {@link #getTagsMap()}
+     * @return frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Frequency> getCountyFrequenciesByTag(int countyId, int tagId) throws RadioReferenceException
     {
@@ -514,11 +539,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Agency frequencies by tag
-     * @param agencyId to query
-     * @param tagId to query
-     * @return frequencies list
-     * @throws RadioReferenceException if there is an error
+     * Frequencies of the agency with the function tag (operation {@code getAgencyFreqsByTag}).
+     *
+     * @param agencyId of the agency
+     * @param tagId of the function tag: see {@link #getTagsMap()}
+     * @return frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Frequency> getAgencyFrequenciesByTag(int agencyId, int tagId) throws RadioReferenceException
     {
@@ -534,10 +560,14 @@ public class RadioReferenceService
     }
 
     /**
-     * Radio system information and details
-     * @param systemId to query
-     * @return radio system or null
-     * @throws RadioReferenceException if there is an error
+     * Details of the trunked radio system: type, flavor and voice, location and coverage, radio networks (e.g. APCO-25
+     * system identifiers), band plans and fleetmap (operation {@code getTrsDetails}).  Sites and talkgroups have their
+     * own
+     * requests: {@link #getSites(int)} and {@link #getTalkgroups(int)}.
+     *
+     * @param systemId of the trunked radio system
+     * @return system information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public SystemInformation getSystemInformation(int systemId) throws RadioReferenceException
     {
@@ -553,11 +583,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Query radio systems by APCO25 hexadecimal system identifier.
+     * Trunked radio systems that use the APCO-25 system identifier (operation {@code getTrsBySysid}).
      *
-     * @param systemId to query (e.g. '2AE')
-     * @return list of radio systems or null
-     * @throws RadioReferenceException if there is an error
+     * @param systemId hexadecimal APCO-25 system identifier, e.g. "2AE"
+     * @return systems, or null if the response doesn't include a list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<System> getApco25Systems(String systemId) throws RadioReferenceException
     {
@@ -573,11 +603,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get sites for a radio system
+     * Sites of the trunked radio system, with their frequencies, location and coverage (operation {@code getTrsSites}).
      *
-     * @param systemId to query
-     * @return list of sites or null
-     * @throws RadioReferenceException if there is an error
+     * @param systemId of the trunked radio system
+     * @return sites, or null if the response doesn't include a list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Site> getSites(int systemId) throws RadioReferenceException
     {
@@ -593,11 +623,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get talkgroups for a specific system
+     * Talkgroups of the trunked radio system (operation {@code getTrsTalkgroups}).
      *
-     * @param systemId to query
-     * @return list of talkgroups or null
-     * @throws RadioReferenceException if there is an error
+     * @param systemId of the trunked radio system
+     * @return talkgroups, or null if the response doesn't include a list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Talkgroup> getTalkgroups(int systemId) throws RadioReferenceException
     {
@@ -613,11 +643,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Get talkgroups for a specific system with optional filtering by category, tag, or decimal value
+     * Talkgroups of the trunked radio system, limited to a talkgroup category, a function tag or a decimal talkgroup
+     * value (operation {@code getTrsTalkgroups}).
      *
-     * @param filter specifying a category id, tag id, or decimal value
-     * @return list of talkgroups or null
-     * @throws RadioReferenceException if there is an error
+     * @param filter with the system and the optional category, tag and decimal value
+     * @return talkgroups, or null if the response doesn't include a list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Talkgroup> getTalkgroups(TalkgroupRequestFilter filter) throws RadioReferenceException
     {
@@ -633,11 +664,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get talkgroup categories
+     * Talkgroup categories of the trunked radio system (operation {@code getTrsTalkgroupCats}).
      *
-     * @param systemId to query
-     * @return list of talkgroup categories or null
-     * @throws RadioReferenceException if there is an error
+     * @param systemId of the trunked radio system
+     * @return categories, or null if the response doesn't include a list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<TalkgroupCategory> getTalkgroupCategories(int systemId) throws RadioReferenceException
     {
@@ -653,10 +684,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Flavor information
-     * @param flavorId to query
-     * @return flavor or null
-     * @throws RadioReferenceException if there is an error
+     * Trunked system flavor with the id, from {@link #getFlavorsMap()}.
+     *
+     * @param flavorId of the flavor, e.g. from {@link SystemInformation#getFlavorId()}
+     * @return flavor, or null if there is no flavor with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Flavor getFlavor(int flavorId) throws RadioReferenceException
     {
@@ -665,12 +697,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of flavors and flavor identifiers.
+     * Trunked system flavors by id: the variants of each system type, e.g. a phase or a vendor variant of a protocol
+     * (operation {@code getTrsFlavor}).
      *
-     * Note: flavor values are cached on the first web service call and reused for subsequent method invocations.
+     * Loaded on the first call and cached.  Concurrent callers share one request.
      *
-     * @return read-only flavors map or null
-     * @throws RadioReferenceException if there is an error
+     * @return read-only map, or null if the response doesn't include the flavors
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Flavor> getFlavorsMap() throws RadioReferenceException
     {
@@ -687,10 +720,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Mode information
-     * @param modeId to query
-     * @return mode or null
-     * @throws RadioReferenceException if there is an error
+     * Operating mode with the id, from {@link #getModesMap()}.
+     *
+     * @param modeId of the mode, e.g. from {@link Frequency#getMode()}
+     * @return mode, or null if there is no mode with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Mode getMode(int modeId) throws RadioReferenceException
     {
@@ -699,12 +733,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of modes and mode identifiers.
+     * Operating modes by id: the analog or digital modulation of a conventional channel (operation {@code getMode}).
+     * {@link Frequency#getMode()} holds the mode id.
      *
-     * Note: mode values are cached on the first web service call and reused for subsequent method invocations.
+     * Loaded on the first call and cached.  Concurrent callers share one request.
      *
-     * @return read-only modes map or null
-     * @throws RadioReferenceException if there is an error
+     * @return read-only map, or null if the response doesn't include the modes
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Mode> getModesMap() throws RadioReferenceException
     {
@@ -721,10 +756,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Metro information
-     * @param metroId to query
-     * @return metro or null
-     * @throws RadioReferenceException if there is an error
+     * Metro area with the id, from {@link #getMetrosMap()}.
+     *
+     * @param metroId of the metro area
+     * @return metro area, or null if there is no metro area with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Metro getMetro(int metroId) throws RadioReferenceException
     {
@@ -733,12 +769,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of metros and metro identifiers.
+     * Metro areas by id (operation {@code getMetroArea}).
      *
-     * Note: metro values are cached on the first web service call and reused for subsequent method invocations.
+     * Loaded on the first call and cached.  Concurrent callers share one request.
      *
-     * @return read-only metros map or null
-     * @throws RadioReferenceException if there is an error
+     * @return read-only map, or null if the response doesn't include the metro areas
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Metro> getMetrosMap() throws RadioReferenceException
     {
@@ -755,13 +791,14 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of counties to metro identifiers.
+     * Counties of every metro area, by metro area id.
      *
-     * Note: this is an expensive service call the first time.  Metro values are cached on the first web service call
-     * and reused for subsequent method invocations.
+     * The first call is expensive: it requests the metro areas ({@code getMetroArea}) and then the counties of each
+     * metro
+     * area ({@code getMetroAreaInfo}), one request per metro area.  The map is cached after that.
      *
-     * @return read-only metro counties map or null
-     * @throws RadioReferenceException if there is an error
+     * @return read-only map, or null if the metro areas aren't available
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,List<County>> getMetroCountiesMap() throws RadioReferenceException
     {
@@ -792,11 +829,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Get counties for a metro area
+     * Counties of the metro area (operation {@code getMetroAreaInfo}).
      *
-     * @param metroId to query
-     * @return list of counties
-     * @throws RadioReferenceException if there is an error
+     * @param metroId of the metro area
+     * @return counties, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<County> getMetroCounties(int metroId) throws RadioReferenceException
     {
@@ -812,16 +849,13 @@ public class RadioReferenceService
     }
 
     /**
-     * List of metro areas for a state
+     * Metro areas that include counties of the state.
      *
-     * WARNING: the first call to this method is expensive because it uses getMetroCountiesMap() which is expensive.
+     * Uses {@link #getStateInfo(int)} and {@link #getMetroCountiesMap()}, so the first call is expensive.
      *
-     * Note: this is performed by first querying the state info for the list of counties and finding the matching metro
-     * areas from the getMetrosMap() method.
-     *
-     * @param stateId to query
-     * @return list of metros
-     * @throws RadioReferenceException if there is an error with the web service
+     * @param stateId of the state, e.g. 36 for New York
+     * @return metro areas, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Metro> getMetrosByState(int stateId) throws RadioReferenceException
     {
@@ -856,11 +890,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of tags and tag identifiers
+     * Function tags by id: the uses that classify frequencies and talkgroups (operation {@code getTag}).
      *
-     * Note: map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return read-only tags map or null
-     * @throws RadioReferenceException if there is an error
+     * Loaded on the first call and cached until {@link #clearTagMap()}.  Concurrent callers share one request.
+     *
+     * @return read-only map, or null if the response doesn't include the tags
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Tag> getTagsMap() throws RadioReferenceException
     {
@@ -877,7 +912,7 @@ public class RadioReferenceService
     }
 
     /**
-     * Clears the tags map so that it can be downloaded again on the next getTagsMap() invocation
+     * Clears the cached tags so that the next {@link #getTagsMap()} call requests them again
      */
     public void clearTagMap()
     {
@@ -885,10 +920,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Tag
-     * @param tagId to query
-     * @return type or null
-     * @throws RadioReferenceException if there is an error
+     * Function tag with the id, from {@link #getTagsMap()}.
+     *
+     * @param tagId of the tag
+     * @return tag, or null if there is no tag with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Tag getTag(int tagId) throws RadioReferenceException
     {
@@ -897,10 +933,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Type (protocol) information
-     * @param typeId to query
-     * @return type or null
-     * @throws RadioReferenceException if there is an error
+     * Trunked system type (protocol) with the id, from {@link #getTypesMap()}.
+     *
+     * @param typeId of the type, e.g. from {@link SystemInformation#getTypeId()}
+     * @return type, or null if there is no type with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Type getType(int typeId) throws RadioReferenceException
     {
@@ -909,11 +946,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of types (protocols) and type identifiers
+     * Trunked system types (protocols) by id (operation {@code getTrsType}).  {@link SystemInformation#getTypeId()} and
+     * {@link io.github.dsheirer.rrapi.type.System#getTypeId()} hold the type id.
      *
-     * Note: type map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return read-only types map or null
-     * @throws RadioReferenceException if there is an error
+     * Loaded on the first call and cached.  Concurrent callers share one request.
+     *
+     * @return read-only map, or null if the response doesn't include the types
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Type> getTypesMap() throws RadioReferenceException
     {
@@ -930,11 +969,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Map of voices and voice identifiers
+     * Voice codecs by id, for the voice channels of trunked systems (operation {@code getTrsVoice}).
+     * {@link io.github.dsheirer.rrapi.type.System#getVoiceId()} holds the voice id.
      *
-     * Note: map is cached on first call to the web service and reused on subsequent method invocations.
-     * @return read-only voices map or null
-     * @throws RadioReferenceException if there is an error
+     * Loaded on the first call and cached.  Concurrent callers share one request.
+     *
+     * @return read-only map, or null if the response doesn't include the voices
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Map<Integer,Voice> getVoicesMap() throws RadioReferenceException
     {
@@ -951,10 +992,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Voice information
-     * @param voiceId to query
-     * @return voice or null
-     * @throws RadioReferenceException if there is an error
+     * Voice codec with the id, from {@link #getVoicesMap()}.
+     *
+     * @param voiceId of the voice codec
+     * @return voice codec, or null if there is no voice codec with the id
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public Voice getVoice(int voiceId) throws RadioReferenceException
     {
@@ -963,10 +1005,11 @@ public class RadioReferenceService
     }
 
     /**
-     * Zipcode information
-     * @param zipcode to query
-     * @return zipcode info or null
-     * @throws RadioReferenceException if there is an error
+     * Location of the United States zip code: city, state, county and coordinates (operation {@code getZipcodeInfo}).
+     *
+     * @param zipcode five digit zip code
+     * @return zip code information, or null if the response doesn't include it
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public ZipInfo getZipcodeInfo(int zipcode) throws RadioReferenceException
     {
@@ -982,10 +1025,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Sub-Category frequencies
-     * @param subCategoryId that identifies a set of frequencies
-     * @return list of frequencies
-     * @throws RadioReferenceException if there is an error
+     * Frequencies of the subcategory (operation {@code getSubcatFreqs}).  The subcategories are listed in the
+     * categories of {@link CountyInfo} and {@link AgencyInfo}.
+     *
+     * @param subCategoryId of the subcategory
+     * @return frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<Frequency> getSubCategoryFrequencies(int subCategoryId) throws RadioReferenceException
     {
@@ -1001,11 +1046,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Search county frequencies
-     * @param countyId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the county that match the frequency (operation {@code searchCountyFreq}).  The frequency is sent
+     * rounded to the nearest Hz.
+     *
+     * @param countyId of the county
+     * @param frequency in MHz, e.g. 460.0375
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchCountyFrequencies(int countyId, double frequency) throws RadioReferenceException
     {
@@ -1013,12 +1060,15 @@ public class RadioReferenceService
     }
 
     /**
-     * Search county frequencies
-     * @param countyId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @param tone description (optional - can be null)
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the county that match the frequency and the tone (operation {@code searchCountyFreq}).  The
+     * frequency is sent
+     * rounded to the nearest Hz.
+     *
+     * @param countyId of the county
+     * @param frequency in MHz, e.g. 460.0375
+     * @param tone to match as the service lists it in {@link SearchFrequencyResult#getTone()}, or null for any tone
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchCountyFrequencies(int countyId, double frequency, String tone) throws RadioReferenceException
     {
@@ -1034,11 +1084,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Search state frequencies
-     * @param stateId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the state that match the frequency (operation {@code searchStateFreq}).  The frequency is sent
+     * rounded to the nearest Hz.
+     *
+     * @param stateId of the state
+     * @param frequency in MHz, e.g. 460.0375
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchStateFrequencies(int stateId, double frequency) throws RadioReferenceException
     {
@@ -1046,12 +1098,15 @@ public class RadioReferenceService
     }
 
     /**
-     * Search state frequencies
-     * @param stateId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @param tone description (optional - can be null)
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the state that match the frequency and the tone (operation {@code searchStateFreq}).  The
+     * frequency is sent
+     * rounded to the nearest Hz.
+     *
+     * @param stateId of the state
+     * @param frequency in MHz, e.g. 460.0375
+     * @param tone to match as the service lists it in {@link SearchFrequencyResult#getTone()}, or null for any tone
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchStateFrequencies(int stateId, double frequency, String tone) throws RadioReferenceException
     {
@@ -1067,11 +1122,14 @@ public class RadioReferenceService
     }
 
     /**
-     * Search metro frequencies
-     * @param metroId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the metro area that match the frequency (operation {@code searchMetroFreq}).  The frequency is
+     * sent
+     * rounded to the nearest Hz.
+     *
+     * @param metroId of the metro area
+     * @param frequency in MHz, e.g. 460.0375
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchMetroFrequencies(int metroId, double frequency) throws RadioReferenceException
     {
@@ -1079,12 +1137,15 @@ public class RadioReferenceService
     }
 
     /**
-     * Search metro frequencies
-     * @param metroId that identifies a set of frequencies
-     * @param frequency in MHz
-     * @param tone description (optional - can be null)
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * Frequencies in the metro area that match the frequency and the tone (operation {@code searchMetroFreq}).  The
+     * frequency is sent
+     * rounded to the nearest Hz.
+     *
+     * @param metroId of the metro area
+     * @param frequency in MHz, e.g. 460.0375
+     * @param tone to match as the service lists it in {@link SearchFrequencyResult#getTone()}, or null for any tone
+     * @return matching frequencies, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<SearchFrequencyResult> searchMetroFrequencies(int metroId, double frequency, String tone) throws RadioReferenceException
     {
@@ -1100,11 +1161,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Get FCC callsign details.
+     * FCC license details of the callsign: licensee, status, radio service, and the licensed locations and
+     * frequencies (operation {@code fccGetCallsign}).
      *
-     * @param callsign to query
-     * @return callsign details or null
-     * @throws RadioReferenceException if there is an error
+     * @param callsign FCC callsign, e.g. "WQDY448"
+     * @return license details, or null if the response doesn't include them
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public FccCallsignDetails getFccCallsignDetails(String callsign) throws RadioReferenceException
     {
@@ -1120,9 +1182,10 @@ public class RadioReferenceService
     }
 
     /**
-     * Get FCC Radio Service Code Information
-     * @return list of FCC radio service codes
-     * @throws RadioReferenceException if there is an error
+     * All FCC radio service codes with their descriptions (operation {@code fccGetRadioServiceCode} without a code).
+     *
+     * @return radio service codes, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<FccRadioServiceCode> getFccRadioServiceCodes() throws RadioReferenceException
     {
@@ -1138,10 +1201,12 @@ public class RadioReferenceService
     }
 
     /**
-     * Get FCC Radio Service Code Information for a specific code
-     * @param code to lookup that is composed of two letters
-     * @return FCC radio service code or null
-     * @throws RadioReferenceException if there is an error
+     * FCC radio service code and its description (operation {@code fccGetRadioServiceCode}).
+     *
+     * @param code two letter FCC radio service code, e.g. "AB"
+     * @return radio service code, or null if the response doesn't include it
+     * @throws RadioReferenceException with error type INVALID_REQUEST if the code isn't two characters, or if the
+     *     request fails
      */
     public FccRadioServiceCode getFccRadioServiceCode(String code) throws RadioReferenceException
     {
@@ -1168,12 +1233,13 @@ public class RadioReferenceService
     }
 
     /**
-     * Get FCC Callsigns near a location
-     * @param latitude of the search location
-     * @param longitude of the search location
-     * @param range from the search location (0 - 4.82 km)
-     * @return list of search results
-     * @throws RadioReferenceException if there is an error
+     * FCC callsigns licensed near the location (operation {@code fccGetProxCallsigns}).
+     *
+     * @param latitude of the search location in decimal degrees
+     * @param longitude of the search location in decimal degrees
+     * @param range search radius in kilometers, at most 4.82803 km (3 miles); larger values are reduced to the maximum
+     * @return callsigns with their distance from the location, or an empty list
+     * @throws RadioReferenceException if the request fails; see {@link RadioReferenceException#getErrorType()}
      */
     public List<ProximityCallsignResult> getFccCallsignsNearLocation(double latitude, double longitude, double range)
                     throws RadioReferenceException

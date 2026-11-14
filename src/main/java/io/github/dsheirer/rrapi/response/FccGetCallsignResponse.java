@@ -24,7 +24,9 @@ import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.FccCallsignDetails;
 
 /**
- * Get FCC callsign response
+ * Response body of the {@code fccGetCallsign} operation, with {@link FccCallsignDetails} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccCallsignDetails(String)}.</p>
  */
 public class FccGetCallsignResponse extends ResponseBody
 {

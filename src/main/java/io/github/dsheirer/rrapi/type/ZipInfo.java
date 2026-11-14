@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Zipcode Information
+ * Location of a United States zip code: city, state, county and coordinates.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getZipcodeInfo(int)}.
  */
 public class ZipInfo
 {
@@ -60,7 +61,7 @@ public class ZipInfo
     }
 
     /**
-     * Location latitude value in decimal degrees
+     * Latitude of the zip code, in decimal degrees, as text.
      * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
@@ -79,7 +80,7 @@ public class ZipInfo
     }
 
     /**
-     * Location longitude value in decimal degrees
+     * Longitude of the zip code, in decimal degrees, as text.
      * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")

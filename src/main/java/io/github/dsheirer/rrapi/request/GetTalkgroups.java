@@ -25,7 +25,19 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import io.github.dsheirer.rrapi.type.TalkgroupRequestFilter;
 
 /**
- * Get talkgroups request
+ * Request for the {@code getTrsTalkgroups} operation: talkgroups of a trunked radio system.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code sid} - trunked radio system id</li>
+ *     <li>{@code tgCid} - talkgroup category id, optional</li>
+ *     <li>{@code tgTag} - function tag id, optional</li>
+ *     <li>{@code tgDec} - decimal talkgroup value, optional</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroups(int)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroups(TalkgroupRequestFilter)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"sid", "tgCid", "tgTag", "tgDec", "authInfo"})

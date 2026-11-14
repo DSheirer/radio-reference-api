@@ -27,7 +27,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * Base SOAP request envelope
+ * SOAP envelope sent to the web service: an empty header and a body that holds one {@link RequestBody}.
  */
 @JacksonXmlRootElement(localName = "Envelope")
 public class RequestEnvelope

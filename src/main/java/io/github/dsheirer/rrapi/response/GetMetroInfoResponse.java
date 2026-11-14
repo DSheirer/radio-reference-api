@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get metro info response
+ * Response body of the {@code getMetroAreaInfo} operation, with a list of {@link County} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getMetroCounties(int)}.</p>
  */
 public class GetMetroInfoResponse extends ResponseBody
 {

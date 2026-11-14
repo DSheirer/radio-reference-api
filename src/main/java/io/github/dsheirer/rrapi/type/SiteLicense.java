@@ -22,7 +22,7 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Site licence
+ * FCC license (callsign) of a trunked system site.  Listed in {@link Site#getSiteLicenses()}.
  */
 public class SiteLicense
 {

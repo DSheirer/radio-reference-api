@@ -24,7 +24,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Objects;
 
 /**
- * Country
+ * Country summary: id, name and country code.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCountries()}; request the details with {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCountryInfo(Country)}.
  */
 public class Country implements Comparable<Country>
 {

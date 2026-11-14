@@ -26,7 +26,15 @@ import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 import java.util.List;
 
 /**
- * Country information request
+ * Request for the {@code getCountryInfo} operation: details of a country.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code coid} - country id</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCountryInfo(int)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"coid", "authInfo"})

@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Fleetmap configuration details for legacy Motorola systems
+ * Fleetmap of a Motorola Type I or hybrid system: the size code of each of the eight blocks.  Part of {@link
+ * SystemInformation}.
  */
 public class Fleetmap
 {

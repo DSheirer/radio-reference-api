@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Abbreviated agency information
+ * Agency summary: id, name and type.  Listed in {@link CountryInfo}, {@link StateInfo} and {@link CountyInfo}; request
+ * the details with {@link io.github.dsheirer.rrapi.RadioReferenceService#getAgencyInfo(Agency)}.
  */
 public class Agency
 {

@@ -24,7 +24,9 @@ import io.github.dsheirer.rrapi.type.CountryInfo;
 import io.github.dsheirer.rrapi.type.CountyInfo;
 
 /**
- * Get county info response
+ * Response body of the {@code getCountyInfo} operation, with {@link CountyInfo} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCountyInfo(int)}.</p>
  */
 public class GetCountyInfoResponse extends ResponseBody
 {

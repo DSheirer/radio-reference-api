@@ -25,7 +25,10 @@ import io.github.dsheirer.rrapi.type.TalkgroupCategory;
 import java.util.List;
 
 /**
- * Get talkgroup categroies response
+ * Response body of the {@code getTrsTalkgroupCats} operation, with a list of {@link TalkgroupCategory} in the {@code
+ * return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroupCategories(int)}.</p>
  */
 public class GetTalkgroupCategoriesResponse extends ResponseBody
 {

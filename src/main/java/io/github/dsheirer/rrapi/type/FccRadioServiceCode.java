@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Federal Communications Commission (FCC) radio service code
+ * FCC radio service code, e.g. the two letter code of a license's radio service, with its description.  Returned by
+ * {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccRadioServiceCodes()}.
  */
 public class FccRadioServiceCode
 {

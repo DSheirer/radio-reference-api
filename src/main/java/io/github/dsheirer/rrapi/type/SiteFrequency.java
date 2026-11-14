@@ -23,7 +23,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Site frequency or repeater output frequency
+ * Frequency of a trunked system site, with its logical channel number and its use, e.g. control channel.  Listed in
+ * {@link Site#getSiteFrequencies()}.
  */
 public class SiteFrequency
 {
@@ -60,7 +61,7 @@ public class SiteFrequency
     }
 
     /**
-     * Frequency
+     * Frequency of the site channel in MHz.  See {@link #getFrequencyHz()} for Hz.
      * @return frequency in MHz
      */
     @JacksonXmlProperty(localName = "freq")
@@ -89,8 +90,9 @@ public class SiteFrequency
     }
 
     /**
-     * Indicates the use for the channel.
-     * @return 'd' for primary control channel, 'a' for alternate control channel, or null.
+     * Use of the channel: {@code d} for the primary control channel, {@code a} for an alternate control channel,
+     * otherwise null.
+     * @return use code, or null
      */
     @JacksonXmlProperty(localName = "use")
     public String getUse()

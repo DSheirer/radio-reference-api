@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub Category
+ * Frequency subcategory of a {@link Category}, e.g. a group of channels, with its location and coverage and the trunked
+ * systems it refers to.  Its frequencies come from {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getSubCategoryFrequencies(int)}.
  */
 public class SubCategory
 {
@@ -83,8 +85,9 @@ public class SubCategory
     }
 
     /**
-     * Center location latitude
-     * @return latitude in decimal degrees
+     * Latitude of the center of the coverage area, in decimal degrees.  0 together with a 0 longitude means
+     * that the location isn't set.
+     * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
@@ -102,7 +105,8 @@ public class SubCategory
     }
 
     /**
-     * Center location longitude
+     * Longitude of the center of the coverage area, in decimal degrees.  0 together with a 0 latitude means
+     * that the location isn't set.
      * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
@@ -121,8 +125,8 @@ public class SubCategory
     }
 
     /**
-     * Range or extent from the center location
-     * @return range
+     * Radius of the coverage area around the center, in miles, or 0 if not set.  See {@link #getCoverage()}.
+     * @return range in miles
      */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
@@ -140,7 +144,8 @@ public class SubCategory
     }
 
     /**
-     * Rectangle geo-bounds.
+     * Rectangles that outline the coverage area more closely than the range, or an empty list.  See
+     * {@link #getCoverage()}.
      * @return rectangles
      */
     @JacksonXmlProperty(localName = "rectangles")
@@ -182,6 +187,7 @@ public class SubCategory
 
     /**
      * Coverage area of the frequency subcategory, for distance and containment checks
+     * @return coverage area
      */
     @JsonIgnore
     public Coverage getCoverage()

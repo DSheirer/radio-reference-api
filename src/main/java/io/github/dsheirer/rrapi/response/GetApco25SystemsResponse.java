@@ -25,7 +25,9 @@ import io.github.dsheirer.rrapi.type.System;
 import java.util.List;
 
 /**
- * Get APCO25 systems response
+ * Response body of the {@code getTrsBySysid} operation, with a list of {@link System} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getApco25Systems(String)}.</p>
  */
 public class GetApco25SystemsResponse extends ResponseBody
 {

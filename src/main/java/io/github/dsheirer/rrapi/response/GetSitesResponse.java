@@ -25,7 +25,9 @@ import io.github.dsheirer.rrapi.type.Site;
 import java.util.List;
 
 /**
- * Gets sites response
+ * Response body of the {@code getTrsSites} operation, with a list of {@link Site} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getSites(int)}.</p>
  */
 public class GetSitesResponse extends ResponseBody
 {

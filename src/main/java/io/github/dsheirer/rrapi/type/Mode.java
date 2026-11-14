@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Operating mode indicating analog or digital modulation type/mode
+ * Operating mode of a conventional channel, e.g. an analog or digital modulation.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getModesMap()}; {@link Frequency#getMode()} holds the mode id.
  */
 public class Mode
 {

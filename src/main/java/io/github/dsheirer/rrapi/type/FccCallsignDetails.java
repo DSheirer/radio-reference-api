@@ -24,7 +24,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.List;
 
 /**
- * Federal Communications Commission (FCC) callsign details
+ * FCC license of a callsign: licensee, status, grant date, radio service, and the licensed transmitter locations and
+ * frequencies.  Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccCallsignDetails(String)}.
  */
 public class FccCallsignDetails
 {

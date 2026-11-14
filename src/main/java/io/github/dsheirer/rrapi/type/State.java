@@ -24,7 +24,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Objects;
 
 /**
- * State
+ * State summary: id, name and state code.  Listed in {@link CountryInfo} and returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getStates(java.util.List)}; request the details with {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getStateInfo(int)}.
  */
 public class State implements Comparable<State>
 {

@@ -22,7 +22,9 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Broadcastify feed / audio streaming channel configuration details
+ * Broadcastify audio feed that the user provides: the feed id and description, and the Icecast server, port, mount
+ * point and password for streaming to it.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getUserFeeds()}.
  */
 public class UserFeedBroadcast
 {

@@ -26,7 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common frequencies response for getCountyFreqsByTag
+ * Response body of the {@code getAgencyFreqsByTag} and {@code getCountyFreqsByTag} operations, with a list of {@link
+ * Frequency} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getAgencyFrequenciesByTag(int, int)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCountyFrequenciesByTag(int, int)}.</p>
  */
 public class FrequenciesResponse extends ResponseBody
 {

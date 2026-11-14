@@ -23,7 +23,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.SystemInformation;
 
 /**
- * Get system info response
+ * Response body of the {@code getTrsDetails} operation, with {@link SystemInformation} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getSystemInformation(int)}.</p>
  */
 public class GetSystemInformationResponse extends ResponseBody
 {

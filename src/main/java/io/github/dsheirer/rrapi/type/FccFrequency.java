@@ -23,7 +23,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Federal Communications Commission (FCC) frequency information.
+ * Frequency of an FCC license, at one of the license's locations ({@link #getLocationId()} matches {@link
+ * FccLocation#getLocationId()}).  Listed in {@link FccCallsignDetails}.
  */
 public class FccFrequency
 {

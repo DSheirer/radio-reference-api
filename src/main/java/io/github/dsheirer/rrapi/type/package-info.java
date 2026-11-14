@@ -18,6 +18,13 @@
  */
 
 /**
- * Type structures provided by the web service
+ * Data types of the web service: countries, states, counties, agencies and their frequencies, trunked radio systems
+ * with their sites and talkgroups, FCC license data, and the lookup tables (modes, tags, system types, flavors and
+ * voices).
+ *
+ * <p>Summary types such as {@link io.github.dsheirer.rrapi.type.County} identify an entity; the matching detail types
+ * such as {@link io.github.dsheirer.rrapi.type.CountyInfo} come from a separate request.  Frequencies are in MHz and
+ * coordinates in decimal degrees.  The types also include helpers that the service doesn't provide:
+ * {@link io.github.dsheirer.rrapi.type.Coverage} and {@link io.github.dsheirer.rrapi.type.FrequencyConversion}.</p>
  */
 package io.github.dsheirer.rrapi.type;

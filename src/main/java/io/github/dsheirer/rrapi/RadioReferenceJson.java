@@ -68,6 +68,7 @@ public final class RadioReferenceJson
      * Reads a value from JSON
      * @param json text
      * @param type of the value
+     * @param <T> type of the value
      * @return value
      * @throws IOException if the JSON can't be read as the type
      */
@@ -80,6 +81,7 @@ public final class RadioReferenceJson
      * Reads a generic value, e.g. a list of frequencies, from JSON
      * @param json text
      * @param type of the value, e.g. new TypeReference&lt;List&lt;Frequency&gt;&gt;() {}
+     * @param <T> type of the value
      * @return value
      * @throws IOException if the JSON can't be read as the type
      */
@@ -130,6 +132,7 @@ public final class RadioReferenceJson
      * Reads a value from a JSON file
      * @param path of the file
      * @param type of the value
+     * @param <T> type of the value
      * @return value
      * @throws IOException if the file can't be read as the type
      */
@@ -142,6 +145,7 @@ public final class RadioReferenceJson
      * Reads a generic value, e.g. a list of frequencies, from a JSON file
      * @param path of the file
      * @param type of the value, e.g. new TypeReference&lt;List&lt;Frequency&gt;&gt;() {}
+     * @param <T> type of the value
      * @return value
      * @throws IOException if the file can't be read as the type
      */

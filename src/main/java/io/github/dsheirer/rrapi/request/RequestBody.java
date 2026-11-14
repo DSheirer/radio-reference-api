@@ -25,7 +25,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Payload for a Radio Reference SOAP envelope body element
+ * Base class of the request messages.  Each subclass is one WSDL operation: Jackson writes it as an element named after
+ * the operation, with the operation parameters followed by the {@code authInfo} credentials.  The subclasses are
+ * registered by operation name in the {@link JsonSubTypes} annotation of this class.
+ *
+ * <p>Applications normally call {@link io.github.dsheirer.rrapi.RadioReferenceService}, which creates the requests.</p>
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonSubTypes({

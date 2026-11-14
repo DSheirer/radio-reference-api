@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get types response
+ * Response body of the {@code getTrsType} operation, with a list of {@link Type} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTypesMap()}.</p>
  */
 public class GetTypesResponse extends ResponseBody
 {

@@ -39,9 +39,15 @@ import java.util.Objects;
  */
 public record Coverage(double latitude, double longitude, double rangeMiles, List<Rectangle> rectangles)
 {
+    /**
+     * Kilometers in one statute mile
+     */
     public static final double KILOMETERS_PER_MILE = 1.609344;
     private static final double EARTH_MEAN_RADIUS_KILOMETERS = 6371.0088;
 
+    /**
+     * Constructs an instance.  Null rectangles become an empty list, and null rectangle entries are dropped.
+     */
     public Coverage
     {
         rectangles = rectangles == null ? List.of() : rectangles.stream().filter(Objects::nonNull).toList();
@@ -49,6 +55,7 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
 
     /**
      * Indicates if the center point is set: valid coordinates other than 0, 0.
+     * @return true if the center is set
      */
     public boolean hasLocation()
     {
@@ -57,7 +64,8 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
     }
 
     /**
-     * Coverage radius in kilometers, 0 if not set
+     * Coverage radius in kilometers
+     * @return radius in kilometers, or 0 if the range is not set
      */
     public double rangeKilometers()
     {
@@ -66,6 +74,8 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
 
     /**
      * Great circle distance from the center to the location
+     * @param latitude of the location in decimal degrees
+     * @param longitude of the location in decimal degrees
      * @return kilometers, or NaN if the center is not set
      */
     public double distanceKilometers(double latitude, double longitude)
@@ -76,6 +86,8 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
     /**
      * Distance from the location to the edge of the coverage area: 0 inside the area.  Uses the rectangles when set,
      * otherwise the circle around the center.
+     * @param latitude of the location in decimal degrees
+     * @param longitude of the location in decimal degrees
      * @return kilometers, or NaN if neither the rectangles nor the center are set
      */
     public double distanceToCoverageKilometers(double latitude, double longitude)
@@ -96,6 +108,9 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
     /**
      * Indicates if the location is inside the coverage area: inside one of the rectangles when they are set, otherwise
      * within the range of the center.
+     * @param latitude of the location in decimal degrees
+     * @param longitude of the location in decimal degrees
+     * @return true if the location is inside the coverage area
      */
     public boolean contains(double latitude, double longitude)
     {
@@ -108,7 +123,11 @@ public record Coverage(double latitude, double longitude, double rangeMiles, Lis
     }
 
     /**
-     * Great circle (haversine) distance between two locations
+     * Great circle (haversine) distance between two locations, using the mean radius of the Earth
+     * @param latitude1 of the first location in decimal degrees
+     * @param longitude1 of the first location in decimal degrees
+     * @param latitude2 of the second location in decimal degrees
+     * @param longitude2 of the second location in decimal degrees
      * @return kilometers
      */
     public static double distanceKilometers(double latitude1, double longitude1, double latitude2, double longitude2)

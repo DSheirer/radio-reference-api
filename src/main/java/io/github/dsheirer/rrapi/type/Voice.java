@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Voice CODEC option for a protocol type
+ * Voice codec of a trunked system type.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getVoicesMap()}; {@link System#getVoiceId()} holds the voice id.
  */
 public class Voice
 {

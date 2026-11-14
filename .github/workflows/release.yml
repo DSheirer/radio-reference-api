@@ -59,3 +59,19 @@ jobs:
           fi
           gh release create "$GITHUB_REF_NAME" jars/* "${prerelease[@]}" \
             --verify-tag --generate-notes --title "radio-reference-api ${GITHUB_REF_NAME#v}"
+
+  # Publishes the javadoc of the new release on the GitHub Pages site.  Started with workflow_dispatch on master: the
+  # Pages environment only accepts deployments from the default branch, and a release created with the workflow token
+  # doesn't trigger other workflows by itself.  Pre-releases keep the javadoc of the latest release.
+  pages:
+    needs: publish
+    if: ${{ !contains(github.ref_name, '-') }}
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Start the Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run pages.yml --ref master

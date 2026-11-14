@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Proximity callsign search result
+ * FCC callsign licensed near a location, with its distance from the location.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getFccCallsignsNearLocation(double, double, double)}.
  */
 public class ProximityCallsignResult
 {
@@ -78,7 +79,7 @@ public class ProximityCallsignResult
     }
 
     /**
-     * Latitude of the emitter
+     * Latitude in decimal degrees.
      * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
@@ -97,7 +98,7 @@ public class ProximityCallsignResult
     }
 
     /**
-     * Longitude of the emitter
+     * Longitude in decimal degrees.
      * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")

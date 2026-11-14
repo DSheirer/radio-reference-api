@@ -26,7 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FCC get proximity callsigns response
+ * Response body of the {@code fccGetProxCallsigns} operation, with a list of {@link ProximityCallsignResult} in the
+ * {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccCallsignsNearLocation(double, double,
+ * double)}.</p>
  */
 public class FccGetProximityCallsignResponse extends ResponseBody
 {

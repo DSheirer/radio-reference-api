@@ -26,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get user feed broadcast response
+ * Response body of the {@code getUserFeedBroadcasts} operation, with a list of {@link UserFeedBroadcast} in the {@code
+ * return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getUserFeeds()}.</p>
  */
 public class GetUserFeedBroadcastsResponse extends ResponseBody
 {

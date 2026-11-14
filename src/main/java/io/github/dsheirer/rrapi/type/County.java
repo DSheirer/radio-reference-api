@@ -24,7 +24,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Objects;
 
 /**
- * County
+ * County summary: id, name and header.  Listed in {@link StateInfo} and returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCounties(java.util.List)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getMetroCounties(int)}; request the details with {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCountyInfo(int)}.
  */
 public class County implements Comparable<County>
 {

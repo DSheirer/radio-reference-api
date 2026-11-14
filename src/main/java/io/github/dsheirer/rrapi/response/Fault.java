@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.response;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * SOAP Fault response body
+ * SOAP fault: the error that the web service returns, with HTTP status 500, instead of an operation response. {@link
+ * io.github.dsheirer.rrapi.RadioReferenceException} carries it and categorizes it by the fault code.
  */
 public class Fault extends ResponseBody
 {
@@ -40,7 +41,13 @@ public class Fault extends ResponseBody
     }
 
     /**
-     * Fault code
+     * Fault code.  Codes returned by the service:
+     * <ul>
+     *     <li>{@code AUTH} - invalid user name or password</li>
+     *     <li>{@code APP} - invalid or empty application key</li>
+     *     <li>{@code SERVER} - invalid parameters, e.g. with fault string "Invalid County ID", or a server error</li>
+     *     <li>{@code SOAP-ENV:Client} - malformed request, or an operation that the API version doesn't define</li>
+     * </ul>
      * @return code
      */
     @JacksonXmlProperty(localName = "faultcode")
@@ -78,7 +85,7 @@ public class Fault extends ResponseBody
     }
 
     /**
-     * Fault string (ie message)
+     * Fault string: the error message, e.g. "Invalid County ID"
      * @return message
      */
     @JacksonXmlProperty(localName = "faultstring")

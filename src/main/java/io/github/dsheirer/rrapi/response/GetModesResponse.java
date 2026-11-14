@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Gets modes response
+ * Response body of the {@code getMode} operation, with a list of {@link Mode} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getModesMap()}.</p>
  */
 public class GetModesResponse extends ResponseBody
 {

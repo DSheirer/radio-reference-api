@@ -22,7 +22,11 @@ package io.github.dsheirer.rrapi.request;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Broadcastify stream(s) configuration details.
+ * Request for the {@code getUserFeedBroadcasts} operation: Broadcastify feeds that the user provides.
+ *
+ * <p>The only parameter is {@code authInfo}, the credentials from {@link RequestBody}.</p>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getUserFeeds()}.</p>
  */
 public class GetUserFeedBroadcasts extends RequestBody
 {

@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * State information containing list of agencies, counties and trunked radio systems.
+ * State details: its counties, statewide agencies and trunked radio systems.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getStateInfo(int)}.
  */
 public class StateInfo
 {

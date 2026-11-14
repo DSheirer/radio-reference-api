@@ -26,7 +26,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Talkgroup category or grouping
+ * Category that groups the talkgroups of a trunked radio system, with its location and coverage.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroupCategories(int)}; {@link
+ * Talkgroup#getTalkgroupCategoryId()} holds the category id.
  */
 public class TalkgroupCategory
 {
@@ -144,8 +146,9 @@ public class TalkgroupCategory
     }
 
     /**
-     * Center location latitude
-     * @return latitude in decimal degrees
+     * Latitude of the center of the coverage area, in decimal degrees.  0 together with a 0 longitude means
+     * that the location isn't set.
+     * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
@@ -163,8 +166,9 @@ public class TalkgroupCategory
     }
 
     /**
-     * Center location longitude
-     * @return longitude in decimal degrees
+     * Longitude of the center of the coverage area, in decimal degrees.  0 together with a 0 latitude means
+     * that the location isn't set.
+     * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
@@ -182,8 +186,8 @@ public class TalkgroupCategory
     }
 
     /**
-     * Range or extent from the center location
-     * @return range
+     * Radius of the coverage area around the center, in miles, or 0 if not set.  See {@link #getCoverage()}.
+     * @return range in miles
      */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
@@ -201,7 +205,8 @@ public class TalkgroupCategory
     }
 
     /**
-     * Rectangle geo-bounds.
+     * Rectangles that outline the coverage area more closely than the range, or an empty list.  See
+     * {@link #getCoverage()}.
      * @return rectangles
      */
     @JacksonXmlProperty(localName = "rectangles")
@@ -240,6 +245,7 @@ public class TalkgroupCategory
 
     /**
      * Coverage area of the talkgroup category, for distance and containment checks
+     * @return coverage area
      */
     @JsonIgnore
     public Coverage getCoverage()

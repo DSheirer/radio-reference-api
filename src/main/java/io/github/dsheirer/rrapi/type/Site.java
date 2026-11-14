@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Radio site information
+ * Site of a trunked radio system: identity (site, zone and RFSS numbers, NAC or RAN), location and coverage,
+ * frequencies, licenses and band plans.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getSites(int)}.
  */
 public class Site
 {
@@ -197,8 +199,8 @@ public class Site
     }
 
     /**
-     * NAC code
-     * @return nac
+     * APCO-25 Network Access Code (NAC) of the site, as hexadecimal text, e.g. "2AE".
+     * @return NAC, or null
      */
     @JacksonXmlProperty(localName = "nac")
     public String getNac()
@@ -351,8 +353,9 @@ public class Site
     }
 
     /**
-     * Location latitude
-     * @return latitude in decimal degrees
+     * Latitude of the center of the coverage area, in decimal degrees.  0 together with a 0 longitude means
+     * that the location isn't set.
+     * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
@@ -370,8 +373,9 @@ public class Site
     }
 
     /**
-     * Location longitude
-     * @return longitude in decimal degrees
+     * Longitude of the center of the coverage area, in decimal degrees.  0 together with a 0 latitude means
+     * that the location isn't set.
+     * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
@@ -389,8 +393,8 @@ public class Site
     }
 
     /**
-     * Range or extent of the site
-     * @return range
+     * Radius of the coverage area around the center, in miles, or 0 if not set.  See {@link #getCoverage()}.
+     * @return range in miles
      */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
@@ -408,7 +412,8 @@ public class Site
     }
 
     /**
-     * Rectangle geo-bounds.
+     * Rectangles that outline the coverage area more closely than the range, or an empty list.  See
+     * {@link #getCoverage()}.
      * @return rectangles
      */
     @JacksonXmlProperty(localName = "rectangles")
@@ -465,8 +470,8 @@ public class Site
     }
 
     /**
-     * TDMA control channel indicator
-     * @return 0 = false, 1 = true for TDMA control channel
+     * Indicates the type of control channel: 1 for a TDMA control channel, 0 for an FDMA control channel.
+     * @return 1 for TDMA, 0 for FDMA
      */
     @JacksonXmlProperty(localName = "tdma_cc")
     public int getTdmaControlChannel()
@@ -543,6 +548,7 @@ public class Site
 
     /**
      * Coverage area of the trunked system site, for distance and containment checks
+     * @return coverage area
      */
     @JsonIgnore
     public Coverage getCoverage()

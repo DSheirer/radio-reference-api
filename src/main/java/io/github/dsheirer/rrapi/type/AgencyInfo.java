@@ -26,7 +26,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Agency information including frequency categories, subcategories and radio systems.
+ * Agency details: location and coverage, and the frequency categories with their subcategories.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getAgencyInfo(int)}; the frequencies of each subcategory come from
+ * {@link io.github.dsheirer.rrapi.RadioReferenceService#getSubCategoryFrequencies(int)}.
  */
 public class AgencyInfo
 {
@@ -145,7 +147,8 @@ public class AgencyInfo
     }
 
     /**
-     * Agency location - latitude
+     * Latitude of the center of the coverage area, in decimal degrees.  0 together with a 0 longitude means
+     * that the location isn't set.
      * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
@@ -164,7 +167,8 @@ public class AgencyInfo
     }
 
     /**
-     * Agency location - longitude
+     * Longitude of the center of the coverage area, in decimal degrees.  0 together with a 0 latitude means
+     * that the location isn't set.
      * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
@@ -183,8 +187,8 @@ public class AgencyInfo
     }
 
     /**
-     * Agency location - range (extent)
-     * @return range
+     * Radius of the coverage area around the center, in miles, or 0 if not set.  See {@link #getCoverage()}.
+     * @return range in miles
      */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
@@ -202,7 +206,8 @@ public class AgencyInfo
     }
 
     /**
-     * Rectangle geo-bounds.
+     * Rectangles that outline the coverage area more closely than the range, or an empty list.  See
+     * {@link #getCoverage()}.
      * @return rectangles
      */
     @JacksonXmlProperty(localName = "rectangles")
@@ -260,6 +265,7 @@ public class AgencyInfo
 
     /**
      * Coverage area of the agency, for distance and containment checks
+     * @return coverage area
      */
     @JsonIgnore
     public Coverage getCoverage()

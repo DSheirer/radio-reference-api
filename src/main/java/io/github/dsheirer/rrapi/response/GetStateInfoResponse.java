@@ -23,7 +23,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.StateInfo;
 
 /**
- * Get state info response
+ * Response body of the {@code getStateInfo} operation, with {@link StateInfo} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getStateInfo(int)}.</p>
  */
 public class GetStateInfoResponse extends ResponseBody
 {

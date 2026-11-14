@@ -107,6 +107,7 @@ public class RadioReferenceException extends Exception
 
         /**
          * Indicates if the same request could succeed when tried again later
+         * @return true for errors that are usually temporary
          */
         public boolean isRetryable()
         {
@@ -124,7 +125,14 @@ public class RadioReferenceException extends Exception
      */
     private Fault mFault;
 
+    /**
+     * Category of the error
+     */
     private final ErrorType mErrorType;
+
+    /**
+     * Delay that the service requested before retrying, or null
+     */
     private Duration mRetryAfter;
 
     /**
@@ -198,6 +206,7 @@ public class RadioReferenceException extends Exception
 
     /**
      * Category of the error
+     * @return error type, never null
      */
     public ErrorType getErrorType()
     {
@@ -207,6 +216,7 @@ public class RadioReferenceException extends Exception
     /**
      * Indicates if the same request could succeed when tried again later, e.g. after a timeout or a service error.
      * False for errors that need a change first, e.g. invalid credentials or an invalid id.
+     * @return true if retrying could help
      */
     public boolean isRetryable()
     {

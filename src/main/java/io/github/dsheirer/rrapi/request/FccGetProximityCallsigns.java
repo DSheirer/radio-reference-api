@@ -24,12 +24,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.github.dsheirer.rrapi.type.AuthorizationInformation;
 
 /**
- * Get FCC callsigns in proximity to a reference point and distance
+ * Request for the {@code fccGetProxCallsigns} operation: FCC callsigns licensed near a location.
  *
- * Note: the web service interface supports range units of measure: m=miles, k=kilometers and n=nautical miles.  This
- * class uses kilometers by default.
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code lat} - latitude in decimal degrees</li>
+ *     <li>{@code lon} - longitude in decimal degrees</li>
+ *     <li>{@code range} - search radius, at most 4.82803 km</li>
+ *     <li>{@code unit} - unit of the range: k for kilometers</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
  *
- * The ICD requests that a max range of 3 miles (4.82 km) be used.  The constructor enforces this value.
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getFccCallsignsNearLocation(double, double,
+ * double)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"lat", "lon", "range", "unit", "authInfo"})

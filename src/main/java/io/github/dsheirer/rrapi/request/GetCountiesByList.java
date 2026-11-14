@@ -29,7 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * List of counties supported by the service
+ * Request for the {@code getCountiesByList} operation: counties by id.
+ *
+ * <p>Parameters, in the order the service expects them:</p>
+ * <ul>
+ *     <li>{@code request} - SOAP encoded array of county ids: see RequestArray</li>
+ *     <li>{@code authInfo} - credentials, from {@link RequestBody}</li>
+ * </ul>
+ *
+ * <p>Sent by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCounties(java.util.List)}.</p>
  */
 //RPC parameters are matched by position, so they are sent in WSDL order
 @JsonPropertyOrder({"request", "authInfo"})
@@ -48,6 +56,7 @@ public class GetCountiesByList extends RequestBody
 
     /**
      * Request parameter, sent as a SOAP encoded array of ctid items
+     * @return array of the requested county ids
      */
     @JacksonXmlProperty(localName = "request")
     public RequestArray<CountyRequestItem> getRequest()

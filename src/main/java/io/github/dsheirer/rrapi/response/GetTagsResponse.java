@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get tags response
+ * Response body of the {@code getTag} operation, with a list of {@link Tag} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTagsMap()}.</p>
  */
 public class GetTagsResponse extends ResponseBody
 {

@@ -25,7 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Search frequency result item
+ * Frequency found by a frequency search, with the state, county, agency and subcategory that it belongs to. Returned by
+ * {@link io.github.dsheirer.rrapi.RadioReferenceService#searchCountyFrequencies(int, double)}, {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#searchStateFrequencies(int, double)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#searchMetroFrequencies(int, double)}.
  */
 public class SearchFrequencyResult
 {
@@ -54,8 +57,8 @@ public class SearchFrequencyResult
     }
 
     /**
-     * Downlink (tower to mobile) or output frequency
-     * @return frequency in MHz
+     * Downlink (tower to mobile) or repeater output frequency in MHz.  See {@link #getDownlinkHz()} for Hz.
+     * @return frequency in MHz, or 0 if not set
      */
     @JacksonXmlProperty(localName = "out")
     public double getDownlink()
@@ -83,8 +86,8 @@ public class SearchFrequencyResult
     }
 
     /**
-     * Uplink (mobile to tower) or input frequency
-     * @return uplink frequency in MHz
+     * Uplink (mobile to tower) or repeater input frequency in MHz.  See {@link #getUplinkHz()} for Hz.
+     * @return frequency in MHz, or 0 if not set
      */
     @JacksonXmlProperty(localName = "in")
     public double getUplink()

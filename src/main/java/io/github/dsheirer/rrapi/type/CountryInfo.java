@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Country information and details.
+ * Country details: its states and national agencies.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getCountryInfo(int)}.
  */
 public class CountryInfo
 {

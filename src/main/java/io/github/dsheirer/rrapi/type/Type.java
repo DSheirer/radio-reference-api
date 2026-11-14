@@ -22,10 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Protocol type or name
- *
- * @see Flavor Flavor for protocol type variants or flavors
- * @see Voice Voice for protocol voice CODEC options
+ * Trunked system type (protocol).  Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTypesMap()};
+ * {@link SystemInformation#getTypeId()} holds the type id.
  */
 public class Type
 {

@@ -18,16 +18,15 @@
  */
 
 /**
- * Java client for accessing the radioreference.com SOAP web services API.
+ * The web service client: {@link io.github.dsheirer.rrapi.RadioReferenceService}, its exception
+ * {@link io.github.dsheirer.rrapi.RadioReferenceException}, and {@link io.github.dsheirer.rrapi.RadioReferenceJson} for
+ * saving the data types as JSON.
  *
- * Usage:
- *
- * AuthorizationInformation authorizationInformation = new AuthorizationInformation("apikey", "username", "password");
- *
- * RadioReferenceService service = new RadioReferenceService(authorizationInformation);
- *
+ * <pre>{@code
+ * AuthorizationInformation credentials = new AuthorizationInformation("appKey", "username", "password");
+ * RadioReferenceService service = new RadioReferenceService(credentials);
  * UserInfo userInfo = service.getUserInfo();
- *
+ * }</pre>
  */
 package io.github.dsheirer.rrapi;
 

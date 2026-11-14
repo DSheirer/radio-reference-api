@@ -27,7 +27,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Radio system extended information and details
+ * Trunked radio system details: type, flavor and voice, location and coverage, radio networks, band plans and fleetmap.
+ * Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getSystemInformation(int)}; sites and talkgroups
+ * come from {@link io.github.dsheirer.rrapi.RadioReferenceService#getSites(int)} and {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroups(int)}.
  */
 public class SystemInformation
 {
@@ -220,8 +223,9 @@ public class SystemInformation
     }
 
     /**
-     * Center location latitude
-     * @return latitude in decimal degrees
+     * Latitude of the center of the coverage area, in decimal degrees.  0 together with a 0 longitude means
+     * that the location isn't set.
+     * @return latitude
      */
     @JacksonXmlProperty(localName = "lat")
     public double getLatitude()
@@ -239,8 +243,9 @@ public class SystemInformation
     }
 
     /**
-     * Center location longitude
-     * @return longitude in decimal degrees
+     * Longitude of the center of the coverage area, in decimal degrees.  0 together with a 0 latitude means
+     * that the location isn't set.
+     * @return longitude
      */
     @JacksonXmlProperty(localName = "lon")
     public double getLongitude()
@@ -258,8 +263,8 @@ public class SystemInformation
     }
 
     /**
-     * Range (extent) of the system from the center location
-     * @return range
+     * Radius of the coverage area around the center, in miles, or 0 if not set.  See {@link #getCoverage()}.
+     * @return range in miles
      */
     @JacksonXmlProperty(localName = "range")
     public double getRange()
@@ -277,7 +282,8 @@ public class SystemInformation
     }
 
     /**
-     * Rectangle geo-bounds.
+     * Rectangles that outline the coverage area more closely than the range, or an empty list.  See
+     * {@link #getCoverage()}.
      * @return rectangles
      */
     @JacksonXmlProperty(localName = "rectangles")
@@ -377,6 +383,7 @@ public class SystemInformation
 
     /**
      * Coverage area of the trunked system, for distance and containment checks
+     * @return coverage area
      */
     @JsonIgnore
     public Coverage getCoverage()

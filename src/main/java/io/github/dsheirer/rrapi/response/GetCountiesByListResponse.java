@@ -27,7 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get counties by list response
+ * Response body of the {@code getCountiesByList} operation, with a list of {@link County} in the {@code return}
+ * element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCounties(java.util.List)}.</p>
  */
 public class GetCountiesByListResponse extends ResponseBody
 {

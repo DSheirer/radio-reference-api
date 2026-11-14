@@ -24,7 +24,9 @@ import io.github.dsheirer.rrapi.type.StateInfo;
 import io.github.dsheirer.rrapi.type.ZipInfo;
 
 /**
- * Get zipcode info response
+ * Response body of the {@code getZipcodeInfo} operation, with {@link ZipInfo} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getZipcodeInfo(int)}.</p>
  */
 public class GetZipcodeInfoResponse extends ResponseBody
 {

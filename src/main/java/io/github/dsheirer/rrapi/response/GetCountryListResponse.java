@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get country list response
+ * Response body of the {@code getCountryList} operation, with a list of {@link Country} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getCountries()}.</p>
  */
 public class GetCountryListResponse extends ResponseBody
 {

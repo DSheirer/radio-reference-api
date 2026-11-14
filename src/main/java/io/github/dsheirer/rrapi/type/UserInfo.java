@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * User account information
+ * Account of the authenticated user: user name and premium subscription expiration.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getUserInfo()}.
  */
 public class UserInfo
 {
@@ -56,8 +57,9 @@ public class UserInfo
     }
 
     /**
-     * Expiration date for the account
-     * @return expiration date
+     * Expiration date of the premium subscription, as text: a date formatted MM-dd-yyyy, or a description for
+     * accounts that don't expire, e.g. "Never - Admin" or "Never - Feed Provider".
+     * @return expiration date text
      */
     @JacksonXmlProperty(localName = "subExpireDate")
     public String getExpirationDate()

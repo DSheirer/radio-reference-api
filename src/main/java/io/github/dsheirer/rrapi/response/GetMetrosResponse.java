@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get metro(s) response
+ * Response body of the {@code getMetroArea} operation, with a list of {@link Metro} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getMetrosMap()}.</p>
  */
 public class GetMetrosResponse extends ResponseBody
 {

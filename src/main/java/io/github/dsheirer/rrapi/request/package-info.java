@@ -18,6 +18,11 @@
  */
 
 /**
- * SOAP request messages
+ * SOAP request messages: one {@link io.github.dsheirer.rrapi.request.RequestBody} subclass per WSDL operation, sent in
+ * a {@link io.github.dsheirer.rrapi.request.RequestEnvelope}.
+ *
+ * <p>The service matches the parameters by position, so each request class declares its parameters in WSDL order with
+ * {@code @JsonPropertyOrder}.  {@link io.github.dsheirer.rrapi.RadioReferenceService} creates the requests;
+ * applications don't normally use these classes directly.</p>
  */
 package io.github.dsheirer.rrapi.request;

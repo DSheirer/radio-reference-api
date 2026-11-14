@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get state by list response
+ * Response body of the {@code getStatesByList} operation, with a list of {@link State} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getStates(java.util.List)}.</p>
  */
 public class GetStatesByListResponse extends ResponseBody
 {

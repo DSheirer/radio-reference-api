@@ -22,7 +22,8 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Frequency band plan
+ * Band plan of a trunked system or site: the channel numbering for systems that identify channels by number rather than
+ * frequency.  Listed in {@link SystemInformation} and {@link Site}.
  */
 public class Bandplan
 {

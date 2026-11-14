@@ -25,7 +25,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Date;
 
 /**
- * Talkgroup
+ * Talkgroup of a trunked radio system: decimal value, alpha tag, description, mode, encryption and function tags.
+ * Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroups(int)}.
  */
 public class Talkgroup
 {

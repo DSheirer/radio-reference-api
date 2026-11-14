@@ -24,7 +24,10 @@ import io.github.dsheirer.rrapi.type.Talkgroup;
 import java.util.List;
 
 /**
- * Gets talkgroups response
+ * Response body of the {@code getTrsTalkgroups} operation, with a list of {@link Talkgroup} in the {@code return}
+ * element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getTalkgroups(int)}.</p>
  */
 public class GetTalkgroupsResponse extends ResponseBody
 {

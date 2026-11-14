@@ -22,7 +22,9 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Tag for frequency category or grouping
+ * Function tag: the use that classifies frequencies and talkgroups.  Returned by {@link
+ * io.github.dsheirer.rrapi.RadioReferenceService#getTagsMap()}; frequencies, search results and talkgroups list their
+ * tags.
  */
 public class Tag
 {

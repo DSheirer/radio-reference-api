@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Radio system categories
+ * Frequency category of a county or an agency, e.g. a department or a service, with its subcategories.  Listed in
+ * {@link CountyInfo} and {@link AgencyInfo}.
  */
 public class Category
 {

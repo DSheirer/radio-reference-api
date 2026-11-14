@@ -18,6 +18,11 @@
  */
 
 /**
- * SOAP response messages
+ * SOAP response messages: one {@link io.github.dsheirer.rrapi.response.ResponseBody} subclass per WSDL operation, and
+ * {@link io.github.dsheirer.rrapi.response.Fault} for errors, read from a
+ * {@link io.github.dsheirer.rrapi.response.ResponseEnvelope}.
+ *
+ * <p>{@link io.github.dsheirer.rrapi.RadioReferenceService} reads the responses and returns their contents;
+ * applications don't normally use these classes directly.</p>
  */
 package io.github.dsheirer.rrapi.response;

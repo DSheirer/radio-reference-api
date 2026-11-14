@@ -24,7 +24,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Objects;
 
 /**
- * Metropolitan area
+ * Metro area: id and name.  Returned by {@link io.github.dsheirer.rrapi.RadioReferenceService#getMetrosMap()}; the
+ * counties of a metro area come from {@link io.github.dsheirer.rrapi.RadioReferenceService#getMetroCounties(int)}.
  */
 public class Metro implements Comparable<Metro>
 {

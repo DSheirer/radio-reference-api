@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Get voices response
+ * Response body of the {@code getTrsVoice} operation, with a list of {@link Voice} in the {@code return} element.
+ *
+ * <p>Read by {@link io.github.dsheirer.rrapi.RadioReferenceService#getVoicesMap()}.</p>
  */
 public class GetVoicesResponse extends ResponseBody
 {

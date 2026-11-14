@@ -22,8 +22,7 @@ package io.github.dsheirer.rrapi.type;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Radio system reference with system identifier value
- *
+ * Reference from a {@link SubCategory} to a trunked radio system, by system id.
  */
 public class SystemReference
 {
