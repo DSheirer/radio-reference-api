@@ -1,5 +1,9 @@
 ## Java Client Library for radioreference.com Web Services API
 
+[![Nightly](https://github.com/DSheirer/radio-reference-api/actions/workflows/nightly.yml/badge.svg?branch=master)](https://github.com/DSheirer/radio-reference-api/actions/workflows/nightly.yml)
+[![Nightly release](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2FDSheirer%2Fradio-reference-api%2Freleases%2Ftags%2Fnightly&query=%24.name&label=download&color=blue)](https://github.com/DSheirer/radio-reference-api/releases/tag/nightly)
+[![Latest release](https://img.shields.io/github/v/release/DSheirer/radio-reference-api?label=release)](https://github.com/DSheirer/radio-reference-api/releases/latest)
+
 A client library for accessing the web services methods available from the radioreference.com website.  The web service wsdl uses legacy rpc encoding which is not compatible with current versions of the wsimport utility and therefore requires the use of non-modular (pre-Java 9) apache axis 1.4 library and related dependencies.  This library uses the Java HttpClient and Faster Jackson annotated classes for serialization of SOAP messages.  SOAP implementation and serialization are largely hidden from the user via the public methods available in the RadioReferenceService class.
 
 ### Compatibility
